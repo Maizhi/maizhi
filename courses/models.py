@@ -1,0 +1,45 @@
+from django.db import models
+
+class Types(models.Model):
+	name=models.CharField(max_length=29)
+	img=models.ImageField(upload_to='templates/picture/type/normal/')
+	big_img=models.ImageField(upload_to='templates/picture/type/big/')
+
+class Tiny_type(models.Model):
+	types=models.ForeignKey(Types)
+	name=models.CharField(max_length=29)
+	introduce=models.TextField()
+	img=models.ImageField(upload_to='templates/picture/type/big/')
+
+class Course(models.Model):
+	tiny_type=models.ForeignKey(Tiny_type)
+	status=models.IntegerField()
+	over=models.IntegerField()
+	teacher_id=models.IntegerField()
+	password=models.CharField(max_length=49,blank=True,null=True)
+	name=models.CharField(max_length=49)
+	introduce=models.TextField()
+	tag=models.CommaSeparatedIntegerField(max_length=99)
+	price=models.FloatField()
+	grade=models.IntegerField()
+	grade_con=models.IntegerField(default=0)
+	purchase_con=models.IntegerField(default=0)
+	time=models.DateTimeField(auto_now_add=True)
+	deadline=models.DateTimeField(auto_now_add=True)
+	img=models.ImageField(upload_to='templates/picture/course/')
+
+class Lession(models.Model):
+	course=models.ForeignKey(Course)
+	name=models.CharField(max_length=49)
+	time=models.DateTimeField(auto_now_add=True)
+	video=models.FileField(upload_to='templates/lession/video')
+	doc=models.FileField(upload_to='templates/lession/doc')
+
+class Course_comment(models.Model):
+	course=models.ForeignKey(Course)
+	content=models.TextField()
+	user_id=models.IntegerField()
+	time=models.DateTimeField(auto_now_add=True)
+	grade=models.IntegerField()
+
+

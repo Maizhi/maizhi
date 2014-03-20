@@ -1,0 +1,109 @@
+@CHARSET "UTF-8";
+iv{
+	border:1px solid blue;
+}
+pan{
+	border:1px solid green;
+}
+a{
+	color:#428BCA;
+	text-decoration:none;
+}
+a:hover{
+	color:black;
+	text-decoration:none;
+}
+
+
+
+
+.tth1{
+	width:35%;
+	text-align:center;
+}.tth2{
+	width:15%;
+	text-align:center;
+}.tth3{
+	width:25%;
+	text-align:center;
+}.tth4{
+	width:25%;
+	text-align:center;
+}
+/*标签 第一签*/
+.score_text{
+	width:100px;
+	resize:none;
+}
+/*star begin*/
+.rating > span:hover:before {
+   content: "\2605";
+	color:#FED986;
+   position: absolute;
+}
+
+.rating {
+  unicode-bidi: bidi-override;
+  direction: rtl;
+}
+.rating > span {
+  display: inline-block;
+  position: relative;
+  width: 1.1em;
+}
+.rating > span:hover:before,
+.rating > span:hover ~ span:before {
+   content: "\2605";color:#FED986;
+   position: absolute;
+}
+/*star over*/
+.intro_btn{
+	text-align:right;
+	margin-top:10px;
+}
+.intro_mes{
+	margin-left:5px;
+}
+.td_a{
+	padding-right:5px;
+}
+.td_text{
+	margin-top:15px;
+	text-align:center;
+	vertical-align:middle;
+}
+.td_12{
+	margin-top:15px;
+	padding-left:15px;
+	display:block;/*内联对象需加*/
+	width:200px;
+	word-break:keep-all;/* 不换行 */
+	white-space:nowrap;/* 不换行 */
+	overflow:hidden;/* 内容超出宽度时隐藏超出部分的内容 */
+	text-overflow:ellipsis;/* 当对象内文本溢出时显示省略标记(...) ；需与overflow:hidden;一起使用。*/
+}
+
+.th1{
+	width:35%;
+	text-align:center;
+}.th2{
+	width:15%;
+	text-align:center;
+}.th3{
+	width:15%;
+	text-align:center;
+}.th4{
+	width:35%;
+	text-align:center;
+}
+.tab-pane{
+	padding:20px 50px 20px 20px;
+}
+.btn_right{
+	width:20%;
+	padding-left:50px;
+}
+.tab_left{
+	width:80%;
+	padding-top:20px;
+}

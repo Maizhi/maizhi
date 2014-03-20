@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>麦知网——学问有余，乐为人师</title>
+
+<!-- Bootstrap core CSS -->
+<link href="../css/bootstrap.css" rel="stylesheet">
+<link href="../css/font-awesome.min.css" rel="stylesheet">
+<!-- Custom styles for this template -->
+<link href="../css/sco.message.css" rel="stylesheet">
+<link href="../css/scojs.css" rel="stylesheet">
+<link href="../css/non-responsive.css" rel="stylesheet">
+<link href="ico/favicon.ico" rel="shortcut icon" type="image/vnd.microsoft.icon"/>
+    <!-- Just for debugging purposes. Don't actually copy this line! -->
+    <!--[if lt IE 9]><script src="../../docs-assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="http://cdn.bootcss.com/html5shiv/3.7.0/html5shiv.min.js"></script>
+      <script src="http://cdn.bootcss.com/respond.js/1.3.0/respond.min.js"></script>
+    <![endif]-->
+<link href="../css/index.css" rel="stylesheet">   
+<script>
+var array=new Array();
+</script>
+</head>
+<body>
+	{% include 'public/common/header.html' %}
+	<div class="container" style="margin-top:45px">
+		<div class="row">
+<!-- 左侧div -->
+			<div class="col-xs-4">
+<!-- 个人名片 -->
+				<div class="person">
+					<div>
+						<div class="person_img pull-left">
+							{% if info.img %}
+							<img src="../avatar/{{info.img}}" width="100%"/>
+							{% else %}
+							<img src="../avatar/default.png" width="100%"/>
+							{% endif %}
+						</div>
+						<div class="pull-left person_intro">
+							<div class="intro">
+								<span><a href="{% url 'users:home' id %}"><font size="4"><strong>{{info.user_name|capfirst}}</strong></font></a></span>
+								<span class="span_span"><a href="{% url 'users:setting' %}" title="设置"> <i class="icon-cogs"></i></a></span>
+								<span class="pull-right"><a href="" title="管理我的课程"><i class="icon-table icon-large"></i></a></span>
+								<div class="clearfix"></div>
+							</div>
+							<div class="intro">
+								<span class="span_span2"><font size="1"><i class='icon-globe'></i> {% if info.position %}{{info.position}}{% else %}未填写{% endif %}</font></span>
+								<span><font size="1"><i class="icon-suitcase"></i> {% if info.work %}{{info.work}}{% else %}未填写{% endif %}</font></span>
+							</div>
+							<div class="intro">
+								<span><font size="1"><i class="icon-pencil"></i></font></span>
+								<span><font size="1"><i>{% if info.sign %}{{info.sign}}{% else %}未填写{% endif %}</i></font></span>
+							</div>
+						</div>
+						<div class="clearfix"></div>
+					</div>
+					<div class="person_2">
+						<div  class="topdirection"></div>
+						<form action="" method="">
+						<div style="background-color:white;"><textarea id="news" class="news_text" placeholder="发表新鲜事..."></textarea></div>
+						<div class="btn_fabu">
+							<span><a href="#" onclick="add_pic();"><font id="add" size="1"><span class="glyphicon glyphicon-picture"></span> 点此添加图片</font><font id="cancel" size="1" style="display:none;"><span class="glyphicon glyphicon-picture"></span> 取消添加图片</font></a></span>
+							<span class="pull-right"><button type="button" class="btn btn-primary btn-xs" onclick="push()"><strong> 发  布  </strong></button></span>
+							<div class="clearfix"></div>
+							<div id="news_pic" style="margin-bottom:5px;display:none;padding:5px 5px 5px 5px;">
+								<input type="file" id="file" name="news_picture" multiple />
+								<div id="list"></div>
+							</div>
+						</div>
+						</form>
+					</div>
+				</div>
+<!-- 我的小组、课程、悬赏令 -->
+				<div class="my">
+					<div class="my_in">
+						<span class="pull-left"><a href=""><b>我的小组</b></a></span>
+						<span class="pull-right"><a href=""><span class="label label-info">42</span></a></span>
+						<div class="clearfix"></div>
+					</div>
+					<div class="my_in">
+						<span class="pull-left"><a href=""><b>我的课程</b></a></span>
+						<span class="pull-right"><a href=""><span class="label label-info">42</span></a></span>
+						<div class="clearfix"></div>
+					</div>
+					<div class="my_in2">
+						<span class="pull-left"><a href=""><b>我的悬赏令</b></a></span>
+						<span class="pull-right"><a href=""><span class="label label-info">42</span></a></span>
+						<div class="clearfix"></div>
+					</div>
+				</div>
+<!-- 一个广告位 -->
+				<div class="ad">
+					<img src="../img/ad.jpg" width="100%">
+				</div>
+			</div>
+<!-- 右侧div -->
+			<div class="col-xs-8">
+				<div>
+<!-- 一条新鲜事 循环开始处 -->
+					<div class="newsDiv">
+						<div class="in_newsDiv"> 
+							<strong>您订阅的新鲜事</strong>
+						</div>
+					</div>
+					{% for i in result %}
+					<div class="newsDiv">
+						<div class="in_newsDiv"> 
+							<div class="news_photo pull-left">
+									<a href="{% url 'users:home' i.10 %}" ><img src="../avatar/{{i.1}}" width="100%"/></a>
+							</div>
+
+							<div class="news_content pull-left">
+								<div><span><a href="{% url 'users:home' i.10 %}" id="n{{i.8}}" data-toggle="popover" title="" data-content="{{i.9}}" data-original-title="<strong>{{i.0}}</strong> <font size='1'><i class='icon-globe'></i> {% if i.11 %}{{i.11}}{% else %}未填写{% endif %}</font></span>  <span><font size='1'><i class='icon-suitcase'></i> {% if i.12 %}{{i.12}}{% else %}未填写{% endif %}</font></span>" ><b>{{i.0}}</b></a><a href="javascript:void(0)" data-toggle="modal" data-target="#myModal{{i.8}}" title="向{{i.0}}发私信"> <i class="icon-envelope-alt pull-right"></i></a></span><!--<span style="font-size:">{{i.9}}</span>--><span class="time">{{i.3|date:"Y-m-d H:i:s"}}</span></div>
+								<script>
+									array.push({{i.8}})
+									var $btn{{i.8}} = $('#n{{i.8}}');
+								
+									$btn{{i.8}}.data('state', 'hover');
+									$btn{{i.8}}.popover({html:true})
+									var enterShow = function () {
+									    if ($btn{{i.8}}.data('state') === 'hover') {
+									        $btn{{i.8}}.popover('show');
+									    }
+									};
+									var exitHide = function () {
+									    if ($btn{{i.8}}.data('state') === 'hover') {
+									        $btn{{i.8}}.popover('hide');
+									    }
+									};
+
+									var clickToggle = function () {
+									    if ($btn{{i.8}}.data('state') === 'hover') {
+									        $btn{{i.8}}.data('state', 'pinned');
+									    } else {
+									        $btn{{i.8}}.data('state', 'hover')
+									        $btn{{i.8}}.popover('hover');
+									    }
+									};
+
+									$btn{{i.8}}.popover({trigger: 'manual'})
+									    .on('mouseenter', enterShow)
+									    .on('mouseleave', exitHide)
+									    .on('click', clickToggle);
+								</script>
+								<div class="modal fade" id="myModal{{i.8}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+								  <div class="modal-dialog">
+								    <div class="modal-content">
+								      <div class="modal-header">
+								        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+								        <h4 class="modal-title" id="myModalLabel">发送私信给{{i.0}}</h4>
+								      </div>
+								      <div class="modal-body">
+								        <textarea class="form-control" style="height:120px">Message数据表</textarea>
+								      </div>
+								      <div class="modal-footer">
+								        <button type="button" class="btn btn-primary">发送</button>
+								      </div>
+								    </div><!-- /.modal-content -->
+								  </div><!-- /.modal-dialog -->
+								</div><!-- /.modal -->
+								<div class="content">{{i.2}}</div>
+								<div class="larger_pic">
+									{% if i.4 %}
+									<img id="larger{{i.8}}" class="larger" style="display:none" width="100%" onclick="larger({{i.8}})" onmouseover="change();"/><i id="wait{{i.8}}" class="icon-spinner icon-spin"></i>
+									{% endif %}
+								</div>
+								<div class="pull-right">
+									<span class="span_news"><a href="javascript:void(0)" onclick="clickgood({{i.8}})"><i class="icon-thumbs-up"></i> <span id="good{{i.8}}">{{i.5}}</span></a></span>
+									<span class="span_news"><a href=""><i class="icon-share-alt"></i> <span id="share{{i.8}}">{{i.6}}</a></span>
+									<span class="span_news"><a href="javascript:void(0)" onclick="comment({{i.8}});"><i class="icon-comment"></i> <span id="review{{i.8}}">{{i.7}}</a></span>
+								</div>
+								<div class="clearfix"></div>
+							</div>
+							<div class="clearfix"></div>
+<!--在这个div里加入评论-->
+							<div>
+<!--评论 点击出现-->
+								<div id="comment{{i.8}}" class="comment" style="display:none;">
+									<div class="comment_act">
+										<div class="comment_act1 pull-left">
+											<textarea class="comment_act1_tarea"></textarea>
+										</div>
+										<div class="comment_act2 pull-left">
+											<button type="button" class="btn btn-info comment_act_btn">评论</button>
+										</div>
+										<div class="clearfix"></div>
+									</div>
+<!-- 某条新鲜事的评论 循环开始处 -->
+									<div class="a_comment">
+										<div class="pull-left comment_img">
+											<a href=""><img src="../avatar/{{i.1}}" class="img-circle" width="100%"></a>
+										</div>
+										<div class="pull-left comment_content">
+											<div>
+												<div class="pull-left">
+													<a href=""><b>TRON</b></a>
+												</div>
+												<div class="pull-right comment_time">
+													2014-3-5 12:12:12
+												</div>
+												<div class="clearfix"></div>
+											</div>
+											<div class="comment_concontent">
+												一个女生在雨里痛哭，作为一个陌生男人应该过去安慰一下吗？一个女生在雨里痛哭，作为一个陌生男人应该过去安慰一下吗？一个女生在雨里痛哭，作为一个陌生男人应该过去安慰一下吗？一个女生在雨里痛哭，作为一个陌生男人应该过去安慰一下吗？一个女生在雨里痛哭，作为一个陌生男人应该过去安慰一下吗？
+											</div>
+											<div class="pull-right">
+												<span class=onclick="comment({{i.8}});"onclick="comment({{i.8}});""span_news"><a href="javascript:void(0)"><i class="icon-thumbs-up"></i> <span id="good{{i.8}}">{{i.5}}</span></a></span>
+												<span class="span_news"><a href="javascript:void(0)" onclick="cocomment({{i.8}});"><i class="icon-comment"></i> <span id="review{{i.8}}">{{i.7}}</a></span>
+											</div>
+										</div>
+										<div class="clearfix"></div>
+<!-- 回复的回复 加入的div -->
+										<div>
+											
+										</div>
+									</div>
+
+<!-- 某条新鲜事的评论 循环结束处 -->
+								</div>
+							</div>
+						</div>
+					</div>
+					{% endfor %}
+
+					
+					<ul class="pager">
+					{% if topics.has_previous %}
+					  <li><a href="?page={{ topics.previous_page_number }}">&larr;上一页</a></li>
+					{% endif %}
+					共 {{ topics.number }} 页  第 {{ topics.paginator.num_pages }} 页.
+					{% if topics.has_next %}
+					  <li><a href="?page={{ topics.next_page_number }}">下一页&rarr;</a></li>
+					{% endif %}
+					</ul>
+<!-- 一条新鲜事 循环结束处 -->
+
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	
+	
+	
+	
+	<!-- jQuery文件。务必在bootstrap.min.js 之前引入 -->
+	<script src="../js/jquery.min.js"></script>
+	<script src="../js/publish_news.js"></script>
+	<script src="../js/sco.message.js"></script>
+	<script src="../js/good.js"></script>
+	<!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
+	<script src="../js/bootstrap.js"></script> 
+	
+	<script type="text/javascript">
+	window.onload=function(){
+		/*var worker=new Worker('../js/image.js')
+		for(i in array){
+			worker.postMessage(i)
+			worker.onmeessage=function(event){
+				document.getElementById('larger'+i).style.display='inline'
+				document.getElementById('wait'+i).style.display='none'
+				document.getElementById('larger'+i).src=event.data
+			}
+		}*/
+		createXMLRequest();
+		var url="http://192.168.1.120:8866/users/getimg/?imgid="+event.data;
+		xmlHttp.open("GET",url);
+		xmlHttp.onreadystatechange=function(){
+			if(xmlHttp.readyState==4 && xmlHttp.status==200){
+				document.getElementById('larger'+i).style.display='inline'
+				document.getElementById('wait'+i).style.display='none'
+				document.getElementById('larger'+i).src=xmlHttp.responseText
+			}
+			
+		};
+		xmlHttp.send(); 
+	}
+		var add_time=null;
+		function add_pic(){
+			if(add_time!=null){
+				clearTimeout(add_time);
+			}
+			add_time=setTimeout(function(){
+				$("#news_pic").toggle('slow');
+		 		$("#cancel").toggle();
+				$("#add").toggle();
+			},200);
+		}
+		var imgs;
+		function handleFileSelect(evt) {
+		var files = evt.target.files; // FileList object
+
+		// Loop through the FileList and render image files as thumbnails.
+		for (var i = 0, f; f = files[i]; i++) {
+
+		  // Only process image files.
+		  if (!f.type.match('image.*')) {
+		    continue;
+		  }
+
+		  var reader = new FileReader();
+
+		  // Closure to capture the file information.
+		  reader.onload = (function(theFile) {
+		    return function(e) {
+		      // Render thumbnail.
+		      var span = document.createElement('span');
+		      span.innerHTML = ['<img name="img1" class="img-thumbnail" src="', e.target.result,
+		                        '" title="', escape(theFile.name), '"/>'].join('');
+		      document.getElementById('list').insertBefore(span, null);
+		      imgs=escape(e.target.result);
+		      //var urls=document.images.item(img1).src;
+		    };
+		  })(f);
+		  // Read in the image file as a data URL.
+		  reader.readAsDataURL(f);
+		}
+		}
+		document.getElementById('file').addEventListener('change', handleFileSelect, false);
+
+
+		function larger(a)
+		{
+			var wid=$("#larger"+a).css("width");
+			if(wid=="380px")
+			{
+				$("#larger"+a).css("width","100px");
+			}
+			else
+			{
+				$("#larger"+a).css("width","380px");
+			}
+		}
+
+		function change()
+		{
+			$(".larger").css("cursor","pointer");
+		}
+
+		
+	</script>
+</body>
+</html>

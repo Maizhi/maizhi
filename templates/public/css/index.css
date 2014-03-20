@@ -1,0 +1,157 @@
+@CHARSET "UTF-8";
+
+iv{
+	border:1px solid blue;
+}
+pan{
+	border:1px solid green;
+}
+a{
+	color:#428BCA;
+	text-decoration:none;
+}
+a:hover{
+	color:black;
+	text-decoration:none;
+}
+
+.loading {
+ position:absolute;
+ top:0;
+ left:0;
+ width:100%;
+ height:100%;
+ z-index:100000;
+ background:url(../img/loading.gif) no-repeat center center #fff;
+}
+
+.comment_act_btn{
+	height:50px;
+	width:100%;
+}
+.comment_act1_tarea{
+	resize:none;
+	width:100%;
+	height:50px;
+}
+.comment_act2{
+	width:10%;
+	padding:10px 0px 10px 0px;
+}
+.comment_act1{
+	width:90%;
+	padding:10px 10px 10px 0px;
+}
+.comment_act{
+	width:100%;
+}
+.comment_concontent{
+	font-size:13px;
+}
+.comment_time{
+	font-size:12px;
+	color:gray;
+}
+.comment_content{
+	width:90%;
+	padding-left:10px;
+}
+.comment_img{
+	width:10%;
+}
+.a_comment{
+	margin-top:10px;
+}
+.comment{
+	padding:10px 10px 10px 10px;
+}
+.span_news{
+	margin-left:20px;
+	font-size:12px;
+}
+.larger_pic{
+	width:100px;
+}
+.content{
+	margin-top:5px;
+	font-size:13px;
+}
+.time{
+	margin-left:30px;
+	color:#999999;
+	font-size:12px;
+}
+.news_content{
+	width:92%;
+	padding-left:15px;
+}
+.news_photo{
+	width:8%;
+}
+.in_newsDiv{
+	padding-bottom:15px;
+	border-bottom:1px solid #ffffff;
+}
+.newsDiv{
+	background-color:#F3F3FA;
+	padding:15px 15px 0 15px;
+}
+.ad{
+	margin-top:15px;
+}
+.my_badge{
+	background-color:#00CCFF;
+}
+.my_in2{
+	padding:10px 5px 10px 5px;
+	margin:0 20px 0 20px;
+}
+.my_in{
+	padding:10px 5px 10px 5px;
+	margin:0 20px 0 20px;
+	border-bottom:1px solid #E4E4E4;
+}
+.my{
+	background-color:#ECF7FB;
+	margin-top:15px;
+}
+.btn_fabu{
+	margin-top:15px;
+}
+.news_text{
+	resize: none;
+	width:100%;
+	border:none;
+}
+.person_2{
+	padding-left:15px;
+	padding-right:15px;
+	padding-bottom:15px;
+}
+.topdirection  
+{  
+    width:0;height:0;
+	margin:-20px 0 0 30px;  
+    line-height:0;  
+    border-width:10px;  
+    border-style:solid;  
+    border-color: transparent transparent white transparent;  
+}  
+.span_span2{
+	margin-right:10px;
+}
+.span_span{
+	margin-right:10px;
+}
+
+.person_intro{
+	margin:5% 5% 5% 0;
+	width:55%;
+}
+.person_img{
+	margin:5% 5% 5% 5%;
+	width:30%;
+}
+.person{
+	background-color:#ECF7FB;
+}

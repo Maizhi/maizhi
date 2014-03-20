@@ -1,0 +1,36 @@
+
+	<div class="navbar navbar-default navbar-fixed-top" style="background-color:#0A0A2A;" role="navigation">
+      <div class="container">
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+	      <li class="active"><a href="{% url 'users:index' %}"><i class="icon-home"></i> 首页</a></a></li>
+	      <li><a href="#"><i class="icon-book"></i> 课程</a></li>
+	      <li><a href="#"><i class="icon-group"></i> 小组</a></li>
+	      <li><a href="#"><i class="icon-bullhorn"></i> 悬赏</a></li>
+	    </ul>
+	    	<a style="margin-left:10%" class="navbar-brand" href="#"><strong>麦知</strong></a>
+          <ul class="nav navbar-nav navbar-right">
+            <li style="margin-top:13px" class="form-inline">
+            	<div class="form-group pull-left">
+				    <input type="text" class="form-control" id="search" style="background-color:#D0D0E6;height:25px;width:170px" placeholder="搜索内容" onfocus="f()" onblur="b()">
+				</div>
+				<div class="form-group pull-left">
+				    <button class="btn btn-info btn-sm form-control"style="height:25px;"><i class="icon-search"></i></button>
+				</div>
+				<div class="clearfix"></div>
+            </li>
+            <li><a href="#"><i class="icon-bell-alt"></i><span class="badge">12</span></a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </div>
+	<script src="http://cdn.bootcss.com/jquery/1.10.2/jquery.min.js"></script>
+	<script src="http://cdn.bootcss.com/twitter-bootstrap/3.0.3/js/bootstrap.min.js"></script>
+	<script type="text/javascript">
+	function f(){
+		document.getElementById('search').style.background="#FFFFFF"
+	}
+	function b(){
+		document.getElementById('search').style.background="#D0D0E6"
+	}
+	</script>

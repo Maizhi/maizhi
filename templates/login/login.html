@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head>
+    <meta charset="utf-8">
+    <title>麦知网</title>
+    <link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.4.2/pure-min.css">
+    <link rel="stylesheet" href="css/market.css">
+    <link href="ico/favicon.ico" rel="shortcut icon" type="image/vnd.microsoft.icon"/>
+    <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css">
+    <script src="http://cdn.bootcss.com/jquery/1.10.2/jquery.min.js"></script>
+    <style>
+        .splash-subhead a:link,.splash-subhead a:visited{
+            color: white;
+            text-decoration: none;
+        }
+        .button-success,
+        .button-error,
+        .button-warning,
+        .button-secondary {
+            color: white;
+            border-radius: 4px;
+            text-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
+        }
+
+        .button-success {
+            background: rgb(28, 184, 65); /* this is a green */
+        }
+
+        .button-error {
+            background: rgb(202, 60, 60); /* this is a maroon */
+        }
+
+        .button-warning {
+            background: rgb(223, 117, 20); /* this is an orange */
+        }
+
+        .button-secondary {
+            background: rgb(66, 184, 221); /* this is a light blue */
+        }
+        @font-face { 
+            font-family:'tit'; 
+            src :url('fonts/8866.otf'); 
+            font-style:  normal;
+        } 
+    </style>
+    <script type="text/javascript" src="js/login.js"></script>
+    <script type="text/javascript">
+    window.onload=function(){
+        $("#reg").hide();
+        var datas=localStorage.getItem('EDU_auth');
+        var reg=/\,/;
+        var section=datas.split(reg);
+        localLogin(section[0],section[1])
+    }
+    function reg(){
+        $("#pic").hide();
+        $("#pic").fadeOut();
+        $("#reg").fadeIn();
+    }
+    function pic(){
+        $("#reg").hide();
+        $("#reg").fadeOut();
+        $("#pic").fadeIn();
+    }
+
+    </script>
+  </head>
+
+  <body>
+    <div class="header">
+    <div class="home-menu pure-menu pure-menu-open pure-menu-horizontal pure-menu-fixed">
+        
+            <ul>
+                <li class="pure-menu-selected">
+                    <form class="pure-form" method="get">
+                        <fieldset>
+                            <input type="email" id="email2" placeholder="您的邮箱">
+                            <input type="password" id="password2" placeholder="您的密码">
+                            <button type="button" class="pure-button pure-button-primary" onclick="login();">登入</button>
+                        </fieldset>
+                        <div id="login"></div>
+                    </form>
+                
+            </ul>
+        </div>
+    </div>
+    <div class="splash-container" style="background-image:url(img/002.bmp)">
+    <div class="splash">
+        <div id="pic">
+            <h1 class="splash-head" style="font-family:tit"><span>麦知</span>，麦田里的读书者</h1>
+            <p class="splash-subhead">
+                <a href="javascript:void(0)" onclick="reg()">现在注册 <i class="fa fa-chevron-circle-right"></i></a>
+            </p>
+        </div>
+        <div id="reg">
+            <form class="pure-form pure-form-aligned" >
+                <fieldset>
+                    <div class="pure-control-group">
+                        <label for="name"  style="color:white">用户名</label>
+                        <input id="name" type="text" placeholder="用户名">
+                    </div>
+                    <div class="pure-control-group">
+                        <label for="email"  style="color:white">邮箱</label>
+                        <input id="email" type="email" placeholder="邮箱">
+                    </div>
+                    <div class="pure-control-group">
+                        <label for="password"  style="color:white">密码</label>
+                        <input id="password" type="password" placeholder="密码">
+                    </div>
+                    <div class="pure-controls splash-subhead">
+                        <div id="log"></div>
+                        <a href="javascript:void(0)" onclick="pic()"><i class="fa fa-chevron-circle-left"></i> 返回 </a><button type="button" class="button-success pure-button" onclick="regi()">提交注册</button>
+                    </div>
+                </fieldset>
+            </form>
+        </div>
+    </div>
+    </div>
+    <div class="content-wrapper">
+    <div class="content">
+        <h2 class="content-head is-center">为什么一定要选择麦知.</h2>
+        <div class="pure-g">
+            <div class="l-box pure-u-1 pure-u-med-1-2 pure-u-lrg-1-4">
+
+                <h3 class="content-subhead">
+                    <i class="fa fa-bullhorn"></i>
+                    一呼百应
+                </h3>
+                <p>
+                    Phasellus eget enim eu lectus faucibus vestibulum. Suspendisse sodales pellentesque elementum.
+                </p>
+            </div>
+            <div class="l-box pure-u-1 pure-u-med-1-2 pure-u-lrg-1-4">
+                <h3 class="content-subhead">
+                    <i class="fa fa-cloud"></i>
+                    小组云
+                </h3>
+                <p>
+                    Phasellus eget enim eu lectus faucibus vestibulum. Suspendisse sodales pellentesque elementum.
+                </p>
+            </div>
+            <div class="l-box pure-u-1 pure-u-med-1-2 pure-u-lrg-1-4">
+                <h3 class="content-subhead">
+                    <i class="fa fa-group"></i>
+                    一群相同兴趣的人
+                </h3>
+                <p>
+                    Phasellus eget enim eu lectus faucibus vestibulum. Suspendisse sodales pellentesque elementum.
+                </p>
+            </div>
+            <div class="l-box pure-u-1 pure-u-med-1-2 pure-u-lrg-1-4">
+                <h3 class="content-subhead">
+                    <i class="fa fa-play-circle"></i>
+                    短课时学习
+                </h3>
+                <p>
+                    Phasellus eget enim eu lectus faucibus vestibulum. Suspendisse sodales pellentesque elementum.
+                </p>
+            </div>
+        </div>
+    </div>
+    </div>
+  </body>
+</html>

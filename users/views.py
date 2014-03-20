@@ -1,0 +1,214 @@
+#encoding:utf-8
+
+from django.http import HttpResponse,HttpResponseRedirect
+from django.core.paginator import PageNotAnInteger, Paginator, InvalidPage, EmptyPage
+from users.models import News,Info,Good_news,Follow_user
+from login.models import Register
+from django import template
+from django.views.decorators.csrf import csrf_exempt  
+from django.core.urlresolvers import reverse
+from django.shortcuts import render
+from PIL import Image
+#from django.views.decorators.csrf import csrf_protect
+from users.models import Info,Teacher,News,Review_of_news,Message,Follow_topic,Follow_user,Follow_group,Follow_course,Post_reward,Post_course,Purchase,Good_news,Good_review_of_news
+from django.utils import timezone
+import re,md5,os,time,json,base64
+
+def index(request):
+	limit = 10
+	focus=Follow_user.objects.filter(user_id=request.session['id'])
+	fs=[]
+	for f in focus:
+		fs.append(f.follow_user_id)
+	topics = News.objects.filter(user_id__in=fs).order_by('-time')
+	paginator = Paginator(topics, limit)
+	page = request.GET.get('page')
+	try:
+	    topics = paginator.page(page)
+	except PageNotAnInteger:
+	    topics = paginator.page(1)
+	except EmptyPage:
+	    topics = paginator.page(paginator.num_pages)
+	result=[]
+	for t in topics:
+		each=[]
+		i=Info.objects.get(user_id=t.user_id)
+		each.append(i.user_name)  #0
+		each.append(i.img)        #1
+		each.append(t.content)    #2
+		each.append(t.time)       #3
+		if t.img:
+			each.append(t.img)    #4
+		else:
+			each.append('')       #4
+		each.append(t.good_con)   #5
+		each.append(t.share_con)  #6
+		each.append(t.review_con) #7
+		each.append(t.id)         #8
+		each.append(i.sign)       #9
+		each.append(t.user_id)    #10
+		each.append(i.position)   #11
+		each.append(i.work)       #12
+		result.append(each)
+	info=Info.objects.get(user_id=request.session['id'])
+	return render(request,'users/index.html',{'id':request.session['id'],'info':info,'result':result,'topics':topics})
+
+@csrf_exempt
+def publish(request):
+	#try:
+		#return HttpResponse(simplejson.loads(str(request.POST)))
+		tj=time.time()
+		if 'img' in request.POST:
+			#u=request.POST['img'].split(',')
+			#i=base64.decodestring(u[1])
+			files=open("templates/picture/news/"+str(tj), "w")  
+			files.write(request.POST['img'].replace('*','+'))
+			files.close()
+			news=request.POST['news']
+			News(user_id=request.session['id'],content=news,good_con=0,share_con=0,review_con=0,img=str(tj)+".jpg").save()
+			jpg("templates/picture/news/"+str(tj),"templates/picture/news/"+str(tj)+".jpg")
+			return HttpResponse('1')
+		else:
+			news=request.POST['news']
+			News(user_id=request.session['id'],content=news,good_con=0,share_con=0,review_con=0).save()
+			return HttpResponse('1')
+	#except:
+	#	return HttpResponse('0')
+
+def jpg(url,jpg):
+	files=open(url)
+	fr=files.read()
+	frd=fr.split(',')
+	decode=base64.decodestring(frd[1])
+	files.close()
+	f=open(jpg,'w')
+	f.write(decode)
+	f.close()
+
+def good(request):
+	entire=Good_news.objects.filter(news_id=request.GET['newsid'])
+	for i in entire:
+		if request.session['id']==i.user_id:
+			return HttpResponse('2')
+	Good_news(news_id=request.GET['newsid'],user_id=request.session['id']).save()
+	n=News.objects.get(id=request.GET['newsid'])
+	g=int(n.good_con)+int(1)
+	n.good_con=g
+	n.save()
+	return HttpResponse('1')
+
+def head(request):
+	info=Info.objects.get(user_id=request.session['id'])
+	if 'head' in request.FILES:
+		image=request.FILES['head']
+		pattern=re.compile(r'\.') 
+		head=pattern.split(str(image))
+		head[0]=request.session['email']
+		filename=head[0]+'.'+head[1]
+		dirs ='templates/picture/avatar/'+filename
+		content = image.read()
+		if os.path.isfile(dirs):
+			os.remove(dirs) 
+		fp=open(dirs, 'wb')
+		fp.write(content)
+		fp.flush()
+		fp.close()
+		info.img=filename
+		info.time=timezone.now()
+		info.save()
+	else:
+		image=None
+	#return HttpResponse(image)
+	return HttpResponseRedirect(reverse('users:setting'))
+	#return render(request,"login/home.html")
+
+def getimg(request):
+	this=News.objects.get(id=request.GET['imgid'])
+	if this.img:
+		return HttpResponse(this.img)
+	else:
+		return HttpResponse('')
+
+def mycourseact(request):
+	return render(request,'users/myCourseAct.html')
+
+def home(request,u_id):
+	if u_id==request.session['id']:
+		identity=1
+		info=Info.objects.get(user_id=request.session['id'])
+	else:
+		identity=0
+		info=Info.objects.get(user_id=u_id)
+	user=Register.objects.all()[0:5]
+	guy=[]
+	focus=Follow_user.objects.filter(user_id=request.session['id'])
+	for u in user:
+		if u.id==request.session['id']:
+			pass
+		else:
+			each=[]
+			i=Info.objects.get(user_id=u.id)
+			each.append(i.user_name)
+			each.append(i.sign)
+			each.append(i.sex)
+			each.append(i.img)
+			each.append(i.id)
+			guy.append(each)
+	return render(request,'users/home.html',{'identity':identity,'info':info,'guy':guy})
+
+def add(request):
+	Follow_user(user_id=request.session['id'],follow_user_id=request.GET['id']).save()
+	return HttpResponse('1')
+
+def managecourse(request):
+	return render(request,'users/manageCourse.html')
+
+def managegroup(request):
+	return render(request,'users/manageGroup.html')
+
+def managereward(request):
+	return render(request,'users/managereward.html')
+
+def setting(request):
+	info=Info.objects.get(user_id=request.session['id'])
+	user=Register.objects.get(id=request.session['id'])
+	status=None
+	if user.status!="0":
+		status=True
+	return render(request,'users/setting.html',{'email':request.session['email'],'info':info})
+
+def update(request):
+	#try:
+		info=Info.objects.get(user_id=request.session['id'])
+		info.user_name=request.POST['name']
+		info.sex=request.POST['sex']
+		info.work=request.POST['work']
+		info.position=request.POST['position']
+		info.birthday=request.POST['birthday']
+		info.constellation=request.POST['constellation']
+		info.sign=request.POST['sign']
+		info.introduce=request.POST['introduce']
+		info.save()
+		return HttpResponseRedirect(reverse('users:setting'))
+	#except:
+	#	return HttpResponse('Login first')
+
+def pwdchange(request):
+	user=Register.objects.get(id=request.session['id'])
+	old_pwd=request.POST['old_pwd']
+	pwd=user.password
+	if md5.new(old_pwd).hexdigest()==pwd:
+		new_pwd=request.POST['new_pwd']
+		if old_pwd!=new_pwd:
+			user.password=md5.new(new_pwd).hexdigest()
+			user.save()
+			return HttpResponseRedirect(reverse('login:index'))
+	else:
+		return HttpResponse('原密码不正确！')
+	
+
+def mytopic(request):
+	return render(request,'users/myTopic.html')
+
+def teacherapply(request):
+	return render(request,'users/teacherApply.html')
