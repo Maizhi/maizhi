@@ -12,5 +12,6 @@ function response(id){
 		result=document.getElementById('messageresult'+id);
 		result.innerHTML=xmlHttp.responseText;
 		result.style.color='orange';
+		$("#myModal"+id).modal('hide');
 	};
 }
