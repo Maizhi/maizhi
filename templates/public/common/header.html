@@ -19,7 +19,7 @@
 				</div>
 				<div class="clearfix"></div>
             </li>
-            <li><a href="#"><i class="icon-bell-alt"></i><span class="badge">12</span></a></li>
+            <li><a href="#"><i class="icon-bell-alt"></i>{% ifequal havent 0 %}<span></span>{% else %}<span class="badge">{{havent}}</span>{% endifequal %}</a></li>
           </ul>
         </div><!--/.nav-collapse -->
       </div>

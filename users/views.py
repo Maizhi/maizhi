@@ -2,7 +2,7 @@
 
 from django.http import HttpResponse,HttpResponseRedirect
 from django.core.paginator import PageNotAnInteger, Paginator, InvalidPage, EmptyPage
-from users.models import News,Info,Good_news,Follow_user
+from users.models import News,Info,Good_news,Follow_user,Message
 from login.models import Register
 from django import template
 from django.views.decorators.csrf import csrf_exempt  
@@ -51,7 +51,12 @@ def index(request):
 		each.append(i.work)       #12
 		result.append(each)
 	info=Info.objects.get(user_id=request.session['id'])
-	return render(request,'users/index.html',{'id':request.session['id'],'info':info,'result':result,'topics':topics})
+	m=Message.objects.filter(to=request.session['id'])
+	havent=0
+	for n in m:
+		if n.status==1:
+			havent+=1
+	return render(request,'users/index.html',{'id':request.session['id'],'info':info,'result':result,'topics':topics,'message':m,'havent':havent})
 
 @csrf_exempt
 def publish(request):
@@ -96,6 +101,14 @@ def good(request):
 	n.good_con=g
 	n.save()
 	return HttpResponse('1')
+
+def message(request):
+	try:
+		realto=News.objects.get(id=request.GET['to'])
+		Message(from_id=request.session['id'],to=realto.user_id,content=request.GET['message'],status=1).save()
+		return HttpResponse('OK')
+	except:
+		return HttpResponse('Wrong')
 
 def head(request):
 	info=Info.objects.get(user_id=request.session['id'])
