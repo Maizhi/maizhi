@@ -51,12 +51,20 @@ def index(request):
 		each.append(i.work)       #12
 		result.append(each)
 	info=Info.objects.get(user_id=request.session['id'])
-	m=Message.objects.filter(to=request.session['id'])
+	m=Message.objects.filter(to=request.session['id']).order_by('-time')[0:5]
+	mess=[]
+	for k in m:
+		each=[]
+		name=Info.objects.get(user_id=k.from_id).user_name
+		content=k.content
+		each.append(name)
+		each.append(content)
+		mess.append(each)
 	havent=0
 	for n in m:
 		if n.status==1:
 			havent+=1
-	return render(request,'users/index.html',{'id':request.session['id'],'info':info,'result':result,'topics':topics,'message':m,'havent':havent})
+	return render(request,'users/index.html',{'id':request.session['id'],'info':info,'result':result,'topics':topics,'message':mess,'havent':havent})
 
 @csrf_exempt
 def publish(request):
