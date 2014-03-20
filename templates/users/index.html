@@ -116,7 +116,7 @@ var array=new Array();
 							</div>
 
 							<div class="news_content pull-left">
-								<div><span><a href="{% url 'users:home' i.10 %}" id="n{{i.8}}" data-toggle="popover" title="" data-content="{{i.9}}" data-original-title="<strong>{{i.0}}</strong> <font size='1'><i class='icon-globe'></i> {% if i.11 %}{{i.11}}{% else %}未填写{% endif %}</font></span>  <span><font size='1'><i class='icon-suitcase'></i> {% if i.12 %}{{i.12}}{% else %}未填写{% endif %}</font></span>" ><b>{{i.0}}</b></a><a href="javascript:void(0)" data-toggle="modal" data-target="#myModal{{i.8}}" title="向{{i.0}}发私信"> <i class="icon-envelope-alt pull-right"></i></a></span><!--<span style="font-size:">{{i.9}}</span>--><span class="time">{{i.3|date:"Y-m-d H:i:s"}}</span></div>
+								<div><span><a href="{% url 'users:home' i.10 %}" id="n{{i.8}}" data-toggle="popover" title="" data-content="{{i.9}}" data-original-title="<strong>{{i.0}}</strong> <font size='1'><i class='icon-globe'></i> {% if i.11 %}{{i.11}}{% else %}未填写{% endif %}</font></span>  <span><font size='1'><i class='icon-suitcase'></i> {% if i.12 %}{{i.12}}{% else %}未填写{% endif %}</font></span>" ><b>{{i.0}}</b></a><a href="#" data-toggle="modal" data-target="#myModal{{i.8}}" title="向{{i.0}}发私信"> <i class="icon-envelope-alt pull-right"></i></a></span><!--<span style="font-size:">{{i.9}}</span>--><span class="time">{{i.3|date:"Y-m-d H:i:s"}}</span></div>
 								<script>
 									array.push({{i.8}})
 									var $btn{{i.8}} = $('#n{{i.8}}');
@@ -153,13 +153,14 @@ var array=new Array();
 								    <div class="modal-content">
 								      <div class="modal-header">
 								        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-								        <h4 class="modal-title" id="myModalLabel">发送私信给{{i.0}}</h4>
+								        <h4 class="modal-title">发送私信给{{i.0}}</h4>
 								      </div>
 								      <div class="modal-body">
-								        <textarea class="form-control" style="height:120px">Message数据表</textarea>
+								        <textarea class="form-control" style="height:120px"></textarea>
 								      </div>
 								      <div class="modal-footer">
-								        <button type="button" class="btn btn-primary">发送</button>
+								      	<span id='messageresult{{i.8}}'></span>
+								        <button type="button" onclick="connected({{i.8}})" class="btn btn-primary">发送</button>
 								      </div>
 								    </div><!-- /.modal-content -->
 								  </div><!-- /.modal-dialog -->
