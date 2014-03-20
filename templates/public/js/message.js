@@ -9,8 +9,6 @@ function connected(id){
 
 function response(id){
 	if(xmlHttp.readyState==4 && xmlHttp.status==200){
-		result=document.getElementById('messageresult'+id);
-		result.innerHTML=xmlHttp.responseText;
-		result.style.color='orange';
+		$('#myModal'+id).modal('hide');
 	};
 }
