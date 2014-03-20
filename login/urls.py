@@ -11,21 +11,21 @@ urlpatterns = patterns('',
     url(r'^verification/$', views.verification, name='verification'),
     #url(r'^verification/$', views.verification, name='verification'),
     url(r'^css/(?P<path>.*)$', 'django.views.static.serve', 
-        { 'document_root': '/home/tron/Dropbox/mz/templates/public/css' } 
+        { 'document_root': '/home/tron/mz/maizhi/templates/public/css' } 
     ),
     url(r'^js/(?P<path>.*)$', 'django.views.static.serve', 
-        { 'document_root': '/home/tron/Dropbox/mz/templates/public/js' } 
+        { 'document_root': '/home/tron/mz/maizhi/templates/public/js' } 
     ),
     url(r'^fonts/(?P<path>.*)$', 'django.views.static.serve', 
-        { 'document_root': '/home/tron/Dropbox/mz/templates/public/fonts' } 
+        { 'document_root': '/home/tron/mz/maizhi/templates/public/fonts' } 
     ), 
     url(r'^img/(?P<path>.*)$', 'django.views.static.serve', 
-        { 'document_root': '/home/tron/Dropbox/mz/templates/public/img' } 
+        { 'document_root': '/home/tron/mz/maizhi/templates/public/img' } 
     ), 
     url(r'^avatar/(?P<path>.*)$', 'django.views.static.serve', 
-        { 'document_root': '/home/tron/Dropbox/mz/templates/picture/avatar' } 
+        { 'document_root': '/home/tron/mz/maizhi/templates/picture/avatar' } 
     ), 
     url(r'^ico/(?P<path>.*)$', 'django.views.static.serve', 
-        { 'document_root': '/home/tron/Dropbox/mz/templates/picture/ico' } 
+        { 'document_root': '/home/tron/mz/maizhi/templates/picture/ico' } 
     ), 
 )

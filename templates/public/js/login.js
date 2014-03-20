@@ -26,7 +26,7 @@ function query2(){
 
 function regi(){   
 	createXMLRequest();                       
-	var url="http://192.168.1.113:8866/register/?";
+	var url="http://192.168.1.120:8866/register/?";
 	url+=query();
 	xmlHttp.open("GET",url);
 	xmlHttp.onreadystatechange=handleStateChange;
@@ -40,7 +40,7 @@ function handleStateChange(){
 			rtn.innerHTML=xmlHttp.responseText;
 			rtn.style.color='orange'
 		} else {
-			window.location="http://192.168.1.113:8866/addmajor/";
+			window.location="http://192.168.1.120:8866/addmajor/";
 		}
 	}
 }
@@ -52,7 +52,7 @@ function handleStateChange2(){
 			rtn.innerHTML=xmlHttp.responseText;
 			rtn.style.color='orange'
 		} else {
-			window.location="http://192.168.1.113:8866/users/";
+			window.location="http://192.168.1.120:8866/users/";
 		}
 	}
 }
@@ -60,7 +60,7 @@ function handleStateChange2(){
 function localLogin(email,pwd){
 	var result="email2="+email+"&password2="+pwd;
 	createXMLRequest();
-	var url="http://192.168.1.113:8866/login/?";
+	var url="http://192.168.1.120:8866/login/?";
 	url+=result;
 	xmlHttp.open("GET",url)
 	xmlHttp.onreadystatechange=function(){
@@ -70,7 +70,7 @@ function localLogin(email,pwd){
 				rtn.innerHTML=xmlHttp.responseText;
 				rtn.style.color='orange'
 			} else {
-				window.location="http://192.168.1.113:8866/users/";
+				window.location="http://192.168.1.120:8866/users/";
 			}
 		}
 	};
@@ -79,7 +79,7 @@ function localLogin(email,pwd){
 
 function login(){   
 	createXMLRequest();                       
-	var url="http://192.168.1.113:8866/login/?";
+	var url="http://192.168.1.120:8866/login/?";
 	url+=query2();
 	xmlHttp.open("GET",url);
 	xmlHttp.onreadystatechange=handleStateChange2;
