@@ -10,5 +10,8 @@ function connected(id){
 function response(id){
 	if(xmlHttp.readyState==4 && xmlHttp.status==200){
 		$('#myModal'+id).modal('hide');
-	};
+		
+	} else {
+		$('#myModal'+id).modal('hide');
+	}
 }

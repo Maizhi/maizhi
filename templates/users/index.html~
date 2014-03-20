@@ -20,12 +20,14 @@
       <script src="http://cdn.bootcss.com/html5shiv/3.7.0/html5shiv.min.js"></script>
       <script src="http://cdn.bootcss.com/respond.js/1.3.0/respond.min.js"></script>
     <![endif]-->
-<link href="../css/index.css" rel="stylesheet">   
+<link href="../css/index.css" rel="stylesheet">  
+<script src="../js/jquery.min.js"></script> 
 <script>
 var array=new Array();
 </script>
 </head>
 <body>
+	<div class="loading"></div>
 	{% include 'public/common/header.html' %}
 	<div class="container" style="margin-top:45px">
 		<div class="row">
@@ -115,7 +117,7 @@ var array=new Array();
 							</div>
 
 							<div class="news_content pull-left">
-								<div><span><a href="{% url 'users:home' i.10 %}" id="n{{i.8}}" data-toggle="popover" title="" data-content="{{i.9}}" data-original-title="<strong>{{i.0}}</strong> <font size='1'><i class='icon-globe'></i> {% if i.11 %}{{i.11}}{% else %}未填写{% endif %}</font></span>  <span><font size='1'><i class='icon-suitcase'></i> {% if i.12 %}{{i.12}}{% else %}未填写{% endif %}</font></span>" ><b>{{i.0}}</b></a><a href="javascript:void(0)" data-toggle="modal" data-target="#myModal{{i.8}}" title="向{{i.0}}发私信"> <i class="icon-envelope-alt pull-right"></i></a></span><!--<span style="font-size:">{{i.9}}</span>--><span class="time">{{i.3|date:"Y-m-d H:i:s"}}</span></div>
+								<div><span><a href="{% url 'users:home' i.10 %}" id="n{{i.8}}" data-toggle="popover" title="" data-content="{{i.9}}" data-original-title="<strong>{{i.0}}</strong> <font size='1'><i class='icon-globe'></i> {% if i.11 %}{{i.11}}{% else %}未填写{% endif %}</font></span>  <span><font size='1'><i class='icon-suitcase'></i> {% if i.12 %}{{i.12}}{% else %}未填写{% endif %}</font></span>" ><b>{{i.0}}</b></a><a href="#" data-toggle="modal" data-target="#myModal{{i.8}}" title="向{{i.0}}发私信"> <i class="icon-envelope-alt pull-right"></i></a></span><!--<span style="font-size:">{{i.9}}</span>--><span class="time">{{i.3|date:"Y-m-d H:i:s"}}</span></div>
 								<script>
 									array.push({{i.8}})
 									var $btn{{i.8}} = $('#n{{i.8}}');
@@ -152,13 +154,14 @@ var array=new Array();
 								    <div class="modal-content">
 								      <div class="modal-header">
 								        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-								        <h4 class="modal-title" id="myModalLabel">发送私信给{{i.0}}</h4>
+								        <h4 class="modal-title">发送私信给{{i.0}}</h4>
 								      </div>
 								      <div class="modal-body">
-								        <textarea class="form-control" style="height:120px">Message数据表</textarea>
+								        <textarea id="message{{i.8}}" class="form-control" style="height:120px"></textarea>
 								      </div>
 								      <div class="modal-footer">
-								        <button type="button" class="btn btn-primary">发送</button>
+								      	<span id='messageresult{{i.8}}'></span>
+								        <button type="button" onclick="connected({{i.8}})" class="btn btn-primary">发送</button>
 								      </div>
 								    </div><!-- /.modal-content -->
 								  </div><!-- /.modal-dialog -->
@@ -166,7 +169,7 @@ var array=new Array();
 								<div class="content">{{i.2}}</div>
 								<div class="larger_pic">
 									{% if i.4 %}
-									<img id="larger{{i.8}}" class="larger" style="display:none" width="100%" onclick="larger({{i.8}})" onmouseover="change();"/><i id="wait{{i.8}}" class="icon-spinner icon-spin"></i>
+									<img id="larger{{i.8}}" class="larger" src="news/{{i.4}}" width="100%" onclick="larger({{i.8}})" onmouseover="change();"/>
 									{% endif %}
 								</div>
 								<div class="pull-right">
@@ -243,34 +246,51 @@ var array=new Array();
 			</div>
 		</div>
 	</div>
-	
-	
-	
-	
-	
+
 	<!-- jQuery文件。务必在bootstrap.min.js 之前引入 -->
-	<script src="../js/jquery.min.js"></script>
+	
 	<script src="../js/publish_news.js"></script>
 	<script src="../js/sco.message.js"></script>
 	<script src="../js/good.js"></script>
+	<script src="../js/message.js"></script>
 	<!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
-	<script src="../js/bootstrap.js"></script> 
 	
+
 	<script type="text/javascript">
 	window.onload=function(){
-		/*var worker=new Worker('../js/image.js')
+		/*var worker=new Worker('../js/image.js');
 		for(i in array){
-			worker.postMessage(i)
+			i=parseInt(i)+1;
+			worker.postMessage(i);
 			worker.onmeessage=function(event){
 				document.getElementById('larger'+i).style.display='inline'
 				document.getElementById('wait'+i).style.display='none'
 				document.getElementById('larger'+i).src=event.data
 			}
 		}*/
-		for(i in array){
+		/*for(i in array){
+			max=i
+		}
+		min=array[0];
+		u="http://192.168.1.113:8866/users/getimg/?start="+min+"&end="+max;
+		worker=new Worker(u)
+		worker.onmeessage=function(event){
+			alert(event.data);
+		}*/
+		/*for(i in array){
+			i=parseInt(i)+1;
+			var ul="http://192.168.1.113:8866/users/getimg/?imgid="+i
+			var worker=new Worker(ul)
+			worker.onmeessage=function(event){
+				document.getElementById('larger'+i).style.display='inline'
+				document.getElementById('wait'+i).style.display='none'
+				document.getElementById('larger'+i).src=String(event.data)
+			}
+		}*/
+		/*function get(){
 			createXMLRequest();
-			i=praseInt(i)+1;
-			var url="http://192.168.1.120:8866/users/getimg/?imgid="+i;
+			i=parseInt(i)+1;
+			var url="http://192.168.1.113:8866/users/getimg/?imgid="+i;
 			xmlHttp.open("GET",url);
 			xmlHttp.onreadystatechange=function(){
 				if(xmlHttp.readyState==4 && xmlHttp.status==200){
@@ -279,8 +299,23 @@ var array=new Array();
 					document.getElementById('larger'+i).src=xmlHttp.responseText
 				}
 			};
-			xmlHttp.send(); 
-		}	
+			xmlHttp.send();
+		}*/
+		$(".loading").fadeOut(1000); 
+		/*for(i in array){
+			createXMLRequest();
+			i=parseInt(i)+1;
+			var url="http://192.168.1.113:8866/users/getimg/?imgid="+i;
+			xmlHttp.open("GET",url);
+			xmlHttp.onreadystatechange=function(){
+				if(xmlHttp.readyState==4 && xmlHttp.status==200){
+					document.getElementById('larger'+i).style.display='inline'
+					document.getElementById('wait'+i).style.display='none'
+					document.getElementById('larger'+i).src=xmlHttp.responseText
+				}
+			};
+			xmlHttp.send();
+		}*/
 	}
 		var add_time=null;
 		function add_pic(){
