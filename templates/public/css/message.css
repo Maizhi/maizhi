@@ -1,0 +1,39 @@
+@CHARSET "UTF-8";
+iv{
+	border:1px solid blue;
+}
+pan{
+	border:1px solid green;
+}
+a{
+	color:#428BCA;
+	text-decoration:none;
+}
+a:hover{
+	color:black;
+	text-decoration:none;
+}
+
+
+.mes_content{
+	margin-top:5px;
+}
+.time{
+	text-align:right;
+	font-size:13px;
+	color:#BBBBBB;
+}
+.td1{
+	width:10%;
+}.td2{
+	width:90%;
+	margin-left:10px;
+}
+.tab-pane{
+	padding:20px 50px 20px 20px;
+}
+
+.tab_left{
+	width:100%;
+	padding-top:20px;
+}
