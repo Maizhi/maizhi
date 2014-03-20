@@ -1,6 +1,6 @@
-#-----------Django 1.5.5------------#
+#encoding:utf-8
 
-#----------Write By Tron , Publish By Tron---------#
+#-----------Django 1.5.5------------#
 
 使用是按照Django的部署方法部署所有文件，根据Django的方法生成数据库。
 
