@@ -23,7 +23,7 @@
         </div><!--/.nav-collapse -->
       </div>
     </div>
-	
+
 	<script type="text/javascript">
 	function f(){
 		document.getElementById('search').style.background="#FFFFFF"
@@ -31,6 +31,6 @@
 	function b(){
 		document.getElementById('search').style.background="#D0D0E6"
 	}
-	</script>
+
 	$('#selectPartner').popover({html:true});
 	</script>
