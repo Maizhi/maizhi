@@ -9,13 +9,9 @@ function connected(id){
 
 function response(id){
 	if(xmlHttp.readyState==4 && xmlHttp.status==200){
-<<<<<<< HEAD
 		result=document.getElementById('messageresult'+id);
 		result.innerHTML=xmlHttp.responseText;
 		result.style.color='orange';
 		$("#myModal"+id).modal('hide');
-=======
-		$('#myModal'+id).modal('hide');
->>>>>>> 3651b976d21da3ecadab86b4d446d918b2f1be55
 	};
 }
