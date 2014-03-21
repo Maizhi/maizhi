@@ -118,6 +118,16 @@ def message(request):
 	except:
 		return HttpResponse('Wrong')
 
+def share(request):
+	try:
+		News(user_id=request.session['id'],content=request.GET['sharemsg'],good_con=0,share_con=0,review_con=0,img=request.GET['img']).save()
+		oldnews=News.objects.get(id=request.GET['id'])
+		oldnews.share_con+=1
+		oldnews.save()
+		return HttpResponse('OK')
+	except:
+		return HttpResponse('Wrong')
+
 def head(request):
 	info=Info.objects.get(user_id=request.session['id'])
 	if 'head' in request.FILES:

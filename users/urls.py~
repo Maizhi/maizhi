@@ -6,12 +6,15 @@ urlpatterns = patterns('',
     url(r'^publish/$', views.publish, name="publish"),
     url(r'^setting/$', views.setting, name="setting"),
     url(r'^good/$', views.good, name="good"),
+    url(r'^get/$', views.getimg, name="get"),
     url(r'^add/$', views.add, name="add"),
+    url(r'^share/$', views.share, name="share"),
     url(r'^setting/update/$', views.update, name="update"),
     url(r'^setting/pwdchange/$', views.pwdchange, name="pwdchange"),
     url(r'^setting/head/$', views.head, name="head"),
     url(r'^mycourse/$', views.mycourseact, name="mycourseact"),
     url(r'^home/(.+)$', views.home, name="home"),
+    url(r'^message/$', views.message, name="message"),
     url(r'^manage/course/$', views.managecourse, name="managecourse"),
     url(r'^manage/group/$', views.managegroup, name="managegroup"),
     url(r'^manage/reward/$', views.managereward, name="managereward"),
@@ -19,21 +22,21 @@ urlpatterns = patterns('',
     url(r'^teacherapply/$', views.teacherapply, name="teacherapply"),
     
     url(r'^css/(?P<path>.*)$', 'django.views.static.serve', 
-        { 'document_root': '/home/tron/mz/templates/public/css' } 
+        { 'document_root': '/home/tron/mz/maizhi/templates/public/css' } 
 	),
 	url(r'^js/(?P<path>.*)$', 'django.views.static.serve', 
-        { 'document_root': '/home/tron/mz/templates/public/js' } 
+        { 'document_root': '/home/tron/mz/maizhi/templates/public/js' } 
     ),
     url(r'^fonts/(?P<path>.*)$', 'django.views.static.serve', 
-        { 'document_root': '/home/tron/mz/templates/public/fonts' } 
+        { 'document_root': '/home/tron/mz/maizhi/templates/public/fonts' } 
     ), 
     url(r'^img/(?P<path>.*)$', 'django.views.static.serve', 
-        { 'document_root': '/home/tron/mz/templates/public/img' } 
+        { 'document_root': '/home/tron/mz/maizhi/templates/public/img' } 
     ), 
     url(r'^news/(?P<path>.*)$', 'django.views.static.serve', 
-        { 'document_root': '/home/tron/mz/templates/picture/news' } 
+        { 'document_root': '/home/tron/mz/maizhi/templates/picture/news' } 
     ), 
     url(r'^ico/(?P<path>.*)$', 'django.views.static.serve', 
-        { 'document_root': '/home/tron/mz/templates/picture/ico' } 
+        { 'document_root': '/home/tron/mz/maizhi/templates/picture/ico' } 
     ), 
 )

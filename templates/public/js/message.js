@@ -9,9 +9,17 @@ function connected(id){
 
 function response(id){
 	if(xmlHttp.readyState==4 && xmlHttp.status==200){
+<<<<<<< HEAD
 		$('#myModal'+id).modal('hide');
 		
 	} else {
 		$('#myModal'+id).modal('hide');
 	}
+=======
+		result=document.getElementById('messageresult'+id);
+		result.innerHTML=xmlHttp.responseText;
+		result.style.color='orange';
+		$("#myModal"+id).modal('hide');
+	};
+>>>>>>> 3eb4f14e2f51d1bc534b6bae85233d2f1fb63614
 }
