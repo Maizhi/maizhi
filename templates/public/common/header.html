@@ -18,7 +18,7 @@
 				</div>
 				<div class="clearfix"></div>
             </li>
-            <li><a id="selectPartner" href="#" data-toggle="popover" data-placement="bottom" data-content="{% for k in message %}<div style='width:180px;'><span style='font-size:10px'>{{k.0}}给您发了一条私信<i>{{k.1}}</i></span><hr /></div>{% endfor %}<a href='javascript:void(0)' class='pull-right' style='font-size:8px'>查看更多 >></a>" data-original-title title><i class="icon-bell-alt"></i>{% ifequal havent 0 %}<span></span>{% else %}<span class="badge">{{havent}}</span>{% endifequal %}</a></li>
+            <li><a id="selectPartner" href="javascript:void(0)" data-toggle="popover" data-placement="bottom" data-content="{% for k in message %}<div style='width:180px;'><span style='font-size:10px'>{{k.0}}给您发了一条私信<i>{{k.1}}</i></span><hr /></div>{% endfor %}<a href='javascript:void(0)' class='pull-right' style='font-size:8px'>查看更多 >></a>" data-original-title title><i class="icon-bell-alt"></i>{% ifequal havent 0 %}<span></span>{% else %}<span class="badge">{{havent}}</span>{% endifequal %}</a></li>
           </ul>
         </div><!--/.nav-collapse -->
       </div>
