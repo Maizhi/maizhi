@@ -1,0 +1,73 @@
+@CHARSET "UTF-8";
+iv{
+	border:1px solid blue;
+}
+pan{
+	border:1px solid green;
+}
+a{
+	color:#428BCA;
+	text-decoration:none;
+}
+a:hover{
+	color:black;
+	text-decoration:none;
+}
+
+
+
+.agreement{
+	width:100%;
+	background-color:#ECF7FB;
+	padding:10px 10px 10px 10px;
+}
+.subbox{
+	margin-left:30px;
+	padding-bottom:10px;
+}
+.group_textarea{
+	resize:none;
+	width:90%;
+	height:100px;
+}
+.group_form{
+	width:80%;
+	padding-left:20px;
+}
+.group_form_name{
+	width:20%;
+	text-align:right;
+}
+.group_form_all{
+	margin-top:15px;
+}
+.group_mes{
+	background-color:#F2F2F2;
+	width:100%;
+	padding:20px 20px 20px 20px;
+}
+.topdirection  
+{  
+    width:0;height:0;
+	margin:-10px 0 0 40px;  
+    line-height:0;  
+    border-width:10px;  
+    border-style:solid;  
+    border-color: transparent transparent #F2F2F2 transparent;  
+}
+.publisher_sign{
+	margin-top:5px;
+	display:block;/*内联对象需加*/
+	width:400px;
+	word-break:keep-all;/* 不换行 */
+	white-space:nowrap;/* 不换行 */
+	overflow:hidden;/* 内容超出宽度时隐藏超出部分的内容 */
+	text-overflow:ellipsis;/* 当对象内文本溢出时显示省略标记(...) ；需与overflow:hidden;一起使用。*/
+}
+.publisher_name{
+	margin-top:20px;
+}
+.publisher_img{
+	width:100px;
+	padding:10px 10px 10px 10px;
+}
