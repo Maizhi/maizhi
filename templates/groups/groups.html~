@@ -29,7 +29,7 @@
 <!-- 一个小组 循环开始处 -->
 					{% for i in groups %}					
 					<div class="a_group pull-left">
-						<div class="imgDiv"><img src="group/{{i.0}}" width="120px" class="img"></div>
+						<div class="imgDiv"><img src="group/{{i.0}}" width="120px" class="img-thumbnail"></div>
 						<div class="groupName">{{i.1}}</div>
 						<div class="switchDiv">
 							<div class="switch switch-small" data-on="info" data-off="NO">
