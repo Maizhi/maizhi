@@ -1,0 +1,36 @@
+<html>
+	<head>
+		<meta charset='utf-8'>
+		<link rel='stylesheet' href='../css/bootstrap.css' />
+		<link href="../css/non-responsive.css" rel="stylesheet">
+		<title>麦知网——学问有余，乐为人师</title>
+	</head>
+
+	<body>
+		
+<div class="container" style="margin-top:45px">
+	<div class="row">
+		<div class="col-xs-2"></div>
+		<div class="col-xs-8">
+		<form class='form-signin' method='post' action="{% url 'upload:index' %}" enctype="multipart/form-data">
+			{% csrf_token %}
+			<h2>请选择你要上传的文件^_^</h2>
+			<input type='text' name='user' placeholder='文件名' class='form-control' required='required' />
+			<textarea name='intro' maxlength="100" placeholder='介绍文件（请不要超过100字）' class='form-control' required='required'></textarea>
+			<input type='file' name='files' class='form-control' />
+			<input type='submit' value='上传文件' class='btn btn-primary' style="margin-top:20px;width:100%;"/>
+			{% if result %}
+			<div class="alert alert-success result">
+				{{result}}
+			</div>
+			{% endif %}
+		</form>
+		</div>
+		<div class="col-xs-2"></div>
+	</div>
+</div>
+	
+		<script type="text/javascript" src="../js/jquery.min.js"></script>
+		<script type="text/javascript" src="../js/bootstrap.js"></script>
+	</body>
+</html>

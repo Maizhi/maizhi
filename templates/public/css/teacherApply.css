@@ -1,0 +1,46 @@
+@CHARSET "UTF-8";
+
+iv{
+	border:1px solid blue;
+}
+pan{
+	border:1px solid green;
+}
+a{
+	color:#428BCA;
+	text-decoration:none;
+}
+a:hover{
+	color:black;
+	text-decoration:none;
+}
+
+
+
+
+
+.subbox{
+	padding-bottom:10px;
+}
+.form_row2{
+	margin-top:30px;
+	padding:10px 0 0 50px;
+}
+.form_input input{
+	width:80%;
+}
+.form_input{
+	width:80%;
+	padding-left:20px;
+}
+.form_lab{
+	width:20%;
+	text-align:right;
+}
+.form_row{
+	padding-top:10px;
+	padding-bottom:10px;
+}
+.form{
+	margin-top:30px;
+}

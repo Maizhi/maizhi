@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>麦知网——学问有余，乐为人师</title>
+
+<!-- Bootstrap core CSS -->
+<link href="../css/bootstrap.css" rel="stylesheet">
+<!-- Custom styles for this template -->
+<link href="../css/non-responsive.css" rel="stylesheet">
+
+<link href="../css/theGroup.css" rel="stylesheet">    
+ 
+</head>
+<body>
+	
+	<div class="container" style="margin-top:45px">
+		<div class="row">
+<!-- left div -->
+			<div class="col-xs-7">
+<!-- 小组信息div -->
+				<div class="groupMes">
+					<div class="group_img pull-left">
+						<img src="../img/rd.jpg" width="100%"/>
+					</div>
+					<div class="group_names pull-left">
+						<div class="group_name">
+							<span><b>男神小组</b></span>
+<!-- 别人的小组 未加入时  用这个 -->
+							<span><button type="button" class="btn btn-xs btn-info btn_join">加入小组</button></span>
+<!-- 别人的小组 已加入时  用这个 -->
+							<span><button type="button" class="btn btn-xs btn-info btn_join" disabled>已加入</button></span>
+<!-- 我的小组  用这个-->							
+							<span class="my_group">我的小组</span>
+						</div>
+						<div class="group_person">15556位组员</div>
+<!-- 我的小组  才有-->
+						<div class="change_img"><a id="change_img" href="#" data-toggle="popover" data-placement="bottom" data-content="<div><form action='' method='post' enctype='multipart/form-data'><div><input type='file'></div><div style='margin-top:15px;text-align:center'><input type='submit' value='确认修改'></div></form></div>" data-original-title title><b>修改图片</b></a></div>
+					</div>
+					<div class="clearfix"></div>
+				</div>
+				<div class="group_intro">
+					<div class="topdirection"></div>
+					<div class="group_introduce">
+<!-- 我的小组  才有-->
+						<div class="change_intro"><a id="change_intro" href="javascript:void(0)" data-toggle="popover" data-placement="bottom" data-content="<div><div><textarea style='resize:none;width:200px;'></textarea></div><div style='margin-top:15px;text-align:center'><a href='' type='button' class='btn btn-default btn-xs'>确认修改</a></div></div>" data-original-title title><b>修改</b></a></div>
+						<div><i>男神小组是一个致力于发现并追求男神的团体。让我们更好的与男神相处。男神小组是一个致力于发现并追求男神的团体。让我们更好的与男神相处。男神小组是一个致力于发现并追求男神的团体。让我们更好的与男神相处。男神小组是一个致力于发现并追求男神的团体。让我们更好的与男神相处。男神小组是一个致力于发现并追求男神的团体。让我们更好的与男神相处。</i></div>
+					</div>
+				</div>
+				<div class="create_topic">
+					<a type="button" class="btn btn-default">发布新话题</a>
+				</div>
+				<div class="topics">
+<!-- 别人的小组 显示开始处 -->
+					<table class="table table-hover">
+							<thead>
+								<tr>
+									<th class="th1">话题</th>
+									<th class="th2">作者</th>
+									<th class="th3">更新时间</th>
+									<th class="th4">回复数</th>
+								</tr>
+							</thead>
+							<tbody>
+<!--  一条话题循环开始处 -->
+								<tr>
+									<td class="td1">
+										<div class="td_12"><a href="" title="我们要得到男神" target="_blank">我们要得到男神我们要得到男神</a></div>
+									</td>
+									<td><div class="td_text">芸豆</div></td>
+									<td><div class="td_text">2014-5-5 12:12:55</div></td>
+									<td><div class="td_text">155</div></td>
+								</tr>
+<!-- 一条话题循环结束处 -->
+							</tbody>
+						</table>
+<!-- 别人的小组 显示结束处 -->
+<!-- 我的小组 显示开始处 -->
+						<table class="table table-hover">
+							<thead>
+								<tr>
+									<th class="tth1">话题</th>
+									<th class="tth2">作者</th>
+									<th class="tth3">更新时间</th>
+									<th class="tth4">回复</th>
+									<th class="tth4">操作</th>
+								</tr>
+							</thead>
+							<tbody>
+<!--  一条话题循环开始处 -->
+								<tr>
+									<td class="td1">
+										<div class="ttd_12"><a href="" title="我们要得到男神" target="_blank">我们要得到男神我们要得到男神</a></div>
+									</td>
+									<td><div class="td_text">芸豆</div></td>
+									<td><div class="td_text">2014-5-5 12:12:55</div></td>
+									<td><div class="td_text">155</div></td>
+									<td><div class="td_text"><a id="manage" href="javascript:void(0)" data-toggle="popover" data-placement="bottom" data-content="<div><div><a href='javascript:void(0)'>删除话题</a></div><div style='margin-top:5px;'><!-- 未被封禁的用户 开始处 --><a href='javascript:(0)'>封禁用户</a><!-- 未被封禁的用户 结束处 --><!-- 已经被封禁的用户 开始处 --><a href='javascript:(0)'>解封用户</a><!-- 已经被封禁的用户 结束处 --></div></div>" data-original-title title>管理</a></div></td>
+								</tr>
+<!-- 一条话题循环结束处 -->
+							</tbody>
+						</table>
+<!-- 我的小组 显示结束处 -->
+				</div>
+			</div>
+<!-- 中间留白div -->
+			<div class="col-xs-1">
+
+			</div>
+<!-- right div -->
+			<div class="col-xs-4">
+				<div class="up_file">
+					<span><a type="button" id="up_file" class="btn btn-warning btn_file" href="javascript:void(0)" data-toggle="popover" data-placement="bottom" data-content="<div><form action='' method='post' enctype='multipart/form-data'><div><input type='file'></div><div style='margin-top:15px;text-align:center'><input type='submit' value='确认修改'></div></form></div>" data-original-title title><b>上传群文件</b></a></span>
+<!-- 别人的小组  才有 -->
+					<span class="btnSpan2"><a type="button" class="btn btn-info btn_file"><b>下载群文件</b></a></span>
+<!-- 自己的小组  才有 -->
+					<span class="btnSpan2"><a type="button" class="btn btn-info btn_file"><b>管理或下载群文件</b></a></span>
+				</div>
+<!-- 本群活跃用户 -->
+				<div class="my">
+					<div class="my_title"><b>本群活跃用户</b></div>
+<!-- 一个本群活跃用户 循环开始处 -->
+					<div class="a_guy">
+						<div class="pull-left person_avatar"><a href=""><img src="../img/rd.jpg" class="img-circle" width="90%"/></a></div>
+						<div class="pull-left person_content">
+							<div><span class="person_name"><a href=""><b>TRON</b></a></span><span class="focus"><button type="button" class="btn btn-info btn-xs">+ 关注</button></span></div>
+							<div class="show_person"><i>获得1561个赞</i></div>
+						</div>
+						<div class="clearfix"></div>
+					</div>
+<!-- 一个本群活跃用户 循环结束处 -->
+				</div>
+<!-- 本群活跃用户 结束处-->
+				<div class="my">
+					<div class="hot_title"><b>小组热门分享</b></div>
+<!-- 小组热门分享 一条热门分享循环开始处 -->
+					<div class="hot_intro">
+						<a href="">我是一个热门话题名</a>
+					</div>
+<!-- 小组热门分享 一条热门分享循环结束处 -->					
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	
+	
+	
+	<!-- jQuery文件。务必在bootstrap.min.js 之前引入 -->
+	<script src="../js/jquery.min.js"></script>
+	
+	<!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
+	<script src="../js/bootstrap.js"></script>
+	
+	<script type="text/javascript">
+	$('#change_img').popover({html:true});
+	$('#change_intro').popover({html:true});
+	$('#manage').popover({html:true});
+	$('#up_file').popover({html:true});
+		
+		
+	</script>
+</body>
+</html>
