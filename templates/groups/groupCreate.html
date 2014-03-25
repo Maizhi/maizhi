@@ -8,43 +8,44 @@
 <link href="../css/bootstrap.css" rel="stylesheet">
 <!-- Custom styles for this template -->
 <link href="../css/non-responsive.css" rel="stylesheet">
-
+<link href="../css/font-awesome.min.css" rel="stylesheet">
 <link href="../css/groupCreate.css" rel="stylesheet">    
- 
+<link href="../ico/favicon.ico" rel="shortcut icon" type="image/vnd.microsoft.icon"/>
 </head>
 <body>
-	
+	{% include 'public/common/header.html' %}
 	<div class="container" style="margin-top:45px">
 		<div class="row">
 <!-- left div -->
 			<div class="col-xs-7">
 				<div>
 					<div class="publisher_img pull-left">
-						<img src="../img/rd.jpg" width="100%" class="img-circle"/>
+						<img src="../avatar/{{info.img}}" width="100%" class="img-circle"/>
 					</div>
 					<div class="publisher_name pull-left">
-						<div>芸豆</div>
-						<div class="publisher_sign"><i>谁砍我的树，我砍谁的头谁砍我的树，我砍谁的头谁砍我的树，我砍谁的头谁砍我的树，我砍谁的头。</i></div>
+						<div>{{info.user_name}}</div>
+						<div class="publisher_sign"><i>{{info.sign}}</i></div>
 					</div>
 					<div class="clearfix"></div>
 				</div>
 				<div>
 					<div class="topdirection"></div>
 					<div class="group_mes">
-					<form action="" method="post" enctype="multipart/form-data">
+					<form action="{% url 'groups:groupcreate' %}" method="post" enctype="multipart/form-data">
+						{% csrf_token %}
 						<div class="group_form_all">
 							<div class="group_form_name pull-left"><b>小组名</b></div>
-							<div class="group_form pull-left"><input type="text"></div>
+							<div class="group_form pull-left"><input type="text" name="groupName"></div>
 							<div class="clearfix"></div>
 						</div>
 						<div class="group_form_all">
 							<div class="group_form_name pull-left"><b>小组图片</b></div>
-							<div class="group_form pull-left"><input type="file"></div>
+							<div class="group_form pull-left"><input type="file" name="groupImg"></div>
 							<div class="clearfix"></div>
 						</div>
 						<div class="group_form_all">
 							<div class="group_form_name pull-left"><b>小组介绍</b></div>
-							<div class="group_form pull-left"><textarea class="group_textarea"></textarea></div>
+							<div class="group_form pull-left"><textarea class="group_textarea" name="groupIntro"></textarea></div>
 							<div class="clearfix"></div>
 						</div>
 						<div class="group_form_all">
@@ -87,7 +88,22 @@
 <!-- right div -->
 			<div class="col-xs-4">
 				<div class="agreement">
-					哈哈哈
+				1 .未在接口上启动ospf,这通常是因为没有正确地宣告网络，使用以下命令通常可以快速地查看
+				　　show ip ospf interface  brief-查看是否在接口上启动了ospf如果表中没有接口的相关信息则说明接口没有运行ospf
+				　　show run | inc network -查看是否正确地宣告了网络（技巧：管道符号可以迅速选出所需的信息，可查阅相关文档获取信息）
+				<br />
+				2.连接的两端未在相同区域，出现的结果："……Mismatch Area Id …virtual-link…FastEthernet0/0",此时使用指令
+				　　show run | inc network
+				　　show ip ospf interface F0/0  | inc Area
+				<br />
+				3.处于末节/次末节/NSSA区域的路由器与其边界的配置不一致
+				　　show run | inc stub （在相关的路由器上执行）
+				<br />
+				4.身份验证不一致
+				　　show run interface S1/0.304-查看接口的运行配置状况
+				<br />
+				5.邻居不可达，主要在non-broadcast/Tunnel/等
+				　　show run | inc  neighbor -查看是否正确配置了邻居
 				</div>
 			</div>
 		</div>

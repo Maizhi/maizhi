@@ -1,10 +1,10 @@
-<div class="navbar navbar-default navbar-fixed-top" style="background-color:#0A0A2A;" role="navigation">
+	<div class="navbar navbar-default navbar-fixed-top" style="background-color:#0A0A2A;" role="navigation">
       <div class="container">
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
-	      <li class="active"><a href="{% url 'users:index' %}"><i class="icon-home"></i> 首页</a></a></li>
+	      <li><a href="{% url 'users:index' %}"><i class="icon-home"></i> 首页</a></a></li>
 	      <li><a href="#"><i class="icon-book"></i> 课程</a></li>
-	      <li><a href="#"><i class="icon-group"></i> 小组</a></li>
+	      <li><a href="{% url 'groups:groups' %}"><i class="icon-group"></i> 小组</a></li>
 	      <li><a href="#"><i class="icon-bullhorn"></i> 悬赏</a></li>
 	    </ul>
 	    	<a style="margin-left:10%" class="navbar-brand" href="#"><strong>麦知</strong></a>
@@ -18,7 +18,7 @@
 				</div>
 				<div class="clearfix"></div>
             </li>
-            <li><a id="selectPartner" href="javascript:void(0)" data-toggle="popover" data-placement="bottom" data-content="{% for k in message %}<div style='width:180px;'><span style='font-size:10px'>{{k.0}}给您发了一条私信<i>{{k.1}}</i></span><hr /></div>{% endfor %}<a href='javascript:void(0)' class='pull-right' style='font-size:8px'>查看更多 >></a>" data-original-title title><i class="icon-bell-alt"></i>{% ifequal havent 0 %}<span></span>{% else %}<span class="badge">{{havent}}</span>{% endifequal %}</a></li>
+            <li><a id="selectPartner" href="javascript:void(0)" data-toggle="popover" data-placement="bottom" data-content="{% for k in message %}<div style='width:180px;'><span style='font-size:10px'>{{k.0}}给您发了一条私信 : <i>{{k.1}}</i></span></div><div style='font-size:10px' class='pull-right'><a href='#'>回复</a></div><hr />{% endfor %}<a href='javascript:void(0)' class='pull-right' style='font-size:8px'>查看更多 >></a>" data-original-title title><i class="icon-bell-alt"></i>{% ifequal havent 0 %}<span></span>{% else %}<span class="badge">{{havent}}</span>{% endifequal %}</a></li>
           </ul>
         </div><!--/.nav-collapse -->
       </div>
