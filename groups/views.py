@@ -170,7 +170,20 @@ def thetopic(request,id):
 	topic=Topic.objects.get(id=id)
 	user=Info.objects.get(user_id=topic.user_id)
 	group=Group.objects.get(id=topic.group_id)
-	return render(request,'groups/theTopic.html',{'topic':topic,'user':user,'group':group})
+	m=Message.objects.filter(to=request.session['id']).order_by('-time')[0:5]
+	mess=[]
+	for k in m:
+		each=[]
+		name=Info.objects.get(user_id=k.from_id).user_name
+		content=k.content
+		each.append(name)
+		each.append(content)
+		mess.append(each)
+	havent=0
+	for n in m:
+		if n.status==1:
+			havent+=1
+	return render(request,'groups/theTopic.html',{'topic':topic,'user':user,'group':group,'message':mess,'havent':havent})
 
 def change(request):
 	group=Group.objects.get(id=request.GET['id'])

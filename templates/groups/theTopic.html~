@@ -10,11 +10,7 @@
 <link href="../css/non-responsive.css" rel="stylesheet">
 <link href="../css/font-awesome.min.css" rel="stylesheet">
 <link href="../css/theTopic.css" rel="stylesheet">    
-	<!-- jQuery文件。务必在bootstrap.min.js 之前引入 -->
-	<script src="../js/jquery.min.js"></script>
-	
-	<!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
-	<script src="../js/bootstrap.js"></script>
+ 
 </head>
 <body>
 	{% include 'public/common/header.html' %}

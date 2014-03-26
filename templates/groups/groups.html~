@@ -29,8 +29,8 @@
 <!-- 一个小组 循环开始处 -->
 					{% for i in groups %}					
 					<div class="a_group pull-left">
-						<div class="imgDiv"><img src="group/{{i.0}}" width="120px" class="img-thumbnail"></div>
-						<div class="groupName">{{i.1}}</div>
+						<div class="imgDiv"><img src="group/{{i.0}}" width="120px" class="img"></div>
+						<div class="groupName"><a href="{% url 'groups:thegroup' i.3 %}"><strong>{{i.1}}</strong></a></div>
 						<div class="switchDiv">
 							<div class="switch switch-small" data-on="info" data-off="NO">
 <!--如果是  未加入的小组 -->	{% ifequal i.2 '0' %}
@@ -49,13 +49,7 @@
 		</div>
 	</div>
 	
-	<!-- jQuery文件。务必在bootstrap.min.js 之前引入 -->
-	<script src="../js/jquery.min.js"></script>
-	
-	<script src="../js/join.js"></script>
-	<!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
-	<script src="../js/bootstrap.js"></script>
-	<script src="../js/bootstrap-switch.js"></script>
+
 	
 </body>
 </html>
