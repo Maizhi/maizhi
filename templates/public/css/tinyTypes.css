@@ -1,0 +1,48 @@
+@CHARSET "UTF-8";
+iv{
+	border:1px solid blue;
+}
+pan{
+	border:1px solid green;
+}
+a{
+	color:#428BCA;
+	text-decoration:none;
+}
+a:hover{
+	color:black;
+	text-decoration:none;
+}
+
+
+
+
+.tiny_inter_btn{
+	width:80px;
+	padding-top:2px;
+	padding-bottom:2px;
+}
+.tiny_inter{
+	background-color:#D7DBDE;
+	padding:10px 10px 10px 180px;
+}
+.tiny_intro2{
+	color:#8B8989;
+	margin-top:5px;
+}
+.tiny_intro1{
+	text-align:center;
+}
+.tiny_intro{
+	width:55%;
+	padding:15px 5px 5px 5px;
+}
+.tiny_img{
+	width:45%;
+}
+.tiny_breadcrumb{
+	background-color:#ffffff;
+}
+.a_tiny{
+	border:1px solid #D7DBDE;
+}
