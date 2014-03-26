@@ -75,12 +75,13 @@ a:hover{
 .btn_file{
 	padding:15px 10px 15px 10px;
 	font-size:15px;
+	width:80%;
 }
 .up_file{
 	width:100%;
 }
 .ttd_12{
-	margin-top:15px;
+	margin-top:5px;
 	padding-left:15px;
 	display:block;/*内联对象需加*/
 	width:150px;
@@ -109,7 +110,9 @@ a:hover{
 	padding-right:5px;
 }
 .td_text{
-	margin-top:15px;
+	margin-top:5px;
+	font-size:12px;
+	color:gray;
 	text-align:center;
 	vertical-align:middle;
 }

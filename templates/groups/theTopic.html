@@ -8,26 +8,26 @@
 <link href="../css/bootstrap.css" rel="stylesheet">
 <!-- Custom styles for this template -->
 <link href="../css/non-responsive.css" rel="stylesheet">
-<link href="../css/fontawesome.min.css" rel="stylesheet">
+<link href="../css/font-awesome.min.css" rel="stylesheet">
 <link href="../css/theTopic.css" rel="stylesheet">    
  
 </head>
 <body>
-	
+	{% include 'public/common/header.html' %}
 	<div class="container" style="margin-top:45px">
 		<div class="row">
 <!-- left div -->
 			<div class="col-xs-7">
 <!-- 小组信息div -->
 				<div class="groupMes">
-					<div class="topic_title"><b>话题明：如何追求喜欢的男神</b></div>
+					<div class="topic_title"><b>话题名：{{topic.name}}</b></div>
 					<div>
 						<div class="group_img pull-left">
-							<a href=""><img src="../img/rd.jpg" class="img-circle" width="100%"/></a>
+							<a href=""><img src="../avatar/{{user.img}}" class="img-circle" width="100%"/></a>
 						</div>
 						<div class="group_names pull-left">
 							<div class="topic_publisher pull-left">
-								<a href=""><b>孙芃芸</b></a>
+								<a href=""><b>{{user.user_name}}</b></a>
 							</div>
 <!-- 只有小组创建者才有 开始处-->
 							<div class="pull-right">
@@ -36,7 +36,7 @@
 							</div>
 <!-- 只有小组创建者才有  结束处-->
 							<div class="clearfix"></div>
-							<div class="topic_publisher_sign"><i>一生致力于追求男森一生致力于追求男森一生致力于追求男森一生致力</i></div>
+							<div class="topic_publisher_sign"><i>{{user.sign}}</i></div>
 						</div>
 						<div class="clearfix"></div>
 					</div>
@@ -45,8 +45,8 @@
 					<div class="topdirection"></div>
 					<div class="group_introduce">
 						<div>
-							<div class="time">2014-2-3 12:58:44</div>
-							<div>孙老师教给大家如何成为合格的绿茶婊~同时提高追求男神的技术孙老师教给大家如何成为合格的绿茶婊~同时提高追求男神的技术孙老师教给大家如何成为合格的绿茶婊~同时提高追求男神的技术孙老师教给大家如何成为合格的绿茶婊~同时提高追求男神的技术<img src="../img/rd.jpg"/>孙老师教给大家如何成</div>
+							<div class="time">{{topic.time|date:"Y-m-d H:i:s"}}</div>
+							<div>{% autoescape off %}{{topic.content}}{% endautoescape %}</div>
 						</div>
 						<div class="pull-right">
 							<span class="span_news"><a href=""><i class="icon-share-alt"></i> 69</a></span>
@@ -128,11 +128,11 @@
 			<div class="col-xs-4">
 				<div class="return_group">
 					<div class="group_img_div pull-left">
-						<img src="../img/rd.jpg" width="100%"/>
+						<img src="../group/{{group.img}}" width="100%"/>
 					</div>
 					<div class="group_name_div pull-left">
-						<div class="group_name"><b>男神小组</b></div>
-						<div class="group_return"><a href=""><span class="glyphicon glyphicon-arrow-left"></span> 返回小组</a></div>
+						<div class="group_name"><b>{{group.name}}</b></div>
+						<div class="group_return"><a href="{% url 'groups:thegroup' group.id %}"><span class="glyphicon glyphicon-arrow-left"></span> 返回小组</a></div>
 					</div>
 					<div class="clearfix"></div>
 				</div>
