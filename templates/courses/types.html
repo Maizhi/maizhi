@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>麦知网——学问有余，乐为人师</title>
+
+<!-- Bootstrap core CSS -->
+<link href="../css/bootstrap.css" rel="stylesheet">
+<!-- Custom styles for this template -->
+<link href="../css/non-responsive.css" rel="stylesheet">
+
+<link href="../css/types.css" rel="stylesheet">    
+ 
+</head>
+<body>
+	
+	<div class="container" style="margin-top:45px">
+		<div class="row">
+<!-- left div -->
+			<div class="col-xs-9">
+<!-- 一个大分类 循环开始处 -->
+				<div class="a_type pull-left">
+					<div class="a_type1 pull-left">
+						<div class="type_title"><b>大分类1</b></div>
+						<div class="type_inter"><button type="button" class="btn btn-primary btn-sm">进入</button></div>
+					</div>
+					<div class="a_type2 pull-left">
+						<img src="../img/type.png" width="100px" height="130px"/>
+					</div>
+					<div class="clearfix"></div>
+				</div>
+				
+<!-- 一个大分类 循环结束处 -->
+				<div class="clearfix"></div>
+			</div>
+
+<!-- right div -->
+			<div class="col-xs-3">
+				<div><img src="../img/lucky.png" width="100%"/></div>
+				<div class="hot_newpage"><a href=""><span class="glyphicon glyphicon-globe"></span> 热门推荐</a></div>
+<!-- 推荐 -->
+				<div class="my">
+					<div class="my_title"><b>推荐</b></div>
+					<div class="pageChange">
+						<span><button type="button" class="btn btn-default btn-xs" onclick="frontPage()"><</button></span>
+						<span><button type="button" class="btn btn-default btn-xs" onclick="nextPage()">></button></span>
+					</div>
+<!-- 前五个推荐 循环开始处 -->
+					<div class="a_guy">
+						<div class="pull-left person_avatar"><a href=""><img src="../img/rd.jpg" width="100%"/></a></div>
+						<div class="pull-left person_content">
+							<div><span class="person_name"><a href=""><b>PHP</b></a></span></div>
+							<div class="show_person"><a href="">点击查看</a></div>
+						</div>
+						<div class="clearfix"></div>
+					</div>
+<!-- 前五个推荐 循环结束处 -->
+<!-- 所有20（id为a0到a19）个推荐 循环开始处 -->
+					<div id="a0" class="a_guy" style="display:none;">
+						<div class="pull-left person_avatar"><a href=""><img src="../img/rd.jpg" width="100%"/></a></div>
+						<div class="pull-left person_content">
+							<div><span class="person_name"><a href=""><b>PHP</b></a></span></div>
+							<div class="show_person"><a href="">点击查看</a></div>
+						</div>
+						<div class="clearfix"></div>
+					</div>
+<!-- 所有20个推荐  循环结束处 -->
+				</div>
+<!-- 推荐 结束处-->
+			</div>
+		</div>
+	</div>
+	
+	
+	
+	
+	<!-- jQuery文件。务必在bootstrap.min.js 之前引入 -->
+	<script src="../js/jquery.min.js"></script>
+	
+	<!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
+	<script src="../js/bootstrap.js"></script>
+	
+	<script type="text/javascript">
+	var start_id_num=0;
+		function frontPage()
+		{	if(start_id_num > 0)
+			{
+				start_id_num-=5;alert(start_id_num);
+				$(".a_guy").css("display","none");
+				$("#a"+start_id_num).css("display","block");
+				$("#a"+(start_id_num+1)).css("display","block");
+				$("#a"+(start_id_num+2)).css("display","block");
+				$("#a"+(start_id_num+3)).css("display","block");
+				$("#a"+(start_id_num+4)).css("display","block");
+			}
+		}
+		function nextPage()
+		{
+			if(start_id_num < 15)
+			{
+				start_id_num+=5;alert(+start_id_num);
+				$(".a_guy").css("display","none");
+				$("#a"+start_id_num).css("display","block");
+				$("#a"+(start_id_num+1)).css("display","block");
+				$("#a"+(start_id_num+2)).css("display","block");
+				$("#a"+(start_id_num+3)).css("display","block");
+				$("#a"+(start_id_num+4)).css("display","block");
+			}
+		
+		}
+		
+		
+	</script>
+</body>
+</html>
