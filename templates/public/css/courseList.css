@@ -1,0 +1,144 @@
+@CHARSET "UTF-8";
+iv{
+	border:1px solid blue;
+}
+pan{
+	border:1px solid green;
+}
+a{
+	color:#428BCA;
+	text-decoration:none;
+}
+a:hover{
+	color:black;
+	text-decoration:none;
+}
+
+
+
+
+
+
+.btn_friend{
+	padding-left:10px;
+}
+.show_person{
+	padding-top:2px;
+	font-size:12px;
+	
+}
+.focus{
+	margin-left:20px;
+}
+.person_name{
+	font-size:13px;
+	display:block;/*内联对象需加*/
+	width:150px;
+	word-break:keep-all;/* 不换行 */
+	white-space:nowrap;/* 不换行 */
+	overflow:hidden;/* 内容超出宽度时隐藏超出部分的内容 */
+	text-overflow:ellipsis;/* 当对象内文本溢出时显示省略标记(...) ；需与overflow:hidden;一起使用。*/
+}
+.person_content{
+	width:75%;
+	padding:0px 0px 5px 10px;
+}
+.person_avatar{
+	width:25%;
+}
+.course{
+	font-size:12px;
+	text-align:center;
+	width:100%;
+	overflow:hidden;
+	text-overflow:ellipsis;
+}
+.a_course1{
+	width:33.33%;
+	padding-left:10px;
+	padding-right:10px;
+	margin-top:15px;
+}
+
+.interest_course_title{
+	font-size:14px;
+}
+.a_guy{
+	margin:15px 0 0px 0;
+}
+.pageChange{
+	text-align:right;
+	margin-top:5px;
+}
+.my_title{
+	border-bottom:1px solid #E4E4E4;
+	padding-bottom:10px;
+}
+.my{
+	margin-top:40px;
+}
+.hot_newpage{
+	margin-top:20px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+.a_course_bottom2{
+	margin-right:25px;
+}
+.a_course_bottom1{
+	margin-left:5px;
+}
+.a_course_bottom{
+	margin-top:5px;
+}
+.cl_intro{
+	margin-top:5px;
+	color:gray;
+}
+.badge{
+	background-color:#2EA2CD;
+}
+.cl_font{
+	font-size:12px;
+	color:gray;
+	padding-top:3px;
+}
+.yellow_star{
+	color:#FED986;
+}
+.cl_course_name{
+	font-size:16px;
+	padding-right:5px;
+}
+.cl_a_course_right1{
+	width:100%;
+}
+.cl_a_course_right{
+	width:85%;
+	padding-left:10px;
+}
+.cl_a_course_left{
+	width:12%;
+}
+.cl_a_course{
+	margin-top:12px;
+	padding:10px 10px 10px 10px;
+	background-color:#F2F2F2;
+}
+.selDiv{
+	padding-top:10px;
+	margin-right:25px;
+}
+.courseList_breadcrumb{
+	background-color:#ffffff;
+}

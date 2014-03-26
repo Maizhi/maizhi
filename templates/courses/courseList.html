@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>麦知网——学问有余，乐为人师</title>
+
+<!-- Bootstrap core CSS -->
+<link href="../css/bootstrap.css" rel="stylesheet">
+<!-- Custom styles for this template -->
+<link href="../css/non-responsive.css" rel="stylesheet">
+
+<link href="../css/courseList.css" rel="stylesheet">    
+ 
+</head>
+<body>
+	
+	<div class="container" style="margin-top:45px">
+		<div class="row">
+<!-- left div -->
+			<div class="col-xs-9">
+				<div>
+					<div class="pull-left">
+					<ol class="breadcrumb courseList_breadcrumb">
+					  <li><a href="#">大分类</a></li>
+					  <li class="active">小分类</li>
+					</ol>
+				</div>
+				<div class="selDiv pull-right">
+					<select id="selectWay">   
+				        <option value="1">按价格排列</option>   
+				        <option value="2">按时间排列</option>   
+				        <option value="3">按人气排列/option>   
+				   	</select>  
+				</div>
+				<div class="clearfix"></div>
+				</div>
+<!-- 一个课程 循环开始处 -->
+				<div class="cl_a_course">
+					<div>
+						<div class="pull-left cl_a_course_left">
+							<img src="../img/rd.jpg" width="100%"/>
+						</div>
+						<div class="pull-left cl_a_course_right">
+							<div class="cl_a_course_right1">
+								<div class="pull-left cl_course_name"><b>课程名</b></div>
+								<div class="pull-left">
+<!-- 用星星评价的地方    第一个span是黄色星星  第二个span是空心星星  分别循环   -->
+									<span class="yellow_star">&#9733</span><span class="yellow_star">&#9733</span><span class="yellow_star">&#9733</span><span class="yellow_star">&#9733</span><span>☆</span>
+<!-- 用星星评价的地方 结束 -->							
+								</div>
+								<div class="pull-left cl_font">（123人评价）</div>
+								<div class="pull-left cl_font">5566人购买</div>
+								<div class="pull-right"><span class="badge">￥2555.00</span></div>
+								<div class="clearfix"></div>
+							</div>
+							<div class="cl_intro"><i>
+								课程介绍课程介绍课程介绍课程介绍课程介绍课程介绍课程介绍课程介绍课程介绍课程介绍课程介绍课程介绍课程介绍课程介绍课程介绍课程介绍课程介绍课程介绍课程介绍课程介绍课程介绍课程介绍课程介绍课程介绍课程介绍课程介绍课程介绍课程介绍课程介绍
+							</i></div>
+						</div>
+						<div class="clearfix"></div>
+					</div>
+					<div class="a_course_bottom">
+						<div class="pull-left a_course_bottom1">讲师：<b>刘一峰</b></div>
+						<div class="pull-right a_course_bottom2"><a href="">点击查看</a></div>
+						<div class="clearfix"></div>
+					</div>
+				</div>
+<!-- 一个课程 循环结束处 -->
+				<div class="clearfix"></div>
+			</div>
+
+<!-- right div -->
+			<div class="col-xs-3">
+				<div><img src="../img/lucky.png" width="100%"/></div>
+				<div class="hot_newpage"><a href=""><span class="glyphicon glyphicon-globe"></span> 热门推荐</a></div>
+<!-- 推荐 -->
+				<div class="my">
+					<div class="my_title"><b>推荐</b></div>
+					<div class="pageChange">
+						<span><button type="button" class="btn btn-default btn-xs" onclick="frontPage()"><</button></span>
+						<span><button type="button" class="btn btn-default btn-xs" onclick="nextPage()">></button></span>
+					</div>
+<!-- 前五个推荐 循环开始处 -->
+					<div class="a_guy">
+						<div class="pull-left person_avatar"><a href=""><img src="../img/rd.jpg" width="100%"/></a></div>
+						<div class="pull-left person_content">
+							<div><span class="person_name"><a href=""><b>芸豆炖白菜孙芋头孙芋头</b></a></span></div>
+							<div class="show_person">2222个共同好友</div>
+							<div class="show_person">
+								<span><a href="">点击查看</a></span>
+								<span class="btn_friend"><button type="button" class="btn btn-info btn-xs">+好友</button></span>
+							</div>
+						</div>
+						<div class="clearfix"></div>
+					</div>
+<!-- 前五个推荐 循环结束处 -->
+<!-- 所有20（id为a0到a19）个推荐 循环开始处 -->
+					<div id="a0" class="a_guy" style="display:none;">
+						<div class="pull-left person_avatar"><a href=""><img src="../img/rd.jpg" width="100%"/></a></div>
+						<div class="pull-left person_content">
+							<div><span class="person_name"><a href=""><b>PHP</b></a></span></div>
+							<div class="show_person"><a href="">点击查看</a></div>
+						</div>
+						<div class="clearfix"></div>
+					</div>
+<!-- 所有20个推荐  循环结束处 -->
+				</div>
+<!-- 推荐 结束处-->
+			</div>
+		</div>
+	</div>
+	
+	
+	
+	
+	<!-- jQuery文件。务必在bootstrap.min.js 之前引入 -->
+	<script src="../js/jquery.min.js"></script>
+	
+	<!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
+	<script src="../js/bootstrap.js"></script>
+	
+	<script type="text/javascript">
+	var start_id_num=0;
+		function frontPage()
+		{	if(start_id_num > 0)
+			{
+				start_id_num-=5;alert(start_id_num);
+				$(".a_guy").css("display","none");
+				$("#a"+start_id_num).css("display","block");
+				$("#a"+(start_id_num+1)).css("display","block");
+				$("#a"+(start_id_num+2)).css("display","block");
+				$("#a"+(start_id_num+3)).css("display","block");
+				$("#a"+(start_id_num+4)).css("display","block");
+			}
+		}
+		function nextPage()
+		{
+			if(start_id_num < 20)
+			{
+				start_id_num+=5;alert(+start_id_num);
+				$(".a_guy").css("display","none");
+				$("#a"+start_id_num).css("display","block");
+				$("#a"+(start_id_num+1)).css("display","block");
+				$("#a"+(start_id_num+2)).css("display","block");
+				$("#a"+(start_id_num+3)).css("display","block");
+				$("#a"+(start_id_num+4)).css("display","block");
+			}
+		
+		}
+		
+		
+	</script>
+</body>
+</html>
