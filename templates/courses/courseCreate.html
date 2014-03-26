@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>麦知网——学问有余，乐为人师</title>
+
+<!-- Bootstrap core CSS -->
+<link href="../css/bootstrap.css" rel="stylesheet">
+<!-- Custom styles for this template -->
+<link href="../css/non-responsive.css" rel="stylesheet">
+
+<link href="../css/courseCreate.css" rel="stylesheet">    
+ 
+ 
+ 
+	
+	<!-- jQuery文件。务必在bootstrap.min.js 之前引入 -->
+	<script src="../js/jquery.min.js"></script>
+	
+	<!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
+	<script src="../js/bootstrap.js"></script>
+		
+	<script type="text/javascript">
+	function change_list(a)
+	{
+		$("#case1").css("display","none");
+		$("#case2").css("display","none");
+		$("#case3").css("display","none");
+		$("#case4").css("display","none");
+		$("#a1").attr("class","list-group-item");
+		$("#a2").attr("class","list-group-item");
+		$("#a3").attr("class","list-group-item");
+		$("#a4").attr("class","list-group-item");
+		$("#case"+a).css("display","block");
+		$("#a"+a).attr("class","active list-group-item");
+	}
+
+
+
+
+	function typeLabels(a)
+	{
+		var textvalue=$("#textvalue").val();
+		$(".typeLabel3"+a).attr("class","typeLabel1"+a);
+		var typeLabel1=$(".typeLabel1"+a);
+		var typeLabel2=$(".typeLabel2"+a);
+		typeLabel1.css("background-color","#D0D1E6");
+		typeLabel2.css("background-color","#F2F2F2");
+		typeLabel2.attr("class","typeLabel3"+a);
+		typeLabel1.attr("class","typeLabel2"+a);
+	//第一次点击 加上这个分类名
+		if($('.typeLabel2'+a+'>a').html())
+		{
+			$("#textvalue").val(textvalue+$('.typeLabel2'+a+'>a').html());
+		}
+	//第二次点击 减去这个分类名
+		if($('.typeLabel3'+a+'>a').html())
+		{
+			var strPosition=textvalue.indexOf($('.typeLabel3'+a+'>a').html());
+			var textNew1=textvalue.substr(0,strPosition);
+			var textNew2=textvalue.substr(strPosition+$('.typeLabel3'+a+'>a').html().length,textvalue.length);
+			//var textjiechu=textvalue.substr(strPosition,strPosition+$('.typeLabel3'+a+'>#a').html().length);
+			var textNew=textNew1+textNew2;
+			$("#textvalue").val(textNew);
+		}
+	}
+
+
+	function sub()
+	{
+		$("#subbutton3").attr("id","subbutton1");
+		$("#subbutton2").removeAttr("disabled");
+		$("#subbutton1").attr("disabled","disabled");
+		$("#subbutton2").attr("id","subbutton3");
+		$("#subbutton1").attr("id","subbutton2");
+	}
+		
+		
+	</script>
+</head>
+<body>
+	
+	<div class="container" style="margin-top:45px">
+		<div class="row">
+<!-- left div -->
+			<div class="col-xs-8">
+				<div>
+					<div class="publisher_img pull-left">
+						<img src="../img/rd.jpg" width="100%" class="img-circle"/>
+					</div>
+					<div class="publisher_name pull-left">
+						<div class="cc_title"><b>创建我的课程系列</b></div>
+						<div class="publisher_sign"><i>我一共创建了33个课程系列</i></div>
+					</div>
+					<div class="clearfix"></div>
+				</div>
+				<div>
+					<div class="topdirection"></div>
+					<div class="group_mes">
+					<form action="" method="post" enctype="multipart/form-data">
+						<div class="group_form_all">
+							<div class="group_form_name pull-left"> 课程系列名称 </div>
+							<div class="group_form pull-left"><input type="text"></div>
+							<div class="clearfix"></div>
+						</div>
+						<div class="group_form_all">
+							<div class="group_form_name pull-left"> 课程图片 </div>
+							<div class="group_form pull-left"><input type="file"></div>
+							<div class="clearfix"></div>
+						</div>
+						<div class="group_form_all">
+							<div class="group_form_name pull-left"> 课程简介 </div>
+							<div class="group_form pull-left"><textarea class="group_textarea"></textarea></div>
+							<div class="clearfix"></div>
+						</div>
+						<div class="group_form_all">
+							<div class="group_form_name pull-left"> 课程价格 </div>
+							<div class="group_form pull-left"><input type="text"></div>
+							<div class="clearfix"></div>
+						</div>
+						<div class="group_form_all">
+<!-- 标签设置  -->	
+							<div class="right case4" id="case4">
+								<div>
+									<div class="group_form_name pull-left"> 课程分类 </div>
+									<div class="group_form pull-left"><input id="textvalue" type="text" name=""></div>
+									<div class="clearfix"></div>
+									<div>
+										<dl class="tags" style="margin-left:50px;">
+<!-- 循环显示分类标签 开始处 -->
+											<dd class="typeLabel12" onclick="typeLabels(2);" style="float:left;margin-top:10px;margin-left:5px;margin-right:5px;padding-top:2px;padding-bottom:2px;padding-left:8px;padding-right:8px;">
+												<a href="javascript:void(0)">  分类1</a>
+											</dd>
+<!-- 循环显示分类标签 结束处 -->			
+											<div class="clearfix"></div>						
+										</dl>
+									</div>
+									
+									<div class="subbox">
+										<input id="subbox" type="checkbox" onclick="sub()" checked>我已阅读并同意排队网服务协议
+									</div>
+									<div>
+										<div style="text-align:center;"><button id="subbutton3" type="submit" class="btn btn-info">创建课程系列</button></div>
+									</div>
+								</div>
+							</div>
+<!-- 标签设置 结束处 -->
+
+						</div>
+					</form>
+					</div>
+				</div>
+			</div>
+<!-- 中间留白div -->
+
+<!-- right div -->
+			<div class="col-xs-4">
+				<div class="agreement">
+					在此处要告诉发布者 要在课程系列里面添加课时
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	
+	
+
+</body>
+</html>
