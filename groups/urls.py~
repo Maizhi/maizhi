@@ -4,9 +4,11 @@ from groups import views
 urlpatterns = patterns('',
     url(r'^$', views.groups, name="groups"),
     url(r'^the/(.+)$', views.thegroup, name="thegroup"),
+    url(r'^change/$', views.change, name="change"),
     url(r'^join/$', views.join, name="join"),
     url(r'^topic/create/(.+)$', views.topiccreate, name="topiccreate"),
     url(r'^topic/(.+)$', views.thetopic, name="thetopic"),
+    url(r'^topic/publish/$', views.publish, name="publish"),
     url(r'^create/$', views.groupcreate, name="groupcreate"),
 
     url(r'^css/(?P<path>.*)$', 'django.views.static.serve', 
