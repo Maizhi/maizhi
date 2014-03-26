@@ -79,7 +79,7 @@
 						{% for t in topic %}
 								<tr>
 									<td class="td1">
-										<div class="td_12"><a href="{% url 'groups:thetopic' k.4 %}" title="{{t.1}}" target="_blank">{{t.1}}</a></div>
+										<div class="td_12"><a href="{% url 'groups:thetopic' t.4 %}" title="{{t.1}}" target="_blank">{{t.1}}</a></div>
 									</td>
 									<td><div class="td_text">{{t.0}}</div></td>
 									<td><div class="td_text">{{t.2|date:"Y-m-d H:i"}}</div></td>
@@ -107,7 +107,7 @@
 						{% for t in topic %}
 								<tr>
 									<td class="td1">
-										<div class="td_12"><a href="{% url 'groups:thetopic' k.4 %}" title="{{t.1}}" target="_blank">{{t.1}}</a></div>
+										<div class="td_12"><a href="{% url 'groups:thetopic' t.4 %}" title="{{t.1}}" target="_blank">{{t.1}}</a></div>
 									</td>
 									<td><div class="td_text">{{t.0}}</div></td>
 									<td><div class="td_text">{{t.2|date:"Y-m-d H:i"}}</div></td>
@@ -136,7 +136,7 @@
 							{% for t in topic %}
 								<tr>
 									<td class="td1">
-										<div class="ttd_12"><a href="{% url 'groups:thetopic' k.4 %}" title="{{t.1}}" target="_blank">{{t.1}}</a></div>
+										<div class="ttd_12"><a href="{% url 'groups:thetopic' t.4 %}" title="{{t.1}}" target="_blank">{{t.1}}</a></div>
 									</td>
 									<td><div class="td_text">{{t.0}}</div></td>
 									<td><div class="td_text">{{t.2|date:"Y-m-d H:i"}}</div></td>
@@ -224,7 +224,7 @@
 
 	function join(id,way){   
 		createXMLRequest();                       
-		var url="http://192.168.1.113:8866/groups/join/?id="+id;
+		var url="http://192.168.1.120:8866/groups/join/?id="+id;
 		xmlHttp.open("GET",url);
 		xmlHttp.onreadystatechange=function(){
 			if(xmlHttp.readyState==4 && xmlHttp.status==200){
