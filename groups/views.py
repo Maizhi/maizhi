@@ -122,6 +122,7 @@ def thegroup(request,id):
 		each.append(k.name)          #1
 		each.append(k.last_time)     #2
 		each.append(k.review_con)    #3
+		each.append(k.id)	     #4
 		topic.append(each)
 	return render(request,'groups/theGroup.html',{'group':group,'status':status,'actman':actman,'message':mess,'havent':havent,'topic':topic})
 
