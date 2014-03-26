@@ -79,7 +79,7 @@
 						{% for t in topic %}
 								<tr>
 									<td class="td1">
-										<div class="td_12"><a href="{% url 'groups:thetopic' k.4 %}" title="{{t.1}}" target="_blank">{{t.1}}</a></div>
+										<div class="td_12"><a href="{% url 'groups:thetopic' t.4 %}" title="{{t.1}}" target="_blank">{{t.1}}</a></div>
 									</td>
 									<td><div class="td_text">{{t.0}}</div></td>
 									<td><div class="td_text">{{t.2|date:"Y-m-d H:i"}}</div></td>
@@ -89,6 +89,15 @@
 <!-- 一条话题循环结束处 -->
 							</tbody>
 						</table>
+						<ul class="pager">
+						{% if topics.has_previous %}
+						  <li><a href="?page={{ topics.previous_page_number }}">&larr;上一页</a></li>
+						{% endif %}
+						共 {{ topics.number }} 页  第 {{ topics.paginator.num_pages }} 页.
+						{% if topics.has_next %}
+						  <li><a href="?page={{ topics.next_page_number }}">下一页&rarr;</a></li>
+						{% endif %}
+						</ul>
 						{% endifequal %}
 <!-- 别人的小组 显示结束处 -->
 <!-- 别人的小组 显示开始处 -->
@@ -107,7 +116,7 @@
 						{% for t in topic %}
 								<tr>
 									<td class="td1">
-										<div class="td_12"><a href="{% url 'groups:thetopic' k.4 %}" title="{{t.1}}" target="_blank">{{t.1}}</a></div>
+										<div class="td_12"><a href="{% url 'groups:thetopic' t.4 %}" title="{{t.1}}" target="_blank">{{t.1}}</a></div>
 									</td>
 									<td><div class="td_text">{{t.0}}</div></td>
 									<td><div class="td_text">{{t.2|date:"Y-m-d H:i"}}</div></td>
@@ -117,6 +126,15 @@
 <!-- 一条话题循环结束处 -->
 							</tbody>
 						</table>
+						<ul class="pager">
+						{% if topics.has_previous %}
+						  <li><a href="?page={{ topics.previous_page_number }}">&larr;上一页</a></li>
+						{% endif %}
+						共 {{ topics.number }} 页  第 {{ topics.paginator.num_pages }} 页.
+						{% if topics.has_next %}
+						  <li><a href="?page={{ topics.next_page_number }}">下一页&rarr;</a></li>
+						{% endif %}
+						</ul>
 						{% endifequal %}
 <!-- 别人的小组 显示结束处 -->
 <!-- 我的小组 显示开始处 -->
@@ -136,7 +154,7 @@
 							{% for t in topic %}
 								<tr>
 									<td class="td1">
-										<div class="ttd_12"><a href="{% url 'groups:thetopic' k.4 %}" title="{{t.1}}" target="_blank">{{t.1}}</a></div>
+										<div class="ttd_12"><a href="{% url 'groups:thetopic' t.4 %}" title="{{t.1}}" target="_blank">{{t.1}}</a></div>
 									</td>
 									<td><div class="td_text">{{t.0}}</div></td>
 									<td><div class="td_text">{{t.2|date:"Y-m-d H:i"}}</div></td>
@@ -147,6 +165,15 @@
 <!-- 一条话题循环结束处 -->
 							</tbody>
 						</table>
+						<ul class="pager">
+						{% if topics.has_previous %}
+						  <li><a href="?page={{ topics.previous_page_number }}">&larr;上一页</a></li>
+						{% endif %}
+						共 {{ topics.number }} 页  第 {{ topics.paginator.num_pages }} 页.
+						{% if topics.has_next %}
+						  <li><a href="?page={{ topics.next_page_number }}">下一页&rarr;</a></li>
+						{% endif %}
+						</ul>
 						{% endifequal %}
 <!-- 我的小组 显示结束处 -->
 				</div>
@@ -224,7 +251,7 @@
 
 	function join(id,way){   
 		createXMLRequest();                       
-		var url="http://192.168.1.113:8866/groups/join/?id="+id;
+		var url="http://192.168.1.120:8866/groups/join/?id="+id;
 		xmlHttp.open("GET",url);
 		xmlHttp.onreadystatechange=function(){
 			if(xmlHttp.readyState==4 && xmlHttp.status==200){

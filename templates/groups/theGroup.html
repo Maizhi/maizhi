@@ -89,6 +89,15 @@
 <!-- 一条话题循环结束处 -->
 							</tbody>
 						</table>
+						<ul class="pager">
+						{% if topics.has_previous %}
+						  <li><a href="?page={{ topics.previous_page_number }}">&larr;上一页</a></li>
+						{% endif %}
+						共 {{ topics.number }} 页  第 {{ topics.paginator.num_pages }} 页.
+						{% if topics.has_next %}
+						  <li><a href="?page={{ topics.next_page_number }}">下一页&rarr;</a></li>
+						{% endif %}
+						</ul>
 						{% endifequal %}
 <!-- 别人的小组 显示结束处 -->
 <!-- 别人的小组 显示开始处 -->
@@ -117,6 +126,15 @@
 <!-- 一条话题循环结束处 -->
 							</tbody>
 						</table>
+						<ul class="pager">
+						{% if topics.has_previous %}
+						  <li><a href="?page={{ topics.previous_page_number }}">&larr;上一页</a></li>
+						{% endif %}
+						共 {{ topics.number }} 页  第 {{ topics.paginator.num_pages }} 页.
+						{% if topics.has_next %}
+						  <li><a href="?page={{ topics.next_page_number }}">下一页&rarr;</a></li>
+						{% endif %}
+						</ul>
 						{% endifequal %}
 <!-- 别人的小组 显示结束处 -->
 <!-- 我的小组 显示开始处 -->
@@ -147,6 +165,15 @@
 <!-- 一条话题循环结束处 -->
 							</tbody>
 						</table>
+						<ul class="pager">
+						{% if topics.has_previous %}
+						  <li><a href="?page={{ topics.previous_page_number }}">&larr;上一页</a></li>
+						{% endif %}
+						共 {{ topics.number }} 页  第 {{ topics.paginator.num_pages }} 页.
+						{% if topics.has_next %}
+						  <li><a href="?page={{ topics.next_page_number }}">下一页&rarr;</a></li>
+						{% endif %}
+						</ul>
 						{% endifequal %}
 <!-- 我的小组 显示结束处 -->
 				</div>

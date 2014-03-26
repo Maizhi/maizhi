@@ -18,17 +18,20 @@ def groups(request):
 		fg.append(int(f.follow_group_id))
 	group=[]
 	for i in gro:
-		each=[]
-		each.append(i.img)     #0  
-		each.append(i.name)    #1
-		if i.id in fg:
-			join=True
-			each.append('1')   #2
+		if i.user_id==request.session['id']:
+			pass
 		else:
-			join=None
-			each.append('0')   #2
-		each.append(i.id)      #3
-		group.append(each)
+			each=[]
+			each.append(i.img)     #0  
+			each.append(i.name)    #1
+			if i.id in fg:
+				join=True
+				each.append('1')   #2
+			else:
+				join=None
+				each.append('0')   #2
+			each.append(i.id)      #3
+			group.append(each)
 	m=Message.objects.filter(to=request.session['id']).order_by('-time')[0:5]
 	mess=[]
 	for k in m:
@@ -113,18 +116,27 @@ def thegroup(request,id):
 	for n in m:
 		if n.status==1:
 			havent+=1
-	t=Topic.objects.filter(group_id=group.id)
+	limit = 15
+	topics=Topic.objects.filter(group_id=group.id)
+	paginator = Paginator(topics, limit)
+	page = request.GET.get('page')
+	try:
+	    topics = paginator.page(page)
+	except PageNotAnInteger:
+	    topics = paginator.page(1)
+	except EmptyPage:
+	    topics = paginator.page(paginator.num_pages)
 	topic=[]
-	for k in t:
+	for k in topics:
 		each=[]
 		i=Info.objects.get(user_id=k.user_id)
 		each.append(i.user_name)     #0
 		each.append(k.name)          #1
 		each.append(k.last_time)     #2
 		each.append(k.review_con)    #3
-		each.append(k.id)	     #4
+		each.append(k.id)            #4
 		topic.append(each)
-	return render(request,'groups/theGroup.html',{'group':group,'status':status,'actman':actman,'message':mess,'havent':havent,'topic':topic})
+	return render(request,'groups/theGroup.html',{'group':group,'status':status,'actman':actman,'message':mess,'havent':havent,'topic':topic,'topics':topics})
 
 def topiccreate(request,id):
 	group=Group.objects.get(id=id)
