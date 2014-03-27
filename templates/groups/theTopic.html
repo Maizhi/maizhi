@@ -9,12 +9,16 @@
 <!-- Custom styles for this template -->
 <link href="../css/non-responsive.css" rel="stylesheet">
 <link href="../css/font-awesome.min.css" rel="stylesheet">
-<link href="../css/theTopic.css" rel="stylesheet">    
+<link href="../css/theTopic.css" rel="stylesheet">  
+<link href="../css/sco.message.css" rel="stylesheet">
+<link href="../css/scojs.css" rel="stylesheet">  
 <!-- jQuery文件。务必在bootstrap.min.js 之前引入 -->
 <script src="../js/jquery.min.js"></script>
 <!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
 <script src="../js/bootstrap.js"></script>
 <script src="../js/collect.js"></script>
+<script src="../js/sco.message.js"></script>
+<script src="../js/comment_topic.js"></script>
 </head>
 <body>
 	{% include 'public/common/header.html' %}
@@ -63,10 +67,10 @@
 						<div class="group_comment">
 							<div class="comment_act">
 								<div class="comment_act1 pull-left">
-									<textarea class="comment_act1_tarea"></textarea>
+									<textarea id="comment" class="comment_act1_tarea"></textarea>
 								</div>
 								<div class="comment_act2 pull-left">
-									<button type="button" class="btn btn-info comment_act_btn">评论</button>
+									<button type="button" onclick="comment_topic({{topic.id}})" class="btn btn-info comment_act_btn">评论</button>
 								</div>
 								<div class="clearfix"></div>
 							</div>
@@ -76,9 +80,10 @@
 <!-- 评论 -->			
 				<div class="topic_comment">
 <!-- 一条评论 循环开始处-->
+				{% for r in review %}
 					<div>
 						<div class="commentDiv1 pull-left">
-							<img src="../img/rd.jpg" class="img-circle" width="100%"/>
+							<img src="../avatar/{{r.5}}" class="img-circle" width="100%"/>
 						</div>
 						<div class="pull-left commentDiv2">
 							<div class="topdirection_left pull-left"></div>
@@ -99,14 +104,14 @@
 <!-- 只有小组创建者才有  结束处-->
 							
 								<div>
-									<div class="pull-left time">芸豆</div>
-									<div class="pull-right time">2014-5-812:55:44</div>
+									<div class="pull-left time">{{r.4}}</div>
+									<div class="pull-right time">{{r.1|date:"Y-m-d H:i:s"}}</div>
 									<div class="clearfix"></div>
 								</div>
-								<div>楼主说得好呀~我喜欢男神~！我也要当绿茶婊~！我也要当绿茶婊~！我也要当绿茶婊~！我也要当绿茶婊~！我也要当绿茶婊~！</div>
+								<div>{{r.0}}</div>
 								<div style="text-align:right;">
-									<span class="span_news"><a href=""><i class="icon-thumbs-up"></i> 690</a></span>
-									<span class="span_news"><a href="javascript:void(0)" onclick="topic_cocomment(1);"><i class="icon-comment"></i> 150</a></span>
+									<span class="span_news"><a href=""><i class="icon-thumbs-up"></i> {{r.2}}</a></span>
+									<span class="span_news"><a href="javascript:void(0)" onclick="topic_cocomment(1);"><i class="icon-comment"></i> {{r.3}}</a></span>
 								</div>
 <!-- 评论的评论 -->
 								<div id="group_cocomment1" class="group_comment">
@@ -125,6 +130,7 @@
 						</div>
 						<div class="clearfix"></div>
 					</div>
+				{% endfor %}
 <!-- 一条评论 循环结束处-->
 				</div>	
 			</div>

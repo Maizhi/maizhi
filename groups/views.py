@@ -171,6 +171,18 @@ def thetopic(request,id):
 	user=Info.objects.get(user_id=topic.user_id)
 	group=Group.objects.get(id=topic.group_id)
 	m=Message.objects.filter(to=request.session['id']).order_by('-time')[0:5]
+	review=Review_of_topic.objects.filter(topic_id=topic.id)
+	reviewtopic=[]
+	for r in review:
+		each=[]
+		each.append(r.content)                        #0
+		each.append(r.time)                           #1
+		each.append(r.good_con)                       #2
+		each.append(r.review_con)                     #3
+		info=Info.objects.get(user_id=r.from_id)
+		each.append(info.user_name)                   #4
+		each.append(info.img)                         #5
+		reviewtopic.append(each)
 	mess=[]
 	for k in m:
 		each=[]
@@ -194,7 +206,7 @@ def thetopic(request,id):
 	abord=None
 	if topic.id in collect:
 		abord=True
-	return render(request,'groups/theTopic.html',{'topic':topic,'user':user,'group':group,'message':mess,'havent':havent,'competence':competence,'recommend':recommend,'abord':abord})
+	return render(request,'groups/theTopic.html',{'topic':topic,'user':user,'group':group,'message':mess,'havent':havent,'competence':competence,'recommend':recommend,'abord':abord,'review':reviewtopic})
 
 def collect(request):
 	my=Follow_topic.objects.filter(user_id=request.session['id'])
@@ -213,6 +225,15 @@ def collect(request):
 		topic.collect_con=collect_con
 		topic.save()
 	return HttpResponse('1')
+
+def comment(request):
+	result=Review_of_topic(topic_id=request.GET['id'],from_id=request.session['id'],content=request.GET['content'])
+	result.save()
+	topic=Topic.objects.get(id=request.GET['id'])
+	review_con=int(topic.review_con)+int(1)
+	topic.review_con=review_con
+	topic.save()
+	return HttpResponse(result.id)
 
 def change(request):
 	group=Group.objects.get(id=request.GET['id'])
