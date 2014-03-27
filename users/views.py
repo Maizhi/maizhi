@@ -111,12 +111,9 @@ def good(request):
 	return HttpResponse('1')
 
 def message(request):
-	try:
-		realto=News.objects.get(id=request.GET['to'])
-		Message(from_id=request.session['id'],to=realto.user_id,content=request.GET['message'],status=1).save()
-		return HttpResponse('OK')
-	except:
-		return HttpResponse('Wrong')
+	realto=News.objects.get(id=request.GET['to'])
+	Message(from_id=request.session['id'],to=realto.user_id,content=request.GET['message'],status=1).save()
+	return HttpResponse('1')
 
 def share(request):
 	try:
@@ -167,14 +164,21 @@ def home(request,u_id):
 	if u_id==request.session['id']:
 		identity=1
 		info=Info.objects.get(user_id=request.session['id'])
+		news=News.objects.filter(user_id=request.session['id']).order_by('-time')
 	else:
 		identity=0
 		info=Info.objects.get(user_id=u_id)
+		news=News.objects.filter(user_id=u_id).order_by('-time')
 	user=Register.objects.all()[0:5]
 	guy=[]
-	focus=Follow_user.objects.filter(user_id=request.session['id'])
+	focus=[]
+	f=Follow_user.objects.filter(user_id=request.session['id'])
+	for j in f:
+		focus.append(j.follow_user_id)
 	for u in user:
 		if u.id==request.session['id']:
+			pass
+		elif u.id in focus:
 			pass
 		else:
 			each=[]
@@ -185,10 +189,42 @@ def home(request,u_id):
 			each.append(i.img)
 			each.append(i.id)
 			guy.append(each)
-	return render(request,'users/home.html',{'identity':identity,'info':info,'guy':guy})
+	m=Message.objects.filter(to=request.session['id']).order_by('-time')[0:5]
+	mess=[]
+	for k in m:
+		each=[]
+		name=Info.objects.get(user_id=k.from_id).user_name
+		content=k.content
+		each.append(name)
+		each.append(content)
+		mess.append(each)
+	havent=0
+	for n in m:
+		if n.status==1:
+			havent+=1
+	return render(request,'users/home.html',{'identity':identity,'info':info,'guy':guy,'news':news,'havent':havent})
 
 def add(request):
-	Follow_user(user_id=request.session['id'],follow_user_id=request.GET['id']).save()
+	f=Follow_user.objects.filter(user_id=request.session['id'])
+	follow=[]
+	for i in f:
+		follow.append(i.follow_user_id)
+	if int(request.GET['id']) in follow:
+		Follow_user.objects.filter(user_id=request.session['id']).get(follow_user_id=request.GET['id']).delete()
+		focus=Info.objects.get(user_id=request.session['id'])
+		focus.focus_con-=1
+		focus.save()
+		fan=Info.objects.get(user_id=request.GET['id'])
+		fan.fan_con-=1
+		fan.save()
+	else:
+		Follow_user(user_id=request.session['id'],follow_user_id=request.GET['id']).save()
+		focus=Info.objects.get(user_id=request.session['id'])
+		focus.focus_con+=1
+		focus.save()
+		fan=Info.objects.get(user_id=request.GET['id'])
+		fan.fan_con+=1
+		fan.save()
 	return HttpResponse('1')
 
 def managecourse(request):
