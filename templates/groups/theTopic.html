@@ -10,11 +10,11 @@
 <link href="../css/non-responsive.css" rel="stylesheet">
 <link href="../css/font-awesome.min.css" rel="stylesheet">
 <link href="../css/theTopic.css" rel="stylesheet">    
-	<!-- jQuery文件。务必在bootstrap.min.js 之前引入 -->
-	<script src="../js/jquery.min.js"></script>
-	
-	<!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
-	<script src="../js/bootstrap.js"></script>
+<!-- jQuery文件。务必在bootstrap.min.js 之前引入 -->
+<script src="../js/jquery.min.js"></script>
+<!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
+<script src="../js/bootstrap.js"></script>
+<script src="../js/collect.js"></script>
 </head>
 <body>
 	{% include 'public/common/header.html' %}
@@ -34,10 +34,12 @@
 								<a href=""><b>{{user.user_name}}</b></a>
 							</div>
 <!-- 只有小组创建者才有 开始处-->
+						{% if competence %}
 							<div class="pull-right">
 								<span><a href="">限制用户</a></span>
 								<span class="delSpan"><a href="">删除话题</a></span>
 							</div>
+						{% endif %}
 <!-- 只有小组创建者才有  结束处-->
 							<div class="clearfix"></div>
 							<div class="topic_publisher_sign"><i>{{user.sign}}</i></div>
@@ -53,8 +55,8 @@
 							<div>{% autoescape off %}{{topic.content}}{% endautoescape %}</div>
 						</div>
 						<div class="pull-right">
-							<span class="span_news"><a href=""><i class="icon-share-alt"></i> 69</a></span>
-							<span class="span_news"><a href="javascript:void(0)" onclick="topic_comment();"><i class="icon-comment"></i> 150</a></span>
+							<span class="span_news"><a href=""><i class="icon-share-alt"></i> {{topic.share_con}}</a></span>
+							<span class="span_news"><a href="javascript:void(0)" onclick="topic_comment();"><i class="icon-comment"></i> {{topic.review_con}}</a></span>
 						</div>
 						<div class="clearfix"></div>
 <!-- 评论框  评论时候点击出现 -->
@@ -82,6 +84,7 @@
 							<div class="topdirection_left pull-left"></div>
 							<div class="commentDiv21 pull-left">
 <!-- 只有小组创建者才有 开始处-->
+							{% if competence %}
 								<div>
 									<div class="pull-right">
 <!-- 限制用户 -->
@@ -92,6 +95,7 @@
 									</div>
 									<div class="clearfix"></div>
 								</div>
+							{% endif %}
 <!-- 只有小组创建者才有  结束处-->
 							
 								<div>
@@ -141,24 +145,28 @@
 					<div class="clearfix"></div>
 				</div>
 				<div class="topic_collect">
-					<button type="button" class="btn btn-primary topic_collect_btn">收藏</button>
+					{% if abord %}
+					<button id="collect" style="display:none" type="button" class="btn btn-primary topic_collect_btn" onclick='collect({{topic.id}},1)'>收藏</button>
+					<button id="abord" type="button" class="btn topic_collect_btn" onclick='collect({{topic.id}},1)'>取消收藏</button>
+					{% else %}
+					<button id="collect" type="button" class="btn btn-primary topic_collect_btn" onclick='collect({{topic.id}},2)'>收藏</button>
+					<button id="abord" style="display:none" type="button" class="btn topic_collect_btn" onclick='collect({{topic.id}},2)'>取消收藏</button>
+					{% endif %}
 				</div>
 				<div class="my">
 					<div class="hot_title"><b>小组热门分享</b></div>
 <!-- 小组热门分享 一条热门分享循环开始处 -->
+				{% for t in recommend %}
 					<div class="hot_intro">
-						<a href="">我是一个热门话题名</a>
+						<a href="{% url 'groups:thetopic' topic.id %}">{{t.name}}</a>
 					</div>
+				{% endfor %}
 <!-- 小组热门分享 一条热门分享循环结束处 -->					
 				</div>
 			</div>
 		</div>
 	</div>
 	
-	
-	
-	
-
 	
 	<script type="text/javascript">
 		function topic_comment()

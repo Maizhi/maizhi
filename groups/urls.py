@@ -8,6 +8,7 @@ urlpatterns = patterns('',
     url(r'^join/$', views.join, name="join"),
     url(r'^topic/create/(.+)$', views.topiccreate, name="topiccreate"),
     url(r'^topic/publish/$', views.publish, name="publish"),
+    url(r'^topic/collect/$', views.collect, name="collect"),
     url(r'^topic/(.+)$', views.thetopic, name="thetopic"),
     url(r'^create/$', views.groupcreate, name="groupcreate"),
 

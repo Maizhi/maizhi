@@ -4,7 +4,7 @@ from django.http import HttpResponse,HttpResponseRedirect
 from django.core.paginator import PageNotAnInteger, Paginator, InvalidPage, EmptyPage
 from django.core.urlresolvers import reverse
 from django.shortcuts import render
-from users.models import Info,Follow_group,Message
+from users.models import Info,Follow_group,Message,Follow_topic
 from groups.models import Group,Topic,Review_of_topic,Good_review_of_topic,Group_file
 from django.utils import timezone
 from django.views.decorators.csrf import csrf_exempt 
@@ -183,7 +183,36 @@ def thetopic(request,id):
 	for n in m:
 		if n.status==1:
 			havent+=1
-	return render(request,'groups/theTopic.html',{'topic':topic,'user':user,'group':group,'message':mess,'havent':havent})
+	competence=None
+	if group.user_id==request.session['id']:
+		competence=True
+	recommend=Topic.objects.filter(group_id=group.id).order_by('-review_con')[0:5]
+	c=Follow_topic.objects.filter(user_id=request.session['id'])
+	collect=[]
+	for j in c:
+		collect.append(j.follow_topic_id)
+	abord=None
+	if topic.id in collect:
+		abord=True
+	return render(request,'groups/theTopic.html',{'topic':topic,'user':user,'group':group,'message':mess,'havent':havent,'competence':competence,'recommend':recommend,'abord':abord})
+
+def collect(request):
+	my=Follow_topic.objects.filter(user_id=request.session['id'])
+	topic=Topic.objects.get(id=request.GET['id'])
+	follow=[]
+	for i in my:
+		follow.append(int(i.follow_topic_id))
+	if int(request.GET['id']) in follow:
+		Follow_topic.objects.filter(user_id=request.session['id']).get(follow_topic_id=request.GET['id']).delete()
+		collect_con=int(topic.collect_con)-int(1)
+		topic.collect_con=collect_con
+		topic.save()
+	else:
+		Follow_topic(user_id=request.session['id'],follow_topic_id=request.GET['id']).save()
+		collect_con=int(topic.collect_con)+int(1)
+		topic.collect_con=collect_con
+		topic.save()
+	return HttpResponse('1')
 
 def change(request):
 	group=Group.objects.get(id=request.GET['id'])
