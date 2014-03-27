@@ -117,7 +117,7 @@ def thegroup(request,id):
 		if n.status==1:
 			havent+=1
 	limit = 15
-	topics=Topic.objects.filter(group_id=group.id)
+	topics=Topic.objects.filter(group_id=group.id).order_by('-time')
 	paginator = Paginator(topics, limit)
 	page = request.GET.get('page')
 	try:
@@ -171,18 +171,6 @@ def thetopic(request,id):
 	user=Info.objects.get(user_id=topic.user_id)
 	group=Group.objects.get(id=topic.group_id)
 	m=Message.objects.filter(to=request.session['id']).order_by('-time')[0:5]
-	review=Review_of_topic.objects.filter(topic_id=topic.id)
-	reviewtopic=[]
-	for r in review:
-		each=[]
-		each.append(r.content)                        #0
-		each.append(r.time)                           #1
-		each.append(r.good_con)                       #2
-		each.append(r.review_con)                     #3
-		info=Info.objects.get(user_id=r.from_id)
-		each.append(info.user_name)                   #4
-		each.append(info.img)                         #5
-		reviewtopic.append(each)
 	mess=[]
 	for k in m:
 		each=[]
@@ -206,7 +194,28 @@ def thetopic(request,id):
 	abord=None
 	if topic.id in collect:
 		abord=True
-	return render(request,'groups/theTopic.html',{'topic':topic,'user':user,'group':group,'message':mess,'havent':havent,'competence':competence,'recommend':recommend,'abord':abord,'review':reviewtopic})
+	limit = 15
+	topics=Review_of_topic.objects.filter(topic_id=topic.id).order_by('-time')
+	paginator = Paginator(topics, limit)
+	page = request.GET.get('page')
+	try:
+	    topics = paginator.page(page)
+	except PageNotAnInteger:
+	    topics = paginator.page(1)
+	except EmptyPage:
+	    topics = paginator.page(paginator.num_pages)
+	review=[]
+	for r in topics:
+		each=[]
+		each.append(r.content)                        #0
+		each.append(r.time)                           #1
+		each.append(r.good_con)                       #2
+		each.append(r.review_con)                     #3
+		info=Info.objects.get(user_id=r.from_id)
+		each.append(info.user_name)                   #4
+		each.append(info.img)                         #5
+		review.append(each)
+	return render(request,'groups/theTopic.html',{'topic':topic,'user':user,'group':group,'message':mess,'havent':havent,'competence':competence,'recommend':recommend,'abord':abord,'review':review,'topics':topics})
 
 def collect(request):
 	my=Follow_topic.objects.filter(user_id=request.session['id'])

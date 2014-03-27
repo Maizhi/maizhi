@@ -133,6 +133,15 @@
 				{% endfor %}
 <!-- 一条评论 循环结束处-->
 				</div>	
+				<ul class="pager">
+				{% if topics.has_previous %}
+				  <li><a href="?page={{ topics.previous_page_number }}">&larr;上一页</a></li>
+				{% endif %}
+				评论共 {{ topics.number }} 页  第 {{ topics.paginator.num_pages }} 页.
+				{% if topics.has_next %}
+				  <li><a href="?page={{ topics.next_page_number }}">下一页&rarr;</a></li>
+				{% endif %}
+				</ul>
 			</div>
 <!-- 中间留白div -->
 			<div class="col-xs-1">
