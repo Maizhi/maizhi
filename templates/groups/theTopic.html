@@ -173,7 +173,7 @@
 <!-- 小组热门分享 一条热门分享循环开始处 -->
 				{% for t in recommend %}
 					<div class="hot_intro">
-						<a href="{% url 'groups:thetopic' topic.id %}">{{t.name}}</a>
+						<a href="{% url 'groups:thetopic' t.id %}">{{t.name}}</a>
 					</div>
 				{% endfor %}
 <!-- 小组热门分享 一条热门分享循环结束处 -->					
