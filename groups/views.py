@@ -4,7 +4,7 @@ from django.http import HttpResponse,HttpResponseRedirect
 from django.core.paginator import PageNotAnInteger, Paginator, InvalidPage, EmptyPage
 from django.core.urlresolvers import reverse
 from django.shortcuts import render
-from users.models import Info,Follow_group,Message,Follow_topic
+from users.models import Info,Follow_group,Message,Follow_topic,Follow_user
 from groups.models import Group,Topic,Review_of_topic,Good_review_of_topic,Group_file
 from django.utils import timezone
 from django.views.decorators.csrf import csrf_exempt 
@@ -83,15 +83,25 @@ def thegroup(request,id):
 		fp.close()
 		group.img=filename
 		group.save()
+	f=Follow_user.objects.filter(user_id=request.session['id'])
+	follow=[]
+	for  m in f:
+		follow.append(m.follow_user_id)
 	active=Follow_group.objects.filter(follow_group_id=group.id).order_by('-good_con')[0:5]
 	actman=[]
 	for act in active:
-		each=[]
-		info=Info.objects.get(user_id=act.user_id)
-		each.append(info.user_name)
-		each.append(info.img)
-		each.append(act.good_con)
-		actman.append(each)
+		if act.user_id in follow:
+			pass
+		elif act.user_id == request.session['id']:
+			pass
+		else:
+			each=[]
+			info=Info.objects.get(user_id=act.user_id)
+			each.append(info.user_name)    #0
+			each.append(info.img)          #1
+			each.append(act.good_con)	   #2
+			each.append(act.user_id)	   #3
+			actman.append(each)
 	if request.session['id']==group.user_id:
 		status='1'
 	else:
