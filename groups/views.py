@@ -126,6 +126,7 @@ def thegroup(request,id):
 	for n in m:
 		if n.status==1:
 			havent+=1
+	recommend=Topic.objects.filter(group_id=group.id).order_by('-review_con')[0:5]
 	limit = 15
 	topics=Topic.objects.filter(group_id=group.id).order_by('-time')
 	paginator = Paginator(topics, limit)
@@ -145,8 +146,9 @@ def thegroup(request,id):
 		each.append(k.last_time)     #2
 		each.append(k.review_con)    #3
 		each.append(k.id)            #4
+		each.append(k.user_id)       #5
 		topic.append(each)
-	return render(request,'groups/theGroup.html',{'group':group,'status':status,'actman':actman,'message':mess,'havent':havent,'topic':topic,'topics':topics})
+	return render(request,'groups/theGroup.html',{'group':group,'status':status,'actman':actman,'message':mess,'havent':havent,'topic':topic,'topics':topics,'recommend':recommend})
 
 def topiccreate(request,id):
 	group=Group.objects.get(id=id)
@@ -224,8 +226,26 @@ def thetopic(request,id):
 		info=Info.objects.get(user_id=r.from_id)
 		each.append(info.user_name)                   #4
 		each.append(info.img)                         #5
+		each.append(r.id)                             #6
 		review.append(each)
 	return render(request,'groups/theTopic.html',{'topic':topic,'user':user,'group':group,'message':mess,'havent':havent,'competence':competence,'recommend':recommend,'abord':abord,'review':review,'topics':topics})
+
+def good(request):
+	entire=Good_review_of_topic.objects.filter(review_of_topic_id=request.GET['id'])
+	for i in entire:
+		if request.session['id']==i.user_id:
+			return HttpResponse('2')
+	Good_review_of_topic(review_of_topic_id=request.GET['id'],user_id=request.session['id']).save()
+	review=Review_of_topic.objects.get(id=request.GET['id'])
+	topic=Topic.objects.get(id=review.topic_id)
+	n=Follow_group.objects.filter(user_id=request.session['id']).get(follow_group_id=topic.group_id)
+	g=int(n.good_con)+int(1)
+	n.good_con=g
+	n.save()
+	r=int(review.good_con)+1
+	review.good_con=r
+	review.save()
+	return HttpResponse('1')
 
 def collect(request):
 	my=Follow_topic.objects.filter(user_id=request.session['id'])

@@ -119,7 +119,7 @@ a:hover{
 .commentDiv1{
 	width:15%;
 	padding:0px 5px 5px 5px;
-	margin:10px 0 20px 0;
+	margin:0px 0 0px 0;
 }.commentDiv2{
 	width:85%;
 }
@@ -156,6 +156,8 @@ a:hover{
 	width:100%;
 }
 .group_comment{
+	display:none;
+}.group_comment2{
 	display:none;
 }
 .span_news{

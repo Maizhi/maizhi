@@ -19,6 +19,7 @@
 <script src="../js/collect.js"></script>
 <script src="../js/sco.message.js"></script>
 <script src="../js/comment_topic.js"></script>
+<script src="../js/review.js"></script>
 </head>
 <body>
 	{% include 'public/common/header.html' %}
@@ -81,7 +82,7 @@
 				<div class="topic_comment">
 <!-- 一条评论 循环开始处-->
 				{% for r in review %}
-					<div>
+					<div style="margin-top:20px;">
 						<div class="commentDiv1 pull-left">
 							<img src="../avatar/{{r.5}}" class="img-circle" width="100%"/>
 						</div>
@@ -110,11 +111,11 @@
 								</div>
 								<div>{{r.0}}</div>
 								<div style="text-align:right;">
-									<span class="span_news"><a href=""><i class="icon-thumbs-up"></i> {{r.2}}</a></span>
-									<span class="span_news"><a href="javascript:void(0)" onclick="topic_cocomment(1);"><i class="icon-comment"></i> {{r.3}}</a></span>
+									<span class="span_news"><a href="javascript:void(0)" onclick="clickgood({{r.6}})"><i class="icon-thumbs-up"></i> <span id="good{{r.6}}">{{r.2}}</span></a></span>
+									<span class="span_news"><a href="javascript:void(0)" onclick="topic_cocomment({{r.6}});"><i class="icon-comment"></i> {{r.3}}</a></span>
 								</div>
 <!-- 评论的评论 -->
-								<div id="group_cocomment1" class="group_comment">
+								<div id="group_cocomment{{r.6}}" class="group_comment2">
 									<div class="comment_act">
 										<div class="comment_act1 pull-left">
 											<textarea class="comment_act1_tarea"></textarea>
