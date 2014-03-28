@@ -42,6 +42,6 @@ url(r'^img/(?P<path>.*)$', 'django.views.static.serve',
         { 'document_root': '/home/tron/mz/maizhi/templates/picture/group/image' } 
     ), 
     url(r'^file/(?P<path>.*)$', 'django.views.static.serve', 
-        { 'document_root': '/home/tron/Dropbox/mz/templates/picture/group/file' } 
+        { 'document_root': '/home/tron/mz/maizhi/templates/picture/group/file' } 
     ), 
 )
