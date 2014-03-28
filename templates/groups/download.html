@@ -15,6 +15,9 @@
 <script src="../../js/download.js"></script>
 <!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
 <script src="../../js/bootstrap.js"></script>
+<script src="../../js/sco.message.js"></script>
+<link href="../../css/sco.message.css" rel="stylesheet">
+<link href="../../css/scojs.css" rel="stylesheet"> 
 </head>
 <body>
 	{% include 'public/common/header.html' %}
@@ -75,7 +78,7 @@
 							{% if competence %}
 								<td>
 									<div class="td_text">
-										<span class="td_a"><a href="">删除</a></span>
+										<span class="td_a"><a href="javascript:void(0)" onclick="del({{i.7}})">删除</a></span>
 									</div>
 								</td> 
 							{% endif %}

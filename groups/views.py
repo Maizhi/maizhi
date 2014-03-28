@@ -428,3 +428,7 @@ def down(request):
 	files.down_con=down
 	files.save()
 	return HttpResponse('ok')
+
+def delete(request):
+	Group_file.objects.get(id=request.GET['id']).delete()
+	return HttpResponse('OK')

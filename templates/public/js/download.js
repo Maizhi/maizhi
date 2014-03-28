@@ -16,5 +16,20 @@ function downloads(file){
 			document.getElementById('down_con'+file).innerHTML+=1;
 		}
 	};
-	xmlHttp.send(null); 
+	xmlHttp.send(); 
+}
+
+function del(file){
+	createXMLRequest();                
+	xmlHttp.open("GET","http://192.168.1.120:8866/groups/the/download/del/?id="+file);
+	xmlHttp.onreadystatechange=function(e){
+		if(xmlHttp.readyState==4 && xmlHttp.status==200){
+			e.preventDefault();
+    		$.scojs_message('您的操作成功 !', $.scojs_message.TYPE_OK);
+		} else{
+			e.preventDefault();
+    		$.scojs_message('服务器出错啦～ ：）', $.scojs_message.TYPE_ERROR);
+		}
+	};
+	xmlHttp.send(); 
 }
