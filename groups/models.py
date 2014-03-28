@@ -46,7 +46,6 @@ class Group_file(models.Model):
 	introduce=models.TextField()
 	file_path=models.FileField(upload_to='templates/picture/group/file/')
 	down_con=models.IntegerField(default=0)
+	file_length=models.CharField(max_length=50)
 	time=models.DateTimeField(auto_now_add=True)
-
-
 
