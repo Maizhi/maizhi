@@ -396,7 +396,7 @@ def upload(request,group):
 			fp.close()
 		else:
 			f=None
-		result=Group_file(user_id=user,group_id=group.id,introduce=intro,name=filename,file_path=realname)
+		result=Group_file(user_id=user,group_id=group.id,introduce=intro,name=filename,file_path=realname,file_length=int(filesize)/int(1024))
 		result.save()
 		group.filespace=int(group.filespace)-int(filesize)/int(1024)
 		if group.filespace<=0:
@@ -430,5 +430,9 @@ def down(request):
 	return HttpResponse('ok')
 
 def delete(request):
-	Group_file.objects.get(id=request.GET['id']).delete()
+	files=Group_file.objects.get(id=request.GET['id'])
+	group=Group.objects.get(id=files.group_id)
+	group.filespace=int(group.filespace)+int(files.file_length)
+	group.save()
+	files.delete()
 	return HttpResponse('OK')
