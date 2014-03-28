@@ -191,16 +191,16 @@
 <!-- right div -->
 			<div class="col-xs-4">
 				<div class="up_file">
-					{% ifequal status '3' %}
-					<span><a type="button" id="up_file" class="btn btn-warning btn_file" href="javascript:void(0)" data-toggle="popover" data-placement="bottom" data-content="<div><form action='' method='post' enctype='multipart/form-data'><div><input type='file'></div><div style='margin-top:15px;text-align:center'><input type='submit' value='确认修改'></div></form></div>" data-original-title title><b><i class="icon-file"></i> 群文件</b></a></span>
-					{% endifequal %}
+					<!--{% ifequal status '3' %}
+					<span><a type="button" id="up_file" class="btn btn-warning btn_file" href="javascript:void(0)" data-toggle="popover" data-placement="bottom" data-content="<div><form action='' method='post' enctype='multipart/form-data'><div><input type='file'></div><div style='margin-top:15px;text-align:center'><input type='submit' value='确认修改'></div></form></div>" data-original-title title><b><i class="icon-file"></i> 小组资源共享</b></a></span>
+					{% endifequal %}-->
 <!-- 别人的小组  才有 -->
 					{% ifequal status '2' %}
-					<span class="btnSpan2"><a type="button" class="btn btn-warning btn_file"><b><i class="icon-file"></i> 群文件</b></a></span>
+					<span class="btnSpan2"><a href="{% url 'groups:upload' group.id %}" type="button" class="btn btn-warning btn_file"><b><i class="icon-file"></i> 小组资源共享</b></a></span>
 					{% endifequal %}
 <!-- 自己的小组  才有 -->
 					{% ifequal status '1' %}
-					<span class="btnSpan2"><a type="button" class="btn btn-warning btn_file"><b><i class="icon-file"></i> 管理或下载群文件</b></a></span>
+					<span class="btnSpan2"><a type="button" class="btn btn-warning btn_file"><b><i class="icon-file"></i> 管理小组文件</b></a></span>
 					{% endifequal %}
 				</div>
 <!-- 本群活跃用户 -->
