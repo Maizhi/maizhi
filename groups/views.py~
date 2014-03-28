@@ -131,7 +131,7 @@ def thegroup(request,id):
 			havent+=1
 	recommend=Topic.objects.filter(group_id=group.id).order_by('-review_con')[0:5]
 	limit = 15
-	topics=Topic.objects.filter(group_id=group.id).order_by('-time')
+	topics=Topic.objects.filter(group_id=group.id).order_by('-last_time')
 	paginator = Paginator(topics, limit)
 	page = request.GET.get('page')
 	try:
@@ -375,35 +375,50 @@ def download(request,group):
 def upload(request,group):
 	group=Group.objects.get(id=group)
 	space=float(group.filespace)/float(2097152)*100
-
-	user=request.session['id']
-	intro=request.POST['intro']
-	if 'files' in request.FILES:
-		filesize=request.FILES['files'].size
-		filename=request.FILES['files'].name
-		pattern=re.compile(r'\.') 
-		format=pattern.split(str(filename))
-		realname=str(time.time())+"."+format[1]
-		dirs ='templates/picture/group/file/'+realname
-		content = request.FILES['files'].read()
-		if os.path.isfile(dirs):
-			os.remove(dirs) 
-		fp=open(dirs, 'wb')
-		fp.write(content)
-		fp.flush()
-		fp.close()
-	else:
-		f=None
-	result=Group_file(user_id=user,group_id=group.id,introduce=intro,name=filename,file_path=realname)
-	result.save()
-	group.filespace=int(group.filespace)-int(filesize)/int(1024)
-	if group.filespace<=0:
-		leftspace='0'
-	else:
-		leftspace='1'
-		group.save()
-	return render(request,'groups/upload.html',{'result':'1','space':space,'group':group,'space':space,'filesize':filesize})
-	
+	try:
+		user=request.session['id']
+		intro=request.POST['intro']
+		if 'files' in request.FILES:
+			filesize=request.FILES['files'].size
+			filename=request.FILES['files'].name
+			pattern=re.compile(r'\.') 
+			format=pattern.split(str(filename))
+			realname=str(time.time())+"."+format[1]
+			dirs ='templates/picture/group/file/'+realname
+			content = request.FILES['files'].read()
+			if os.path.isfile(dirs):
+				os.remove(dirs) 
+			fp=open(dirs, 'wb')
+			fp.write(content)
+			fp.flush()
+			fp.close()
+		else:
+			f=None
+		result=Group_file(user_id=user,group_id=group.id,introduce=intro,name=filename,file_path=realname)
+		result.save()
+		group.filespace=int(group.filespace)-int(filesize)/int(1024)
+		if group.filespace<=0:
+			leftspace='0'
+		else:
+			leftspace='1'
+			group.save()
+		return render(request,'groups/upload.html',{'result':'1','space':space,'group':group,'space':space,'filesize':filesize})
+	except:
+		m=Message.objects.filter(to=request.session['id']).order_by('-time')[0:5]
+		mess=[]
+		for k in m:
+			each=[]
+			name=Info.objects.get(user_id=k.from_id).user_name
+			content=k.content
+			each.append(name)
+			each.append(content)
+			mess.append(each)
+		havent=0
+		for n in m:
+			if n.status==1:
+				havent+=1
+		info=Info.objects.get(user_id=request.session['id'])
+		return render(request,'groups/upload.html',{'message':mess,'havent':havent,'group':group,'space':space})
 
 def down(request):
 	files=Group_file.objects.get(id=request.GET['id'])

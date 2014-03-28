@@ -131,7 +131,7 @@ def thegroup(request,id):
 			havent+=1
 	recommend=Topic.objects.filter(group_id=group.id).order_by('-review_con')[0:5]
 	limit = 15
-	topics=Topic.objects.filter(group_id=group.id).order_by('-time')
+	topics=Topic.objects.filter(group_id=group.id).order_by('-last_time')
 	paginator = Paginator(topics, limit)
 	page = request.GET.get('page')
 	try:
