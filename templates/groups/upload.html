@@ -2,8 +2,11 @@
 	<head>
 		<meta charset='utf-8'>
 		<link rel='stylesheet' href='../../css/bootstrap.css' />
+		<link rel='stylesheet' href='../../css/upload.css' />
 		<link href="../../css/non-responsive.css" rel="stylesheet">
 		<link href="../../css/font-awesome.min.css" rel="stylesheet">
+		<script type="text/javascript" src="../../js/jquery.min.js"></script>
+		<script type="text/javascript" src="../../js/bootstrap.js"></script>
 		<title>麦知网——学问有余，乐为人师</title>
 	</head>
 
@@ -14,19 +17,19 @@
 		<div class="col-xs-12">
 			<div>
 				<div class="dl_groupMes">
-					<div class="pull-left group_img"><img src="public/img/rd.jpg" width="100%"/></div>
+					<div class="pull-left group_img"><img src="../../group/{{group.img}}" width="100%"/></div>
 					<div class="pull-left group_name">
-						<div class="group_nam"><b>男神小组</b></div>
-						<div class="return_group"><a href=""><span class="glyphicon glyphicon-arrow-left"></span> 返回小组</a></div>
+						<div class="group_nam"><b>{{group.name}}</b></div>
+						<div class="return_group"><a href="{% url 'groups:thegroup' group.id %}"><span class="glyphicon glyphicon-arrow-left"></span> 返回小组</a></div>
 					</div>
 					<div class="pull-left group_space">
 						<div class="dl_upload">
-							<button type="button" class="btn btn-warning">上传小组资源</button>
+							<a href="{% url 'groups:download' group.id %}" type="button" class="btn btn-warning">下载小组资源</a>
 						</div>
-						<div>剩余空间：323KB</div>
+						<div>剩余空间：{{group.filespace}}KB  /  {{space|floatformat}}%</div>
 						<div class="progress progress-striped dl_progress">
-						  <div class="progress-bar"  role="progressbar" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100" style="width: 45%">
-						    <span class="sr-only">45% Complete</span>
+						  <div class="progress-bar progress-bar-info"  role="progressbar" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100" style="width: {{space|floatformat}}%">
+						    <span class="sr-only">{{space|floatformat}}% Complete</span>
 						  </div>
 						</div>
 					</div>
@@ -39,26 +42,23 @@
 		<div class="col-xs-1"></div>
 		<div class="col-xs-10">
 			<div>
-				<form class='form-signin' method='post' action="" enctype="multipart/form-data">
+				<form class='form-signin' method='post' action="{% url 'groups:upload' group.id %}" enctype="multipart/form-data">
 					{% csrf_token %}
 					<h2>来上传点东西嘛~  (๑¯ิε ¯ิ๑)  </h2>
-					<input type='text' name='user' placeholder='文件名' class='form-control' required='required' />
-					<textarea name='intro' maxlength="100" placeholder='介绍文件（请不要超过100字）' class='form-control' required='required'></textarea>
+					<textarea name='intro' maxlength="100" rows="5" placeholder='介绍文件（请不要超过100字）' class='form-control' required='required'></textarea>
 					<input type='file' name='files' class='form-control' />
 					<input type='submit' value='上传文件' class='btn btn-primary' style="margin-top:20px;width:100%;"/>
-					{% if result %}
+					{% ifequal result '1' %}
 					<div class="alert alert-success result">
-						{{result}}
+						文件上传成功 ！
 					</div>
-					{% endif %}
+					{% endifequal %}
 				</form>
 			</div>
 		</div>
 		<div class="col-xs-1"></div>
 	</div>
 </div>
-	
-		<script type="text/javascript" src="../../js/jquery.min.js"></script>
-		<script type="text/javascript" src="../../js/bootstrap.js"></script>
+
 </body>
 </html>

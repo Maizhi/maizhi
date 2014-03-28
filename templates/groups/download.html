@@ -10,7 +10,11 @@
 <link href="../../css/non-responsive.css" rel="stylesheet">
 <link href="../../css/font-awesome.min.css" rel="stylesheet">
 <link href="../../css/download.css" rel="stylesheet">    
- 
+<!-- jQuery文件。务必在bootstrap.min.js 之前引入 -->
+<script src="../../js/jquery.min.js"></script>
+<script src="../../js/download.js"></script>
+<!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
+<script src="../../js/bootstrap.js"></script>
 </head>
 <body>
 	{% include 'public/common/header.html' %}
@@ -18,19 +22,19 @@
 		<div class="row">
 			<div class="col-xs-12">
 				<div class="dl_groupMes">
-					<div class="pull-left group_img"><img src="public/img/rd.jpg" width="100%"/></div>
+					<div class="pull-left group_img"><img src="../../group/{{group.img}}" width="100%"/></div>
 					<div class="pull-left group_name">
-						<div class="group_nam"><b>男神小组</b></div>
-						<div class="return_group"><a href=""><span class="glyphicon glyphicon-arrow-left"></span> 返回小组</a></div>
+						<div class="group_nam"><b>{{group.name}}</b></div>
+						<div class="return_group"><a href="{% url 'groups:thegroup' group.id %}"><span class="glyphicon glyphicon-arrow-left"></span> 返回小组</a></div>
 					</div>
 					<div class="pull-left group_space">
 						<div class="dl_upload">
-							<button type="button" class="btn btn-warning">上传小组资源</button>
+							<a href="{% url 'groups:upload' group.id %}" type="button" class="btn btn-warning">上传小组资源</a>
 						</div>
-						<div>剩余空间：323KB</div>
+						<div>剩余空间：{{group.filespace}}KB  /  {{space|floatformat}}%</div>
 						<div class="progress progress-striped dl_progress">
-						  <div class="progress-bar"  role="progressbar" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100" style="width: 45%">
-						    <span class="sr-only">45% Complete</span>
+						  <div class="progress-bar progress-bar-info"  role="progressbar" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100" style="width: {{space|floatformat}}%">
+						    <span class="sr-only">{{space|floatformat}}% Complete</span>
 						  </div>
 						</div>
 					</div>
@@ -46,35 +50,50 @@
 								<th class="th4">文件</th>
 								<th class="th5">文件介绍</th>
 <!-- 只有发布者才有   开始处 -->
+							{% if competence %}
 								<th class="th6">管理</th>
+							{% endif %}
 <!-- 只有发布者才有    结束处-->
 							</tr>
 						</thead>
 						<tbody>
 <!-- 一个文件  循环开始处 -->
+						{% for i in document %}
 							<tr>
 								<td>
-									<div class="td_text">芸豆炖白菜炖芋头芸豆炖白菜炖芋头</div>
+									<div class="td_text"><a href="{% url 'users:home' i.1 %}">{{i.0}}</a></div>
 								</td>
 								<td>
-									<div class="td_text">5555</div>
+									<div class="td_text" id="down_con{{i.7}}">{{i.2}}</div>
 								</td>
-								<td><div class="td_text">2014-5-5 12:12:55</div></td>
-								<td><div class="td_text"><a href="">男神图片压缩包</a></div></td>
+								<td><div class="td_text">{{i.5|date:"Y-m-d H:i"}}</div></td>
+								<td><div class="td_text"><a href="../../file/{{i.6}}" onclick="downloads({{i.7}})">{{i.3}}</a></div></td>
 								<td>
-									<div class="td_text2">规范的双方各是大法官规范的双方各是大法官规范的双方各是大法官规范的双方各是大法官规范的双方各是大法官规范的双方各是大法官规范的双方各是大法官规范的双方各是大法官规范的双方各是大法官规范的双方各是大法官</div>
+									<div class="td_text2">{{i.4}}</div>
 								</td>
 <!-- 只有发布者才有   开始处 -->
+							{% if competence %}
 								<td>
 									<div class="td_text">
 										<span class="td_a"><a href="">删除</a></span>
 									</div>
 								</td> 
+							{% endif %}
 <!-- 只有发布者才有  结束处 -->							
 							</tr>
+						{% endfor %}
 <!-- 一个文件   循环结束处 -->
 						</tbody>
 					</table>
+					<ul class="pager">
+						{% if files.has_previous %}
+						  <li><a href="?page={{ files.previous_page_number }}">&larr;上一页</a></li>
+						{% endif %}
+						共 {{ files.number }} 页  第 {{ files.paginator.num_pages }} 页.
+						{% if files.has_next %}
+						  <li><a href="?page={{ files.next_page_number }}">下一页&rarr;</a></li>
+						{% endif %}
+					</ul>
 				</div>
 			</div>
 		</div>
@@ -83,15 +102,6 @@
 	
 	
 	
-	<!-- jQuery文件。务必在bootstrap.min.js 之前引入 -->
-	<script src="../../js/jquery.min.js"></script>
-	
-	<!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
-	<script src="../../js/bootstrap.js"></script>
-		
-	<script type="text/javascript">
 
-		
-	</script>
 </body>
 </html>

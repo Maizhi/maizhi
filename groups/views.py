@@ -8,6 +8,9 @@ from users.models import Info,Follow_group,Message,Follow_topic,Follow_user
 from groups.models import Group,Topic,Review_of_topic,Good_review_of_topic,Group_file
 from django.utils import timezone
 from django.views.decorators.csrf import csrf_exempt 
+import sys
+reload(sys)
+sys.setdefaultencoding('utf-8')
 import re,md5,os,time,json,simplejson
 
 def groups(request):
@@ -325,7 +328,101 @@ def groupcreate(request):
 		return render(request,'groups/groupCreate.html',{'info':info,'message':mess,'havent':havent})
 
 def download(request,group):
-	return render(request,'groups/download.html')
+	group=Group.objects.get(id=group)
+	space=float(group.filespace)/float(2097152)*100
+	competence=None
+	if request.session['id']==group.user_id:
+		competence=True
+	limit = 15
+	files=Group_file.objects.filter(group_id=group.id).order_by('-time')
+	paginator = Paginator(files, limit)
+	page = request.GET.get('page')
+	try:
+	    files = paginator.page(page)
+	except PageNotAnInteger:
+	    files = paginator.page(1)
+	except EmptyPage:
+	    files = paginator.page(paginator.num_pages)
+	document=[]
+	for f in files:
+		each=[]
+		info=Info.objects.get(user_id=f.user_id)
+		each.append(info.user_name)     #0
+		each.append(f.user_id)			#1
+		each.append(f.down_con)			#2
+		each.append(f.name)				#3
+		each.append(f.introduce)		#4
+		each.append(f.time)				#5
+		each.append(f.file_path)		#6
+		each.append(f.id)				#7
+		document.append(each)
+	m=Message.objects.filter(to=request.session['id']).order_by('-time')[0:5]
+	mess=[]
+	for k in m:
+		each=[]
+		name=Info.objects.get(user_id=k.from_id).user_name
+		content=k.content
+		each.append(name)
+		each.append(content)
+		mess.append(each)
+	havent=0
+	for n in m:
+		if n.status==1:
+			havent+=1
+	info=Info.objects.get(user_id=request.session['id'])
+	return render(request,'groups/download.html',{'group':group,'space':space,'competence':competence,'message':mess,'havent':havent,'document':document,'files':files})
 
 def upload(request,group):
-	return render(request,'groups/upload.html')
+	group=Group.objects.get(id=group)
+	space=float(group.filespace)/float(2097152)*100
+	try:
+		user=request.session['id']
+		intro=request.POST['intro']
+		if 'files' in request.FILES:
+			filesize=request.FILES['files'].size
+			filename=request.FILES['files'].name
+			pattern=re.compile(r'\.') 
+			format=pattern.split(str(filename))
+			realname=str(time.time())+"."+format[1]
+			dirs ='templates/picture/group/file/'+realname
+			content = request.FILES['files'].read()
+			if os.path.isfile(dirs):
+				os.remove(dirs) 
+			fp=open(dirs, 'wb')
+			fp.write(content)
+			fp.flush()
+			fp.close()
+		else:
+			f=None
+		result=Group_file(user_id=user,group_id=group.id,introduce=intro,name=filename,file_path=realname)
+		result.save()
+		group.filespace=int(group.filespace)-int(filesize)/int(1024)
+		if group.filespace<=0:
+			leftspace='0'
+		else:
+			leftspace='1'
+			group.save()
+		return render(request,'groups/upload.html',{'result':'1','space':space,'group':group,'space':space,'filesize':filesize})
+	except:
+		m=Message.objects.filter(to=request.session['id']).order_by('-time')[0:5]
+		mess=[]
+		for k in m:
+			each=[]
+			name=Info.objects.get(user_id=k.from_id).user_name
+			content=k.content
+			each.append(name)
+			each.append(content)
+			mess.append(each)
+		havent=0
+		for n in m:
+			if n.status==1:
+				havent+=1
+		info=Info.objects.get(user_id=request.session['id'])
+		return render(request,'groups/upload.html',{'message':mess,'havent':havent,'group':group,'space':space})
+
+def down(request):
+	files=Group_file.objects.get(id=request.GET['id'])
+	down=int(files.down_con)+int(1)
+	files.down_con=down
+	files.save()
+	return HttpResponse('ok')
