@@ -1,0 +1,50 @@
+@CHARSET "UTF-8";
+iv{
+	border:1px solid blue;
+}
+pan{
+	border:1px solid green;
+}
+a{
+	color:#428BCA;
+	text-decoration:none;
+}
+a:hover{
+	color:black;
+	text-decoration:none;
+}
+
+
+
+
+
+
+
+
+.dl_progress{
+	width:400px;
+}
+.dl_upload{
+	padding:10px 0 10px 0;
+}
+.group_space{
+	padding:0px 0 0px 150px;
+}
+.return_group{
+	margin-left:50px;
+	margin-top:15px;
+}
+.group_nam{
+	font-size:20px;
+}
+.group_name{
+	margin-left:30px;
+	margin-top:20px;
+}
+.group_img{
+	width:100px;
+}
+.dl_groupMes{
+	padding:0 40px 50px 40px;
+	border-bottom:1px solid #DDDDDD;
+}
