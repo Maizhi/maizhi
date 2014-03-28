@@ -330,6 +330,7 @@ def groupcreate(request):
 def download(request,group):
 	group=Group.objects.get(id=group)
 	space=float(group.filespace)/float(2097152)*100
+	free=float(group.filespace)/1024
 	competence=None
 	if request.session['id']==group.user_id:
 		competence=True
@@ -370,11 +371,12 @@ def download(request,group):
 		if n.status==1:
 			havent+=1
 	info=Info.objects.get(user_id=request.session['id'])
-	return render(request,'groups/download.html',{'group':group,'space':space,'competence':competence,'message':mess,'havent':havent,'document':document,'files':files})
+	return render(request,'groups/download.html',{'group':group,'space':space,'competence':competence,'message':mess,'havent':havent,'document':document,'files':files,'free':free})
 
 def upload(request,group):
 	group=Group.objects.get(id=group)
 	space=float(group.filespace)/float(2097152)*100
+	free=float(group.filespace)/1024
 	try:
 		user=request.session['id']
 		intro=request.POST['intro']
@@ -402,7 +404,7 @@ def upload(request,group):
 		else:
 			leftspace='1'
 			group.save()
-		return render(request,'groups/upload.html',{'result':'1','space':space,'group':group,'space':space,'filesize':filesize})
+		return render(request,'groups/upload.html',{'result':'1','space':space,'group':group,'space':space,'filesize':filesize,'free':free})
 	except:
 		m=Message.objects.filter(to=request.session['id']).order_by('-time')[0:5]
 		mess=[]
@@ -418,7 +420,7 @@ def upload(request,group):
 			if n.status==1:
 				havent+=1
 		info=Info.objects.get(user_id=request.session['id'])
-		return render(request,'groups/upload.html',{'message':mess,'havent':havent,'group':group,'space':space})
+		return render(request,'groups/upload.html',{'message':mess,'havent':havent,'group':group,'space':space,'free':free})
 
 def down(request):
 	files=Group_file.objects.get(id=request.GET['id'])

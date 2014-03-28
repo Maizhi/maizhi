@@ -31,7 +31,7 @@
 						<div class="dl_upload">
 							<a href="{% url 'groups:upload' group.id %}" type="button" class="btn btn-warning">上传小组资源</a>
 						</div>
-						<div>剩余空间：{{group.filespace}}KB  /  {{space|floatformat}}%</div>
+						<div>剩余空间：{{free|floatformat}}MB  /  {{space|floatformat}}%</div>
 						<div class="progress progress-striped dl_progress">
 						  <div class="progress-bar progress-bar-info"  role="progressbar" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100" style="width: {{space|floatformat}}%">
 						    <span class="sr-only">{{space|floatformat}}% Complete</span>
