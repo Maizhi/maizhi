@@ -3,6 +3,7 @@ from groups import views
 
 urlpatterns = patterns('',
     url(r'^$', views.groups, name="groups"),
+    url(r'^the/download/down/$', views.down, name="down"),
     url(r'^the/download/(.+)$', views.download, name="download"),
     url(r'^the/upload/(.+)$', views.upload, name="upload"),
     url(r'^the/(.+)$', views.thegroup, name="thegroup"),
