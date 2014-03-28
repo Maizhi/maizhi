@@ -324,3 +324,8 @@ def groupcreate(request):
 		info=Info.objects.get(user_id=request.session['id'])
 		return render(request,'groups/groupCreate.html',{'info':info,'message':mess,'havent':havent})
 
+def download(request,group):
+	return render(request,'groups/download.html')
+
+def upload(request,group):
+	return render(request,'groups/upload.html')
