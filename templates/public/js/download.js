@@ -16,5 +16,5 @@ function downloads(file){
 			document.getElementById('down_con'+file).innerHTML+=1;
 		}
 	};
-	xmlHttp.send(); 
+	xmlHttp.send(null); 
 }
