@@ -10,7 +10,17 @@
 <link href="../css/non-responsive.css" rel="stylesheet">
 <link href="../css/font-awesome.min.css" rel="stylesheet">
 <link href="../css/theGroup.css" rel="stylesheet">    
+<link href="../css/sco.message.css" rel="stylesheet">
+<link href="../css/scojs.css" rel="stylesheet">  
 <link href="../ico/favicon.ico" rel="shortcut icon" type="image/vnd.microsoft.icon"/>
+<!-- jQuery文件。务必在bootstrap.min.js 之前引入 -->
+<script src="../js/jquery.min.js"></script>
+<!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
+<script src="../js/bootstrap.js"></script>
+<script src="../js/change.js"></script>
+<script src="../js/add.js"></script>
+<script src="../js/ban.js"></script>
+<script src="../js/sco.message.js"></script>
 </head>
 <body>
 	{% include 'public/common/header.html' %}
@@ -28,6 +38,10 @@
 							<span><b>{{group.name}}</b></span>
 <!-- 别人的小组 未加入时  用这个 -->
 							{% ifequal status '3' %}
+							<span id="join"><button type="button" onclick="join({{group.id}},1)" class="btn btn-xs btn-info btn_join">加入小组</button></span>
+							<span id="left" style="display:none"><button type="button" onclick="join({{group.id}},1)" class="btn btn-xs btn-danger btn_join">退出小组</button></span>
+							{% endifequal %}
+							{% ifequal status '4' %}
 							<span id="join"><button type="button" onclick="join({{group.id}},1)" class="btn btn-xs btn-info btn_join">加入小组</button></span>
 							<span id="left" style="display:none"><button type="button" onclick="join({{group.id}},1)" class="btn btn-xs btn-danger btn_join">退出小组</button></span>
 							{% endifequal %}
@@ -60,10 +74,56 @@
 					</div>
 				</div>
 				<div class="create_topic">
+					{% ifequal status '1' %}
 					<a href="{% url 'groups:topiccreate' group.id %}" type="button" class="btn btn-default">发布新话题</a>
+					{% endifequal %}
+					{% ifequal status '2' %}
+					<a href="{% url 'groups:topiccreate' group.id %}" type="button" class="btn btn-default">发布新话题</a>
+					{% endifequal %}
+					{% ifequal status '3' %}
+					加入小组以发布新话题
+					{% endifequal %}
+					{% ifequal status '4' %}
+					您被小组组长封禁，暂时不能发布话题
+					{% endifequal %}
 				</div>
 				<div class="topics">
 <!-- 别人的小组 显示开始处 -->
+					{% ifequal status '4' %}	
+					<table class="table table-hover">
+							<thead>
+								<tr>
+									<th class="th1">话题</th>
+									<th class="th2">作者</th>
+									<th class="th3">更新时间</th>
+									<th class="th4">回复数</th>
+								</tr>
+							</thead>
+							<tbody>
+<!--  一条话题循环开始处 -->
+						{% for t in topic %}
+								<tr>
+									<td class="td1">
+										<div class="td_12"><a href="{% url 'groups:thetopic' t.4 %}" title="{{t.1}}" target="_blank">{{t.1}}</a></div>
+									</td>
+									<td><div class="td_text"><a href="{% url 'users:home' t.5 %}">{{t.0}}</a></div></td>
+									<td><div class="td_text">{{t.2|date:"Y-m-d H:i"}}</div></td>
+									<td><div class="td_text">{{t.3}}</div></td>
+								</tr>
+						{% endfor %}
+<!-- 一条话题循环结束处 -->
+							</tbody>
+						</table>
+						<ul class="pager">
+						{% if topics.has_previous %}
+						  <li><a href="?page={{ topics.previous_page_number }}">&larr;上一页</a></li>
+						{% endif %}
+						共 {{ topics.number }} 页  第 {{ topics.paginator.num_pages }} 页.
+						{% if topics.has_next %}
+						  <li><a href="?page={{ topics.next_page_number }}">下一页&rarr;</a></li>
+						{% endif %}
+						</ul>
+						{% endifequal %}
 					{% ifequal status '3' %}	
 					<table class="table table-hover">
 							<thead>
@@ -81,7 +141,7 @@
 									<td class="td1">
 										<div class="td_12"><a href="{% url 'groups:thetopic' t.4 %}" title="{{t.1}}" target="_blank">{{t.1}}</a></div>
 									</td>
-									<td><div class="td_text">{{t.0}}</div></td>
+									<td><div class="td_text"><a href="{% url 'users:home' t.5 %}">{{t.0}}</a></div></td>
 									<td><div class="td_text">{{t.2|date:"Y-m-d H:i"}}</div></td>
 									<td><div class="td_text">{{t.3}}</div></td>
 								</tr>
@@ -118,7 +178,7 @@
 									<td class="td1">
 										<div class="td_12"><a href="{% url 'groups:thetopic' t.4 %}" title="{{t.1}}" target="_blank">{{t.1}}</a></div>
 									</td>
-									<td><div class="td_text">{{t.0}}</div></td>
+									<td><div class="td_text"><a href="{% url 'users:home' t.5 %}">{{t.0}}</a></div></td>
 									<td><div class="td_text">{{t.2|date:"Y-m-d H:i"}}</div></td>
 									<td><div class="td_text">{{t.3}}</div></td>
 								</tr>
@@ -156,10 +216,10 @@
 									<td class="td1">
 										<div class="ttd_12"><a href="{% url 'groups:thetopic' t.4 %}" title="{{t.1}}" target="_blank">{{t.1}}</a></div>
 									</td>
-									<td><div class="td_text">{{t.0}}</div></td>
+									<td><div class="td_text"><a href="{% url 'users:home' t.5 %}">{{t.0}}</a></div></td>
 									<td><div class="td_text">{{t.2|date:"Y-m-d H:i"}}</div></td>
 									<td><div class="td_text">{{t.3}}</div></td>
-									<td><div class="td_text"><a id="manage" href="javascript:void(0)" data-toggle="popover" data-placement="bottom" data-content="<div><div><a href='javascript:void(0)'>删除话题</a></div><div style='margin-top:5px;'><!-- 未被封禁的用户 开始处 --><a href='javascript:(0)'>封禁用户</a><!-- 未被封禁的用户 结束处 --><!-- 已经被封禁的用户 开始处 --><a href='javascript:(0)'>解封用户</a><!-- 已经被封禁的用户 结束处 --></div></div>" data-original-title title>管理</a></div></td>
+									<td><div class="td_text"><a class="manage" href="javascript:void(0)" data-toggle="popover" data-placement="bottom" data-content="<div><div><a href='javascript:void(0)'>删除话题</a></div><div style='margin-top:5px;'><!-- 未被封禁的用户 开始处 -->{% ifequal t.6 1 %}<a href='javascript:(0)' onclick='ban({{t.5}})'>封禁用户</a>{% endifequal %}<!-- 未被封禁的用户 结束处 --><!-- 已经被封禁的用户 开始处 -->{% ifequal t.6 2 %}<a href='javascript:(0)' onclick='ban({{t.5}})'>解封用户</a>{% endifequal %}<!-- 已经被封禁的用户 结束处 --></div></div>" data-original-title title>管理</a></div></td>
 								</tr>
 							{% endfor %}
 <!-- 一条话题循环结束处 -->
@@ -185,14 +245,20 @@
 <!-- right div -->
 			<div class="col-xs-4">
 				<div class="up_file">
-					{% ifequal status '3' %}
-					<span><a type="button" id="up_file" class="btn btn-warning btn_file" href="javascript:void(0)" data-toggle="popover" data-placement="bottom" data-content="<div><form action='' method='post' enctype='multipart/form-data'><div><input type='file'></div><div style='margin-top:15px;text-align:center'><input type='submit' value='确认修改'></div></form></div>" data-original-title title><b>群文件</b></a></span>
+					<!--{% ifequal status '3' %}
+					<span><a type="button" id="up_file" class="btn btn-warning btn_file" href="javascript:void(0)" data-toggle="popover" data-placement="bottom" data-content="<div><form action='' method='post' enctype='multipart/form-data'><div><input type='file'></div><div style='margin-top:15px;text-align:center'><input type='submit' value='确认修改'></div></form></div>" data-original-title title><b><i class="icon-file"></i> 小组资源共享</b></a></span>
+					{% endifequal %}-->
+<!-- 别人的小组  才有 -->
+					{% ifequal status '4' %}
+					<span class="btnSpan2"><a href="{% url 'groups:upload' group.id %}" type="button" class="btn btn-warning btn_file"><b><i class="icon-file"></i> 小组资源共享</b></a></span>
 					{% endifequal %}
-<!-- 别人的小组  才有 
-					<span class="btnSpan2"><a type="button" class="btn btn-info btn_file"><b>下载群文件</b></a></span>-->
+
+					{% ifequal status '2' %}
+					<span class="btnSpan2"><a href="{% url 'groups:upload' group.id %}" type="button" class="btn btn-warning btn_file"><b><i class="icon-file"></i> 小组资源共享</b></a></span>
+					{% endifequal %}
 <!-- 自己的小组  才有 -->
 					{% ifequal status '1' %}
-					<span class="btnSpan2"><a type="button" class="btn btn-warning btn_file"><b>管理或下载群文件</b></a></span>
+					<span class="btnSpan2"><a type="button" class="btn btn-warning btn_file"><b><i class="icon-file"></i> 管理小组文件</b></a></span>
 					{% endifequal %}
 				</div>
 <!-- 本群活跃用户 -->
@@ -203,7 +269,7 @@
 					<div class="a_guy">
 						<div class="pull-left person_avatar"><a href=""><img src="../avatar/{{act.1}}" class="img-circle" width="90%"/></a></div>
 						<div class="pull-left person_content">
-							<div><span class="person_name"><a href=""><b>{{act.0}}</b></a></span><span class="focus"><button type="button" class="btn btn-info btn-xs">+ 关注</button></span></div>
+							<div><span class="person_name"><a href="{% url 'users:home' act.3 %}"><b>{{act.0}}</b></a></span><span class="focus"><button type="button" id="add{{act.3}}" onclick="add({{act.3}})" class="btn btn-info btn-xs">+ 关注</button><button type="button" onclick="add({{act.3}})" id="abord{{act.3}}" style="display:none" class="btn btn-danger btn-xs">取消关注</button></span></div>
 							<div class="show_person"><i>获得{{act.2}}个赞</i></div>
 						</div>
 						<div class="clearfix"></div>
@@ -215,24 +281,21 @@
 				<div class="my">
 					<div class="hot_title"><b>小组热门分享</b></div>
 <!-- 小组热门分享 一条热门分享循环开始处 -->
+					{% for t in recommend %}
 					<div class="hot_intro">
-						<a href="">我是一个热门话题名</a>
+						<a href="{% url 'groups:thetopic' t.id %}">{{t.name}}</a>
 					</div>
+					{% endfor %}
 <!-- 小组热门分享 一条热门分享循环结束处 -->					
 				</div>
 			</div>
 		</div>
 	</div>
 	
-	
-	
-	
-	<!-- jQuery文件。务必在bootstrap.min.js 之前引入 -->
-
 	<script type="text/javascript">
 	$('#change_img').popover({html:true});
 	$('#change_intro').popover({html:true});
-	$('#manage').popover({html:true});
+	$('.manage').popover({html:true});
 	$('#up_file').popover({html:true});
 
 	var xmlHttp; 
@@ -247,7 +310,7 @@
 
 	function join(id,way){   
 		createXMLRequest();                       
-		var url="http://192.168.1.120:8866/groups/join/?id="+id;
+		var url="http://192.168.1.113:8866/groups/join/?id="+id;
 		xmlHttp.open("GET",url);
 		xmlHttp.onreadystatechange=function(){
 			if(xmlHttp.readyState==4 && xmlHttp.status==200){

@@ -42,8 +42,8 @@
 							<span id="left" style="display:none"><button type="button" onclick="join({{group.id}},1)" class="btn btn-xs btn-danger btn_join">退出小组</button></span>
 							{% endifequal %}
 							{% ifequal status '4' %}
-							<span id="join"><button type="button" onclick="join({{group.id}},1)" class="btn btn-xs btn-info btn_join">加入小组</button></span>
-							<span id="left" style="display:none"><button type="button" onclick="join({{group.id}},1)" class="btn btn-xs btn-danger btn_join">退出小组</button></span>
+							<span id="left"><button type="button" onclick="join({{group.id}},2)" class="btn btn-xs btn-danger btn_join">退出小组</button></span>
+							<span id="join" style="display:none"><button type="button" onclick="join({{group.id}},2)" class="btn btn-xs btn-info btn_join">加入小组</button></span>
 							{% endifequal %}
 <!-- 别人的小组 已加入时  用这个 -->
 							{% ifequal status '2' %}
