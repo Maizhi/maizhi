@@ -11,14 +11,116 @@
 <link href="../css/font-awesome.min.css" rel="stylesheet">
 <link href="../css/groupCreate.css" rel="stylesheet">    
 <link href="../ico/favicon.ico" rel="shortcut icon" type="image/vnd.microsoft.icon"/>
+<link rel="stylesheet" href="../css/jCrop.css">
 	<!-- jQuery文件。务必在bootstrap.min.js 之前引入 -->
 	<script src="../js/jquery.min.js"></script>
 	
 	<!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
 	<script src="../js/bootstrap.js"></script>
+	<script src="../js/jCrop.js"></script>
+			
+	<script type="text/javascript">
+	jQuery(function($){
+		// Create variables (in this scope) to hold the API and image size
+		var jcrop_api,boundx,boundy;
+		
+		$("#targett").Jcrop({
+			setSelect:[0,0,100,100],//显示盖板DIV，控制盖板大小
+			onChange:updatePreview,
+			onSelect:updatePreview,
+			aspectRatio:1//选框宽高比。说明：width/height
+		},function(){
+			// Use the API to get the real image size
+			var bounds=this.getBounds();
+			boundx=bounds[0];
+			boundy=bounds[1];
+			// Store the API in the jcrop_api variable
+			jcrop_api=this;
+		});
+		
+		function updatePreview(c){
+			if(parseInt(c.w)>0){
+				var rx=100/c.w;
+				var ry=100/c.h;
+				
+				$("#previeww").css({
+					width:Math.round(rx*boundx)+"px",
+					height:Math.round(ry*boundy)+"px",
+					marginLeft:"-"+Math.round(rx*c.x)+"px",
+					marginTop:"-"+Math.round(ry*c.y)+"px"
+				});
+			};
+		};
+	});
+
+
+	function huihui()
+	{
+		var upDiv=$(".jcrop-tracker");
+		var img=$("#haha");
+		alert(upDiv.offset().left+"-----"+upDiv.offset().top+"--------"+upDiv.width()+"-------"+upDiv.height());
+		alert(img.offset().left+"-----"+img.offset().top+"--------"+img.width()+"-------"+img.height());
+	}
+	
+	function change_list(a)
+	{
+		$("#case1").css("display","none");
+		$("#case2").css("display","none");
+		$("#case3").css("display","none");
+		$("#case4").css("display","none");
+		$("#a1").attr("class","list-group-item");
+		$("#a2").attr("class","list-group-item");
+		$("#a3").attr("class","list-group-item");
+		$("#a4").attr("class","list-group-item");
+		$("#case"+a).css("display","block");
+		$("#a"+a).attr("class","active list-group-item");
+	}
+
+
+
+
+	function typeLabels(a)
+	{
+		var textvalue=$("#textvalue").val();
+		$(".typeLabel3"+a).attr("class","typeLabel1"+a);
+		var typeLabel1=$(".typeLabel1"+a);
+		var typeLabel2=$(".typeLabel2"+a);
+		typeLabel1.css("background-color","#D0D1E6");
+		typeLabel2.css("background-color","#FAFAFA");
+		typeLabel2.attr("class","typeLabel3"+a);
+		typeLabel1.attr("class","typeLabel2"+a);
+	//第一次点击 加上这个分类名
+		if($('.typeLabel2'+a+'>a').html())
+		{
+			$("#textvalue").val(textvalue+$('.typeLabel2'+a+'>a').html());
+		}
+	//第二次点击 减去这个分类名
+		if($('.typeLabel3'+a+'>a').html())
+		{
+			var strPosition=textvalue.indexOf($('.typeLabel3'+a+'>a').html());
+			var textNew1=textvalue.substr(0,strPosition);
+			var textNew2=textvalue.substr(strPosition+$('.typeLabel3'+a+'>a').html().length,textvalue.length);
+			//var textjiechu=textvalue.substr(strPosition,strPosition+$('.typeLabel3'+a+'>#a').html().length);
+			var textNew=textNew1+textNew2;
+			$("#textvalue").val(textNew);
+		}
+	}
+
+
+	function sub()
+	{
+		$("#subbutton3").attr("id","subbutton1");
+		$("#subbutton2").removeAttr("disabled");
+		$("#subbutton1").attr("disabled","disabled");
+		$("#subbutton2").attr("id","subbutton3");
+		$("#subbutton1").attr("id","subbutton2");
+	}
+		
+		
+	</script>
 </head>
-<body>
-	{% include 'public/common/header.html' %}
+<body style="background-color:#ffffff;">
+	{% include '../common/header.html' %}
 	<div class="container" style="margin-top:45px">
 		<div class="row">
 <!-- left div -->
@@ -47,6 +149,20 @@
 							<div class="group_form_name pull-left"><b>小组图片</b></div>
 							<div class="group_form pull-left"><input type="file" name="groupImg"></div>
 							<div class="clearfix"></div>
+						</div>
+						<div class="group_form_all">
+<!-- js cutimg begin -->
+							<div class="cutImgDiv">
+								<div id="haha" class="pull-left" style="width:330px;">
+									<img src="../img/ad.jpg" id="targett" width="100%">
+								</div>
+								<div class="pull-left previewwDiv">
+									<img src="../img/ad.jpg" id="previeww" alt="Preview">
+								</div>
+								<div class="clearfix"></div>
+								<div><button type="button" class="btn btn-warning" onclick="huihui()">Warning</button></div>
+							</div>
+<!-- js cutimg end -->
 						</div>
 						<div class="group_form_all">
 							<div class="group_form_name pull-left"><b>小组介绍</b></div>
@@ -113,65 +229,7 @@
 	
 	
 	
-	
-
-		
-	<script type="text/javascript">
-	function change_list(a)
-	{
-		$("#case1").css("display","none");
-		$("#case2").css("display","none");
-		$("#case3").css("display","none");
-		$("#case4").css("display","none");
-		$("#a1").attr("class","list-group-item");
-		$("#a2").attr("class","list-group-item");
-		$("#a3").attr("class","list-group-item");
-		$("#a4").attr("class","list-group-item");
-		$("#case"+a).css("display","block");
-		$("#a"+a).attr("class","active list-group-item");
-	}
 
 
-
-
-	function typeLabels(a)
-	{
-		var textvalue=$("#textvalue").val();
-		$(".typeLabel3"+a).attr("class","typeLabel1"+a);
-		var typeLabel1=$(".typeLabel1"+a);
-		var typeLabel2=$(".typeLabel2"+a);
-		typeLabel1.css("background-color","#D0D1E6");
-		typeLabel2.css("background-color","#FAFAFA");
-		typeLabel2.attr("class","typeLabel3"+a);
-		typeLabel1.attr("class","typeLabel2"+a);
-	//第一次点击 加上这个分类名
-		if($('.typeLabel2'+a+'>a').html())
-		{
-			$("#textvalue").val(textvalue+$('.typeLabel2'+a+'>a').html());
-		}
-	//第二次点击 减去这个分类名
-		if($('.typeLabel3'+a+'>a').html())
-		{
-			var strPosition=textvalue.indexOf($('.typeLabel3'+a+'>a').html());
-			var textNew1=textvalue.substr(0,strPosition);
-			var textNew2=textvalue.substr(strPosition+$('.typeLabel3'+a+'>a').html().length,textvalue.length);
-			//var textjiechu=textvalue.substr(strPosition,strPosition+$('.typeLabel3'+a+'>#a').html().length);
-			var textNew=textNew1+textNew2;
-			$("#textvalue").val(textNew);
-		}
-	}
-
-
-	function sub()
-	{
-		$("#subbutton3").attr("id","subbutton1");
-		$("#subbutton2").removeAttr("disabled");
-		$("#subbutton1").attr("disabled","disabled");
-		$("#subbutton2").attr("id","subbutton3");
-		$("#subbutton1").attr("id","subbutton2");
-	}
-		
-		
-	</script>
 </body>
 </html>
