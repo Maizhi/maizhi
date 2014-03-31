@@ -153,7 +153,7 @@ def thegroup(request,id):
 		each.append(k.last_time)     #2
 		each.append(k.review_con)    #3
 		each.append(k.id)            #4
-		if k.user == request.session['id']:
+		if k.user_id == request.session['id']:
 			each.append('1')   #5
 		else:
 			each.append('2') 
