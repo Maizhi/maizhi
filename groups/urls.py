@@ -15,6 +15,7 @@ urlpatterns = patterns('',
     url(r'^topic/collect/$', views.collect, name="collect"),
     url(r'^topic/comment/$', views.comment, name="comment"),
     url(r'^topic/good/$', views.good, name="good"),
+    url(r'^topic/ban/$', views.ban, name="ban"),
     url(r'^topic/(.+)$', views.thetopic, name="thetopic"),
     url(r'^create/$', views.groupcreate, name="groupcreate"),
 

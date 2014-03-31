@@ -113,7 +113,11 @@ def thegroup(request,id):
 		for i in f:
 			follow.append(i.follow_group_id)
 		if group.id in follow:
-			status='2'
+			user=Follow_group.objects.filter(follow_group_id=group.id).get(user_id=request.session['id'])
+			if user.status=='1':
+				status='2'
+			else:
+				status='4'
 		else:
 			status='3'
 	m=Message.objects.filter(to=request.session['id']).order_by('-time')[0:5]
@@ -150,6 +154,11 @@ def thegroup(request,id):
 		each.append(k.review_con)    #3
 		each.append(k.id)            #4
 		each.append(k.user_id)       #5
+		try:
+			user=Follow_group.objects.filter(follow_group_id=group.id).get(user_id=k.user_id)
+			each.append(user.status) #6
+		except:
+			each.append('3')         #6
 		topic.append(each)
 	return render(request,'groups/theGroup.html',{'group':group,'status':status,'actman':actman,'message':mess,'havent':havent,'topic':topic,'topics':topics,'recommend':recommend})
 
@@ -436,3 +445,16 @@ def delete(request):
 	group.save()
 	files.delete()
 	return HttpResponse('OK')
+
+def ban(request):
+	user=Follow_group.objects.get(user_id=request.GET['id'])
+	if user.status==2:
+		user.status=1
+		user.save()
+		return HttpResponse('2')
+	else:
+		user.status=2
+		user.save()
+		return HttpResponse('1')
+		
+	
