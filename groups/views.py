@@ -153,7 +153,10 @@ def thegroup(request,id):
 		each.append(k.last_time)     #2
 		each.append(k.review_con)    #3
 		each.append(k.id)            #4
-		each.append(k.user_id)       #5
+		if k.user == request.session['id']:
+			each.append('1')   #5
+		else:
+			each.append('2') 
 		try:
 			user=Follow_group.objects.filter(follow_group_id=group.id).get(user_id=k.user_id)
 			each.append(user.status) #6
