@@ -159,7 +159,7 @@ def thegroup(request,id):
 			each.append(user.status) #6
 		except:
 			each.append('3')         #6
-		if k.user_id == request.session['id']:
+		if k.user_id == group.user_id:
 			each.append('1')         #7
 		else:
 			each.append('2')         #7
