@@ -176,10 +176,10 @@
 <!-- js cutimg begin -->
 							<div class="cutImgDiv">
 								<div id="haha" class="pull-left">
-									<img src="../../avatar/rd.jpg" id="targett" style="z-index:5;">
+									<img src="../avatar/rd.jpg" id="targett" style="z-index:5;">
 								</div>
 								<div class="pull-left previewwDiv">
-									<img src="../../avatar/rd.jpg" id="previeww" alt="Preview">
+									<img src="../avatar/rd.jpg" id="previeww" alt="Preview">
 								</div>
 								<div class="clearfix"></div>
 								<div><button type="button" class="btn btn-warning" onclick="huihui()">Warning</button></div>
