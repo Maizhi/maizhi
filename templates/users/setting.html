@@ -22,6 +22,122 @@
     <![endif]-->
 
 <link href="../../css/setting.css" rel="stylesheet">
+<link rel="stylesheet" href="../../css/jCrop.css">
+
+
+
+	<script src="../../js/jquery.min.js"></script>
+	<script src="../../js/bootstrap.js"></script>
+	<script src="../../js/jCrop.js"></script>
+	<script type="text/javascript">
+		jQuery(function($){
+			// Create variables (in this scope) to hold the API and image size
+			var jcrop_api,boundx,boundy;
+			
+			$("#targett").Jcrop({
+				setSelect:[0,0,100,100],//显示盖板DIV，控制盖板大小
+				onChange:updatePreview,
+				onSelect:updatePreview,
+				aspectRatio:1//选框宽高比。说明：width/height
+			},function(){
+				// Use the API to get the real image size
+				var bounds=this.getBounds();
+				boundx=bounds[0];
+				boundy=bounds[1];
+				// Store the API in the jcrop_api variable
+				jcrop_api=this;
+			});
+			
+			function updatePreview(c){
+				if(parseInt(c.w)>0){
+					var rx=100/c.w;
+					var ry=100/c.h;
+					
+					$("#previeww").css({
+						width:Math.round(rx*boundx)+"px",
+						height:Math.round(ry*boundy)+"px",
+						marginLeft:"-"+Math.round(rx*c.x)+"px",
+						marginTop:"-"+Math.round(ry*c.y)+"px"
+					});
+				};
+			};
+		});
+	
+	
+		function huihui()
+		{
+			var upDiv=$(".jcrop-tracker");
+			var img=$("#haha");
+			alert(upDiv.offset().left+"-----"+upDiv.offset().top+"--------"+upDiv.width()+"-------"+upDiv.height());
+			alert(img.offset().left+"-----"+img.offset().top+"--------"+img.width()+"-------"+img.height());
+		}
+				
+	
+	
+		function change_list(a)
+		{
+			$("#case1").css("display","none");
+			$("#case2").css("display","none");
+			$("#case3").css("display","none");
+			$("#case4").css("display","none");
+			$("#a1").attr("class","list-group-item");
+			$("#a2").attr("class","list-group-item");
+			$("#a3").attr("class","list-group-item");
+			$("#a4").attr("class","list-group-item");
+			$("#case"+a).css("display","block");
+			$("#a"+a).attr("class","active list-group-item");
+		}
+	
+	
+	
+	
+		function typeLabels(a)
+		{
+			var textvalue=$("#textvalue").val();
+			$(".typeLabel3"+a).attr("class","typeLabel1"+a);
+			var typeLabel1=$(".typeLabel1"+a);
+			var typeLabel2=$(".typeLabel2"+a);
+			typeLabel1.css("background-color","#D0D1E6");
+			typeLabel2.css("background-color","#FAFAFA");
+			typeLabel2.attr("class","typeLabel3"+a);
+			typeLabel1.attr("class","typeLabel2"+a);
+		//第一次点击 加上这个分类名
+			if($('.typeLabel2'+a+'>a').html())
+			{
+				$("#textvalue").val(textvalue+$('.typeLabel2'+a+'>a').html());
+			}
+		//第二次点击 减去这个分类名
+			if($('.typeLabel3'+a+'>a').html())
+			{
+				var strPosition=textvalue.indexOf($('.typeLabel3'+a+'>a').html());
+				var textNew1=textvalue.substr(0,strPosition);
+				var textNew2=textvalue.substr(strPosition+$('.typeLabel3'+a+'>a').html().length,textvalue.length);
+				//var textjiechu=textvalue.substr(strPosition,strPosition+$('.typeLabel3'+a+'>#a').html().length);
+				var textNew=textNew1+textNew2;
+				$("#textvalue").val(textNew);
+			}
+		}
+	
+	
+		function sub()
+		{
+			$("#subbutton3").attr("id","subbutton1");
+			$("#subbutton2").removeAttr("disabled");
+			$("#subbutton1").attr("disabled","disabled");
+			$("#subbutton2").attr("id","subbutton3");
+			$("#subbutton1").attr("id","subbutton2");
+		}
+		function confirm(){
+			var o=document.getElementById('new_pwd').value;
+			var n=document.getElementById('con_pwd').value;
+			if(o != n){
+				document.getElementById('err').innerHTML="您的密码输入有误！";
+			} else {
+				document.getElementById('err').innerHTML="";
+				document.getElementById('pwc').disabled=false;
+			}
+		}
+	</script>
 </head>
 <body>
 	{% include 'public/common/header.html' %}
@@ -32,8 +148,8 @@
 <!-- 个人名片 -->
 				<div class="person">
 					<div class="list-group list_setting">
-					  <a href="#" id="a1" class="list-group-item active" onclick="change_list(1)"><i class="icon-info-sign"></i> 基本信息设置</a>
-					  <a href="#" id="a2" class="list-group-item" onclick="change_list(2)"><i class="icon-camera-retro"></i> 头像设置</a>
+					  <a href="#" id="a1" class="list-group-item active" onclick="change_list(1)"><i class="icon-camera-retro"></i> 头像设置</a>
+					  <a href="#" id="a2" class="list-group-item" onclick="change_list(2)"><i class="icon-info-sign"></i> 基本信息设置</a>
 					  <a href="#" id="a3" class="list-group-item" onclick="change_list(3)"><i class="icon-key"></i> 密码设置</a>
 					  <a href="#" id="a4" class="list-group-item" onclick="change_list(4)"><i class="icon-tags"></i>标签设置</a>
 					</div>
@@ -42,8 +158,40 @@
 
 <!-- 右侧div -->
 			<div class="col-xs-8">
+<!-- 头像设置 -->
+				<div class="right casee1" id="case1">
+					<div>
+						<div class="label_info pull-left">当前头像</div>
+						<div class="form_info pull-left"><img src="../../avatar/{{info.img}}" width="150px"></div>
+						<div class="clearfix"></div>
+					</div>
+					<div>
+						<form action="{% url 'users:head' %}" method="post" enctype="multipart/form-data">
+							{% csrf_token %}
+							<div>
+								<div class="label_info pull-left">新头像</div>
+								<div class="form_info pull-left"><input type="file" name="head"/></div>、
+								<div class="clearfix"></div>
+							</div>
+<!-- js cutimg begin -->
+							<div class="cutImgDiv">
+								<div id="haha" class="pull-left">
+									<img src="public/img/ad.jpg" id="targett" style="z-index:5;">
+								</div>
+								<div class="pull-left previewwDiv">
+									<img src="public/img/ad.jpg" id="previeww" alt="Preview">
+								</div>
+								<div class="clearfix"></div>
+								<div><button type="button" class="btn btn-warning" onclick="huihui()">Warning</button></div>
+							</div>
+<!-- js cutimg end -->
+							<div class="setting_image_btn"><button type="submit" class="btn btn-info">保存</button></div>
+						</form>
+					</div>
+				</div>
+<!-- 头像设置 结束处-->
 <!-- 基本信息设置 -->
-				<div class="right case1" id="case1">
+				<div class="right casee2" id="case2">
 					<form action="{% url 'users:update' %}" method="post">
 						{% csrf_token %}
 						<div>
@@ -112,29 +260,11 @@
 						<div>
 							<div style="text-align:center;"><button type="submit" class="btn btn-info">保存</button></div>
 						</div>
-					</form>
+					</form>			
 				</div>
 <!-- 基本信息设置 结束处-->
-<!-- 头像设置 -->
-				<div class="right case2" id="case2">
-					<div>
-						<div class="label_info pull-left">当前头像</div>
-						<div class="form_info pull-left"><img src="../../avatar/{{info.img}}" width="150px"></div>
-						<div class="clearfix"></div>
-					</div>
-					<div>
-						<form action="{% url 'users:head' %}" method="post" enctype="multipart/form-data">
-							{% csrf_token %}
-							<div class="label_info pull-left">新头像</div>
-							<div class="form_info pull-left"><input type="file" name="head"/></div>
-							<div style="text-align:center;"><button type="submit" class="btn btn-info">保存</button></div>
-							<div class="clearfix"></div>
-						</form>
-					</div>
-				</div>
-<!-- 头像设置 结束处-->
 <!-- 密码设置 -->
-				<div class="right case3" id="case3">
+				<div class="right casee3" id="case3">
 					<form action="{% url 'users:pwdchange' %}" method="post">
 						{% csrf_token %}
 						<div>
@@ -160,7 +290,7 @@
 				</div>
 <!-- 密码设置 结束处 -->
 <!-- 标签设置  -->	
-				<div class="right case4" id="case4">
+				<div class="right casee4" id="case4">
 					<div>
 						<div class="label_info pull-left">相关分类</div>
 						<div class="form_info pull-left"><input id="textvalue" type="text" name=""></div>
@@ -192,72 +322,6 @@
 	
 	
 	
-	<script src="../../js/jquery.min.js"></script>
-	<script src="../../js/bootstrap.js"></script>
-	<script type="text/javascript">
-		function change_list(a)
-		{
-			$("#case1").css("display","none");
-			$("#case2").css("display","none");
-			$("#case3").css("display","none");
-			$("#case4").css("display","none");
-			$("#a1").attr("class","list-group-item");
-			$("#a2").attr("class","list-group-item");
-			$("#a3").attr("class","list-group-item");
-			$("#a4").attr("class","list-group-item");
-			$("#case"+a).css("display","block");
-			$("#a"+a).attr("class","active list-group-item");
-		}
-	
-	
-	
-	
-		function typeLabels(a)
-		{
-			var textvalue=$("#textvalue").val();
-			$(".typeLabel3"+a).attr("class","typeLabel1"+a);
-			var typeLabel1=$(".typeLabel1"+a);
-			var typeLabel2=$(".typeLabel2"+a);
-			typeLabel1.css("background-color","#D0D1E6");
-			typeLabel2.css("background-color","#FAFAFA");
-			typeLabel2.attr("class","typeLabel3"+a);
-			typeLabel1.attr("class","typeLabel2"+a);
-		//第一次点击 加上这个分类名
-			if($('.typeLabel2'+a+'>a').html())
-			{
-				$("#textvalue").val(textvalue+$('.typeLabel2'+a+'>a').html());
-			}
-		//第二次点击 减去这个分类名
-			if($('.typeLabel3'+a+'>a').html())
-			{
-				var strPosition=textvalue.indexOf($('.typeLabel3'+a+'>a').html());
-				var textNew1=textvalue.substr(0,strPosition);
-				var textNew2=textvalue.substr(strPosition+$('.typeLabel3'+a+'>a').html().length,textvalue.length);
-				//var textjiechu=textvalue.substr(strPosition,strPosition+$('.typeLabel3'+a+'>#a').html().length);
-				var textNew=textNew1+textNew2;
-				$("#textvalue").val(textNew);
-			}
-		}
-	
-	
-		function sub()
-		{
-			$("#subbutton3").attr("id","subbutton1");
-			$("#subbutton2").removeAttr("disabled");
-			$("#subbutton1").attr("disabled","disabled");
-			$("#subbutton2").attr("id","subbutton3");
-			$("#subbutton1").attr("id","subbutton2");
-		}
-		function confirm(){
-			var o=document.getElementById('new_pwd').value;
-			var n=document.getElementById('con_pwd').value;
-			if(o != n){
-				document.getElementById('err').innerHTML="您的密码输入有误！";
-			} else {
-				document.getElementById('err').innerHTML="";
-				document.getElementById('pwc').disabled=false;
-			}
-		}
-	</script>
+
 </body>
 </html>
