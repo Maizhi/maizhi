@@ -114,7 +114,7 @@ def thegroup(request,id):
 			follow.append(i.follow_group_id)
 		if group.id in follow:
 			user=Follow_group.objects.filter(follow_group_id=group.id).get(user_id=request.session['id'])
-			if user.status=='1':
+			if int(user.status)==int(1):
 				status='2'
 			else:
 				status='4'
