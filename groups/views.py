@@ -153,15 +153,16 @@ def thegroup(request,id):
 		each.append(k.last_time)     #2
 		each.append(k.review_con)    #3
 		each.append(k.id)            #4
-		if k.user_id == request.session['id']:
-			each.append('1')   #5
-		else:
-			each.append('2') 
+		each.append(k.user_id)       #5
 		try:
 			user=Follow_group.objects.filter(follow_group_id=group.id).get(user_id=k.user_id)
 			each.append(user.status) #6
 		except:
 			each.append('3')         #6
+		if k.user_id == request.session['id']:
+			each.append('1')         #7
+		else:
+			each.append('2')         #7
 		topic.append(each)
 	return render(request,'groups/theGroup.html',{'group':group,'status':status,'actman':actman,'message':mess,'havent':havent,'topic':topic,'topics':topics,'recommend':recommend})
 
