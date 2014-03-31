@@ -41,6 +41,10 @@
 							<span id="join"><button type="button" onclick="join({{group.id}},1)" class="btn btn-xs btn-info btn_join">加入小组</button></span>
 							<span id="left" style="display:none"><button type="button" onclick="join({{group.id}},1)" class="btn btn-xs btn-danger btn_join">退出小组</button></span>
 							{% endifequal %}
+							{% ifequal status '4' %}
+							<span id="join"><button type="button" onclick="join({{group.id}},1)" class="btn btn-xs btn-info btn_join">加入小组</button></span>
+							<span id="left" style="display:none"><button type="button" onclick="join({{group.id}},1)" class="btn btn-xs btn-danger btn_join">退出小组</button></span>
+							{% endifequal %}
 <!-- 别人的小组 已加入时  用这个 -->
 							{% ifequal status '2' %}
 							<span id="left"><button type="button" onclick="join({{group.id}},2)" class="btn btn-xs btn-danger btn_join">退出小组</button></span>
@@ -245,6 +249,10 @@
 					<span><a type="button" id="up_file" class="btn btn-warning btn_file" href="javascript:void(0)" data-toggle="popover" data-placement="bottom" data-content="<div><form action='' method='post' enctype='multipart/form-data'><div><input type='file'></div><div style='margin-top:15px;text-align:center'><input type='submit' value='确认修改'></div></form></div>" data-original-title title><b><i class="icon-file"></i> 小组资源共享</b></a></span>
 					{% endifequal %}-->
 <!-- 别人的小组  才有 -->
+					{% ifequal status '4' %}
+					<span class="btnSpan2"><a href="{% url 'groups:upload' group.id %}" type="button" class="btn btn-warning btn_file"><b><i class="icon-file"></i> 小组资源共享</b></a></span>
+					{% endifequal %}
+
 					{% ifequal status '2' %}
 					<span class="btnSpan2"><a href="{% url 'groups:upload' group.id %}" type="button" class="btn btn-warning btn_file"><b><i class="icon-file"></i> 小组资源共享</b></a></span>
 					{% endifequal %}
