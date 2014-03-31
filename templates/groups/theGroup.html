@@ -219,7 +219,7 @@
 									<td><div class="td_text"><a href="{% url 'users:home' t.5 %}">{{t.0}}</a></div></td>
 									<td><div class="td_text">{{t.2|date:"Y-m-d H:i"}}</div></td>
 									<td><div class="td_text">{{t.3}}</div></td>
-									<td><div class="td_text"><a class="manage" href="javascript:void(0)" data-toggle="popover" data-placement="bottom" data-content="<div><div><a href='javascript:void(0)'>删除话题</a></div>{% ifequal t.7 2 %}<div style='margin-top:5px;'><!-- 未被封禁的用户 开始处 -->{% ifequal t.6 1 %}<a href='javascript:(0)' onclick='ban({{t.5}})'>封禁用户</a>{% endifequal %}<!-- 未被封禁的用户 结束处 --><!-- 已经被封禁的用户 开始处 -->{% ifequal t.6 2 %}<a href='javascript:(0)' onclick='ban({{t.5}})'>解封用户</a>{% endifequal %}<!-- 已经被封禁的用户 结束处 --></div>{% endifequal %}</div>" data-original-title title>管理</a></div></td>
+									<td><div class="td_text"><a class="manage" href="javascript:void(0)" data-toggle="popover" data-placement="bottom" data-content="<div><div><a href='javascript:void(0)'>删除话题</a></div>{% ifequal t.7 '2' %}<div style='margin-top:5px;'><!-- 未被封禁的用户 开始处 -->{% ifequal t.6 1 %}<a href='javascript:(0)' onclick='ban({{t.5}})'>封禁用户</a>{% endifequal %}<!-- 未被封禁的用户 结束处 --><!-- 已经被封禁的用户 开始处 -->{% ifequal t.6 2 %}<a href='javascript:(0)' onclick='ban({{t.5}})'>解封用户</a>{% endifequal %}<!-- 已经被封禁的用户 结束处 --></div>{% endifequal %}</div>" data-original-title title>管理</a></div></td>
 								</tr>
 							{% endfor %}
 <!-- 一条话题循环结束处 -->
