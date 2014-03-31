@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>麦知网——学问有余，乐为人师</title>
+
+<!-- Bootstrap core CSS -->
+<link href="../css/bootstrap.css" rel="stylesheet">
+<!-- Custom styles for this template -->
+<link href="../css/non-responsive.css" rel="stylesheet">
+
+<link href="../css/addLession.css" rel="stylesheet">    
+ 
+ 
+ 	<!-- jQuery文件。务必在bootstrap.min.js 之前引入 -->
+	<script src="../js/jquery.min.js"></script>
+	
+	<!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
+	<script src="../js/bootstrap.min.js"></script>
+		
+	<script type="text/javascript">
+
+	function sub()
+	{
+		$("#subbutton3").attr("id","subbutton1");
+		$("#subbutton2").removeAttr("disabled");
+		$("#subbutton1").attr("disabled","disabled");
+		$("#subbutton2").attr("id","subbutton3");
+		$("#subbutton1").attr("id","subbutton2");
+	}
+
+
+	</script>
+</head>
+<body>
+	
+	<div class="container" style="margin-top:45px">
+		<div class="row">
+<!-- left div -->
+			<div class="col-xs-8">
+				<div>
+					<div class="publisher_img pull-left">
+						<img src="../img/rd.jpg" width="100%" class="img-circle"/>
+					</div>
+					<div class="publisher_name pull-left">
+						<div>芸豆</div>
+						<div class="publisher_sign"><i>谁砍我的树，我砍谁的头谁砍我的树，我砍谁的头谁砍我的树，我砍谁的头谁砍我的树，我砍谁的头。</i></div>
+					</div>
+					<div class="clearfix"></div>
+				</div>
+				<div>
+					<div class="topdirection"></div>
+					<div class="group_mes">
+					<form action="" method="post" enctype="multipart/form-data">
+						<div class="group_form_all">
+							<div class="group_form_name pull-left"><b>课时序号</b></div>
+							<div class="group_form pull-left"><input type="text" class="al_lession_num">（请填写阿拉伯数字。例：11。则在课程中显示：课时11。）</div>
+							<div class="clearfix"></div>
+						</div>
+						<div class="group_form_all">
+							<div class="group_form_name pull-left"><b>课时名称</b></div>
+							<div class="group_form pull-left"><input type="text"></div>
+							<div class="clearfix"></div>
+						</div>
+						<div class="group_form_all">
+							<div class="group_form_name pull-left"><b>上传文档</b></div>
+							<div class="group_form pull-left"><input type="file"></div>
+							<div class="clearfix"></div>
+						</div>
+						<div class="group_form_all">
+							<div class="group_form_name pull-left"><b>上传视频</b></div>
+							<div class="group_form pull-left"><input type="file"></div>
+							<div class="clearfix"></div>
+						</div>
+						<div class="group_form_all">	
+							<div class="right case4" id="case4">
+								<div>
+									<div class="subbox">
+										<input id="subbox" type="checkbox" onclick="sub()" checked>我已阅读并同意排队网服务协议
+									</div>
+									<div>
+										<div style="text-align:center;"><button id="subbutton3" type="submit" class="btn btn-info">提交申请</button></div>
+									</div>
+									<div>
+										<span style="color:red;">（注意：请不要关闭页面！上传视频需要一定的时间。待上传完成后，页面会自动跳转。）</span>
+									</div>
+								</div>
+							</div>
+						</div>
+					</form>
+					</div>
+				</div>
+			</div>
+<!-- right div -->
+			<div class="col-xs-4">
+				<div class="agreement">
+					<div style="color:#F9C300;"><h4>注意：请不要关闭页面！上传视频需要一定的时间。待上传完成后，页面会自动跳转。</h4></div>
+					<div>协议</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	
+	
+	
+
+</body>
+</html>
