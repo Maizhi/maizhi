@@ -259,7 +259,7 @@
 					{% endifequal %}
 <!-- 自己的小组  才有 -->
 					{% ifequal status '1' %}
-					<span class="btnSpan2"><a type="button" class="btn btn-warning btn_file"><b><i class="icon-file"></i> 管理小组文件</b></a></span>
+					<span class="btnSpan2"><a type="button" href="{% url 'groups:upload' group.id %}" class="btn btn-warning btn_file"><b><i class="icon-file"></i> 管理小组文件</b></a></span>
 					{% endifequal %}
 				</div>
 <!-- 本群活跃用户 -->
