@@ -20,6 +20,8 @@
 <script src="../js/sco.message.js"></script>
 <script src="../js/comment_topic.js"></script>
 <script src="../js/review.js"></script>
+<script src="../js/ban.js"></script>
+<script src="../js/dr.js"></script>
 </head>
 <body>
 	{% include 'public/common/header.html' %}
@@ -41,8 +43,8 @@
 <!-- 只有小组创建者才有 开始处-->
 						{% if competence %}
 							<div class="pull-right">
-								<span><a href="">限制用户</a></span>
-								<span class="delSpan"><a href="">删除话题</a></span>
+								<span><a href="javascript:void(0)" onclick="ban({{user.id}})">限制用户</a></span>
+								<span class="delSpan"><a href="javascript:void(0)" onclick="dt({{topic.id}})">删除话题</a></span>
 							</div>
 						{% endif %}
 <!-- 只有小组创建者才有  结束处-->
@@ -94,10 +96,9 @@
 								<div>
 									<div class="pull-right">
 <!-- 限制用户 -->
-										<span><a href="">限制用户</a></span>
+										<span><a href="javascript:void(0)" onclick="ban({{r.6}})">限制用户</a></span>
 <!-- 解除限制用户 -->
-										<span class="delSpan"><a href="">解除限制用户</a></span>
-										<span class="delSpan"><a href="">删除回复</a></span>
+										<span class="delSpan"><a href="javascript:void(0)" onclick="dr({{r.6}})">删除回复</a></span>
 									</div>
 									<div class="clearfix"></div>
 								</div>

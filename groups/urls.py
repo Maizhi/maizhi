@@ -16,6 +16,8 @@ urlpatterns = patterns('',
     url(r'^topic/comment/$', views.comment, name="comment"),
     url(r'^topic/good/$', views.good, name="good"),
     url(r'^topic/ban/$', views.ban, name="ban"),
+    url(r'^topic/dt/$', views.deleteTopic, name="deleteTopic"),
+    url(r'^topic/dr/$', views.deleteReview, name="deleteReview"),
     url(r'^topic/(.+)$', views.thetopic, name="thetopic"),
     url(r'^create/$', views.groupcreate, name="groupcreate"),
 
@@ -28,7 +30,7 @@ urlpatterns = patterns('',
     url(r'^fonts/(?P<path>.*)$', 'django.views.static.serve', 
         { 'document_root': '/home/tron/mz/maizhi/templates/public/fonts' } 
     ), 
-url(r'^img/(?P<path>.*)$', 'django.views.static.serve', 
+    url(r'^img/(?P<path>.*)$', 'django.views.static.serve', 
         { 'document_root': '/home/tron/mz/templates/public/img' } 
     ), 
     url(r'^news/(?P<path>.*)$', 'django.views.static.serve', 
