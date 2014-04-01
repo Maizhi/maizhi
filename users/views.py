@@ -2,7 +2,7 @@
 
 from django.http import HttpResponse,HttpResponseRedirect
 from django.core.paginator import PageNotAnInteger, Paginator, InvalidPage, EmptyPage
-from users.models import News,Info,Good_news,Follow_user,Message
+from groups.models import Group
 from login.models import Register
 from django import template
 from django.views.decorators.csrf import csrf_exempt  
@@ -231,7 +231,43 @@ def managecourse(request):
 	return render(request,'users/manageCourse.html')
 
 def managegroup(request):
-	return render(request,'users/manageGroup.html')
+	follow=Follow_group.objects.filter(user_id=request.session['id'])
+	limit=15
+	paginator = Paginator(follow, limit)
+	page = request.GET.get('page')
+	try:
+	    follow = paginator.page(page)
+	except PageNotAnInteger:
+	    follow = paginator.page(1)
+	except EmptyPage:
+	    follow = paginator.page(paginator.num_pages)
+	groups=[]
+	for i in follow:
+		each=[]
+		group=Group.objects.get(id=i.follow_group_id)
+		info=Info.objects.get(user_id=group.user_id)
+		each.append(group.id)          #0
+		each.append(group.name)        #1
+		each.append(group.crew_con)    #2
+		each.append(info.user_name)    #3
+		each.append(info.user_id)      #4
+		each.append(group.img)         #5
+		groups.append(each)
+	my=Group.objects.filter(user_id=request.session['id'])
+	m=Message.objects.filter(to=request.session['id']).order_by('-time')[0:5]
+	mess=[]
+	for k in m:
+		each=[]
+		name=Info.objects.get(user_id=k.from_id).user_name
+		content=k.content
+		each.append(name)
+		each.append(content)
+		mess.append(each)
+	havent=0
+	for n in m:
+		if n.status==1:
+			havent+=1
+	return render(request,'users/manageGroup.html',{'groups':groups,'follow':follow,'my':my,'message':mess,'havent':havent})
 
 def managereward(request):
 	return render(request,'users/managereward.html')
