@@ -40,6 +40,6 @@ urlpatterns = patterns('',
         { 'document_root': '/home/tron/mz/maizhi/templates/picture/ico' } 
     ), 
     url(r'^group/(?P<path>.*)$', 'django.views.static.serve', 
-        { 'document_root': '/home/tron/Dropbox/mz/templates/picture/group/image' } 
+        { 'document_root': '/home/tron/mz/maizhi/templates/picture/group/image' } 
     ), 
 )
