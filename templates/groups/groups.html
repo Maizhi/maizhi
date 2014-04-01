@@ -12,13 +12,7 @@
 <link href="../css/bootstrap-switch.css" rel="stylesheet">
 <link href="../ico/favicon.ico" rel="shortcut icon" type="image/vnd.microsoft.icon"/>
 <link href="../css/groups.css" rel="stylesheet">    
- 	<!-- jQuery文件。务必在bootstrap.min.js 之前引入 -->
-	<script src="../js/jquery.min.js"></script>
-	
-	<script src="../js/join.js"></script>
-	<!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
-	<script src="../js/bootstrap.js"></script>
-	<script src="../js/bootstrap-switch.js"></script>
+ 
 </head>
 <body>
 	{% include 'public/common/header.html' %}
@@ -28,7 +22,7 @@
 <!-- 两个按钮 -->
 				<div class="twoBtn">
 					<a href="{% url 'groups:groupcreate' %}" type="button" class="btn btn-lg btn-primary">创建小组</a>
-					<a href="" type="button" class="btn btn-lg btn-warning">我的小组</a>
+					<a href="{% url 'users:managegroup' %}" type="button" class="btn btn-lg btn-warning">我的小组</a>
 				</div>
 <!-- 所有小组 -->
 				<div class="groups">
@@ -55,7 +49,13 @@
 		</div>
 	</div>
 	
-
+	<!-- jQuery文件。务必在bootstrap.min.js 之前引入 -->
+	<script src="../js/jquery.min.js"></script>
+	
+	<script src="../js/join.js"></script>
+	<!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
+	<script src="../js/bootstrap.js"></script>
+	<script src="../js/bootstrap-switch.js"></script>
 	
 </body>
 </html>
