@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>麦知网——学问有余，乐为人师</title>
+
+<!-- Bootstrap core CSS -->
+<link href="../css/bootstrap.css" rel="stylesheet">
+<!-- Custom styles for this template -->
+<link href="../css/non-responsive.css" rel="stylesheet">
+<link href="../css/fontawesome.min.css" rel="stylesheet">
+
+    <!-- Just for debugging purposes. Don't actually copy this line! -->
+    <!--[if lt IE 9]><script src="../../docs-assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="http://cdn.bootcss.com/html5shiv/3.7.0/html5shiv.min.js"></script>
+      <script src="http://cdn.bootcss.com/respond.js/1.3.0/respond.min.js"></script>
+    <![endif]-->
+<link href="../css/rewards.css" rel="stylesheet">    
+
+	<!-- jQuery文件。务必在bootstrap.min.js 之前引入 -->
+	<script src="../js/jquery.min.js"></script>
+	
+	<!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
+	<script src="../js/bootstrap.js"></script>
+	<script type="text/javascript">
+		$(function(){
+			array=[];
+			//给每个大分类确定一个颜色， PUSH进ARRAY（有几个大分类就PUSH几个颜色）
+			array.push("186,85,211");
+			array.push("138,43,226");
+			array.push("95,158,160");
+			array.push("0,191,255");
+			//有几个大分类就循环几次
+			for(i=1;i<=2;i++){
+				$("#a_type"+i).css("background-color","rgb("+array[i-1]+")");
+			}
+			
+		})
+	</script>
+</head>
+<body>
+	
+<div class="container" style="margin-top:45px">
+	<div class="row">
+<!-- 左侧div -->
+		<div class="col-xs-4">
+			<div>
+				<button type="button" class="btn btn-warning rewards_btn"><b>发布我的需求</b></button>
+			</div>
+			<div class="rewards_types">
+				<div><h4>按分类检索</h4></div>
+				<div>
+<!-- 一个分类  循环开始处   div的id是大分类的id  需要确保id是连续的 -->
+					<div id="a_type1" class="pull-left rewards_a_type">
+						<a href="" style="color:#ffffff;">一个大分类</a>
+					</div>
+<!-- 一个分类  循环结束处 -->
+					<div class="clearfix"></div>
+					<div class="rewards_type_other"><a href=""><b>其他</b></a></div>				
+				</div>
+			</div>
+			<div class="rewards_interest">
+				<div><h4>您可能感兴趣的其他悬赏</h4></div>
+				<div>
+<!-- 您可能感兴趣的其他悬赏   一条 循环开始处 -->
+					<div class="rewards_a_interest">
+						<div class="rewards_inter_name pull-left">
+							<a href="" title="哈哈我也想要PHP达内课程快给我快给我~！">哈哈我也想要PHP达内课程快给我快给我~！</a>
+						</div>
+						<div class="pull-right">
+							￥25555.00
+						</div>
+						<div class="clearfix"></div>
+					</div>
+<!-- 您可能感兴趣的其他悬赏   一条 循环结束处 -->
+				</div>
+			</div>
+		</div>
+<!-- 右侧div -->
+		<div class="col-xs-8">
+			<div class="rewards_sel">
+				<select id="sel" onChange="chg2()">
+					<option value="1">按人气排列</option>
+					<option value="2">按时间排列</option>
+					<option value="3">按价格排列</option>
+				</select>
+			</div>
+			<div class="all_rewards">
+<!-- 一个悬赏 循环开始处 -->										
+				<div class="a_reward pull-left">
+					<div class="a_a_reward">
+						<div class="a_reward1">
+							<div class="a_reward11 pull-left">
+								<div class="reward_img"><img src="../img/rd.jpg" width="100%" class="img-circle"></div>
+							</div>
+							<div class="a_reward12 pull-left">
+								<div class="reward_type pull-right"><b>#编程</b></div>
+								<div class="clearfix"></div>
+								<div class="reward_name">
+									求购PHP基础课程求购PHP基础课程
+								</div>
+								<div class="reward_price"><b>￥20.00</b></div>
+							</div>
+							<div class="clearfix"></div>
+						</div>
+						<div class="a_reward2">
+							<div class="topdirection"></div>
+						</div>
+						<div class="a_reward3">
+							<div>求购PHP课程的具体内容求购PHP课程的具体内容求购PHP课程的具体内容求购PHP课程的具体内容求购PHP课程的具体内容</div>
+							<div class="reward_in pull-right"><a href="" target="_blank"><b>查看详情</b></a></div>
+							<div class="clearfix"></div>
+						</div>
+					</div>
+				</div>
+<!-- 一个悬赏 循环结束处 -->
+				<div class="clearfix"></div>
+			</div>
+
+									
+
+		</div>
+	</div>
+</div>
+	
+	
+	
+	
+
+</body>
+</html>
