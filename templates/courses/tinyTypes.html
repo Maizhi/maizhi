@@ -5,48 +5,50 @@
 <title>麦知网——学问有余，乐为人师</title>
 
 <!-- Bootstrap core CSS -->
-<link href="../css/bootstrap.css" rel="stylesheet">
+<link href="../../css/bootstrap.css" rel="stylesheet">
 <!-- Custom styles for this template -->
-<link href="../css/non-responsive.css" rel="stylesheet">
-<link href="../css/font-awesome.min.css" rel="stylesheet">
-<link href="../css/bootstrap-switch.css" rel="stylesheet">
+<link href="../../css/non-responsive.css" rel="stylesheet">
+<link href="../../css/font-awesome.min.css" rel="stylesheet">
+<link href="../../css/bootstrap-switch.css" rel="stylesheet">
 
-<link href="../css/tinyTypes.css" rel="stylesheet">    
+<link href="../../css/tinyTypes.css" rel="stylesheet">    
  
 </head>
 <body>
-	
+	{% include 'public/common/header.html' %}
 	<div class="container" style="margin-top:45px">
 		<div class="row">
 			<div class="col-xs-12">
-				<img src="../../picture/type/big/type_big.jpg" width=100%/>
+				<img src="../../type/big/type_big.jpg" width=100%/>
 			</div>
 			<div>
 				<ol class="breadcrumb tiny_breadcrumb">
-				  <li><a href="#">大分类</a></li>
-				  <li class="active">小分类</li>
+				  <li><a href="#">课程系列</a></li>
+				  <li class="active">{{types.name}}</li>
 				</ol>
 			</div>
 		</div>
 		<div class="row">
 <!-- 一个小分类   循环开始处 -->
+		{% for i in tiny %}
 			<div class="col-xs-4 pull-left">
 				<div class="a_tiny">
 					<div>
 						<div class="tiny_img pull-left">
-							<img src="../../picture/tinyType/tiny_type.png" width="125px" height="150px"/>
+							<img src="../../tiny/tiny_type.png" width="125px" height="150px"/>
 						</div>
 						<div class="tiny_intro pull-left">
-							<div class="tiny_intro1">学做绿茶婊</div>
-							<div class="tiny_intro2"><i><!-- 此处需要截断长度，过长用省略号代替 -->只有成功的学习了怎样做绿茶婊，才能更好的击败绿茶婊。</i></div>
+							<div class="tiny_intro1">{{i.name}}</div>
+							<div class="tiny_intro2"><i><!-- 此处需要截断长度，过长用省略号代替 -->{{i.introduce}}。</i></div>
 						</div>
 						<div class="clearfix"></div>
 					</div>
 					<div class="tiny_inter">
-						<button type="button" class="btn btn-primary tiny_inter_btn">进入</button>
+						<a href="{% url 'courses:courselist' i.id %}" type="button" class="btn btn-primary tiny_inter_btn">进入</a>
 					</div>
 				</div>
 			</div>
+		{% endfor %}
 <!-- 一个小分类   循环结束处 -->
 			<div class="clearfix"></div>
 		</div>
@@ -56,10 +58,10 @@
 	
 	
 	<!-- jQuery文件。务必在bootstrap.min.js 之前引入 -->
-	<script src="../js/jquery.min.js"></script>
+	<script src="../../js/jquery.min.js"></script>
 	
 	<!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
-	<script src="../js/bootstrap.js"></script>
+	<script src="../../js/bootstrap.js"></script>
 	
 	<script type="text/javascript">
 		

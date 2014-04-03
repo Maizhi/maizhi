@@ -10,121 +10,115 @@
 <link href="../css/non-responsive.css" rel="stylesheet">
 <link href="../css/courseCreate.css" rel="stylesheet">    
 <link rel="stylesheet" href="../css/jCrop.css">
+<link href="../css/font-awesome.min.css" rel="stylesheet">
  
- 
 	
-	<!-- jQuery文件。务必在bootstrap.min.js 之前引入 -->
-	<script src="../js/jquery.min.js"></script>
+<!-- jQuery文件。务必在bootstrap.min.js 之前引入 -->
+<script src="../js/jquery.min.js"></script>
+
+<!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
+<script src="../js/bootstrap.js"></script>
+<script src="../js/jCrop.js"></script>	
+<script type="text/javascript">
+
+jQuery(function($){
+	// Create variables (in this scope) to hold the API and image size
+	var jcrop_api,boundx,boundy;
 	
-	<!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
-	<script src="../js/bootstrap.js"></script>
-	<script src="public/js/jCrop.js"></script>	
-	<script type="text/javascript">
-	
-	jQuery(function($){
-		// Create variables (in this scope) to hold the API and image size
-		var jcrop_api,boundx,boundy;
-		
-		$("#targett").Jcrop({
-			setSelect:[0,0,100,100],//显示盖板DIV，控制盖板大小
-			onChange:updatePreview,
-			onSelect:updatePreview,
-			aspectRatio:1//选框宽高比。说明：width/height
-		},function(){
-			// Use the API to get the real image size
-			var bounds=this.getBounds();
-			boundx=bounds[0];
-			boundy=bounds[1];
-			// Store the API in the jcrop_api variable
-			jcrop_api=this;
-		});
-		
-		function updatePreview(c){
-			if(parseInt(c.w)>0){
-				var rx=100/c.w;
-				var ry=100/c.h;
-				
-				$("#previeww").css({
-					width:Math.round(rx*boundx)+"px",
-					height:Math.round(ry*boundy)+"px",
-					marginLeft:"-"+Math.round(rx*c.x)+"px",
-					marginTop:"-"+Math.round(ry*c.y)+"px"
-				});
-			};
-		};
+	$("#targett").Jcrop({
+		setSelect:[0,0,100,100],//显示盖板DIV，控制盖板大小
+		onChange:updatePreview,
+		onSelect:updatePreview,
+		aspectRatio:1//选框宽高比。说明：width/height
+	},function(){
+		// Use the API to get the real image size
+		var bounds=this.getBounds();
+		boundx=bounds[0];
+		boundy=bounds[1];
+		// Store the API in the jcrop_api variable
+		jcrop_api=this;
 	});
+	
+	function updatePreview(c){
+		if(parseInt(c.w)>0){
+			var rx=100/c.w;
+			var ry=100/c.h;
+			
+			$("#previeww").css({
+				width:Math.round(rx*boundx)+"px",
+				height:Math.round(ry*boundy)+"px",
+				marginLeft:"-"+Math.round(rx*c.x)+"px",
+				marginTop:"-"+Math.round(ry*c.y)+"px"
+			});
+		};
+	};
+});
 
 
-	function huihui()
-	{
-		var upDiv=$(".jcrop-tracker");
-		var img=$("#haha");
-		alert(upDiv.offset().left+"-----"+upDiv.offset().top+"--------"+upDiv.width()+"-------"+upDiv.height());
-		alert(img.offset().left+"-----"+img.offset().top+"--------"+img.width()+"-------"+img.height());
+function huihui(){
+	var upDiv=$(".jcrop-tracker");
+	var img=$("#haha");
+	alert(upDiv.offset().left+"-----"+upDiv.offset().top+"--------"+upDiv.width()+"-------"+upDiv.height());
+	alert(img.offset().left+"-----"+img.offset().top+"--------"+img.width()+"-------"+img.height());
+}
+	
+
+
+
+function change_list(a){
+	$("#case1").css("display","none");
+	$("#case2").css("display","none");
+	$("#case3").css("display","none");
+	$("#case4").css("display","none");
+	$("#a1").attr("class","list-group-item");
+	$("#a2").attr("class","list-group-item");
+	$("#a3").attr("class","list-group-item");
+	$("#a4").attr("class","list-group-item");
+	$("#case"+a).css("display","block");
+	$("#a"+a).attr("class","active list-group-item");
+}
+
+
+
+
+function typeLabels(a){
+	var textvalue=$("#textvalue").val();
+	$(".typeLabel3"+a).attr("class","typeLabel1"+a);
+	var typeLabel1=$(".typeLabel1"+a);
+	var typeLabel2=$(".typeLabel2"+a);
+	typeLabel1.css("background-color","#D0D1E6");
+	typeLabel2.css("background-color","#F2F2F2");
+	typeLabel2.attr("class","typeLabel3"+a);
+	typeLabel1.attr("class","typeLabel2"+a);
+//第一次点击 加上这个分类名
+	if($('.typeLabel2'+a+'>a').html()){
+		$("#textvalue").val(textvalue+$('.typeLabel2'+a+'>a').html());
 	}
-		
+//第二次点击 减去这个分类名
+	if($('.typeLabel3'+a+'>a').html()){
+		var strPosition=textvalue.indexOf($('.typeLabel3'+a+'>a').html());
+		var textNew1=textvalue.substr(0,strPosition);
+		var textNew2=textvalue.substr(strPosition+$('.typeLabel3'+a+'>a').html().length,textvalue.length);
+		//var textjiechu=textvalue.substr(strPosition,strPosition+$('.typeLabel3'+a+'>#a').html().length);
+		var textNew=textNew1+textNew2;
+		$("#textvalue").val(textNew);
+	}
+}
+
+
+function sub(){
+	$("#subbutton3").attr("id","subbutton1");
+	$("#subbutton2").removeAttr("disabled");
+	$("#subbutton1").attr("disabled","disabled");
+	$("#subbutton2").attr("id","subbutton3");
+	$("#subbutton1").attr("id","subbutton2");
+}
 	
 	
-	
-	function change_list(a)
-	{
-		$("#case1").css("display","none");
-		$("#case2").css("display","none");
-		$("#case3").css("display","none");
-		$("#case4").css("display","none");
-		$("#a1").attr("class","list-group-item");
-		$("#a2").attr("class","list-group-item");
-		$("#a3").attr("class","list-group-item");
-		$("#a4").attr("class","list-group-item");
-		$("#case"+a).css("display","block");
-		$("#a"+a).attr("class","active list-group-item");
-	}
-
-
-
-
-	function typeLabels(a)
-	{
-		var textvalue=$("#textvalue").val();
-		$(".typeLabel3"+a).attr("class","typeLabel1"+a);
-		var typeLabel1=$(".typeLabel1"+a);
-		var typeLabel2=$(".typeLabel2"+a);
-		typeLabel1.css("background-color","#D0D1E6");
-		typeLabel2.css("background-color","#F2F2F2");
-		typeLabel2.attr("class","typeLabel3"+a);
-		typeLabel1.attr("class","typeLabel2"+a);
-	//第一次点击 加上这个分类名
-		if($('.typeLabel2'+a+'>a').html())
-		{
-			$("#textvalue").val(textvalue+$('.typeLabel2'+a+'>a').html());
-		}
-	//第二次点击 减去这个分类名
-		if($('.typeLabel3'+a+'>a').html())
-		{
-			var strPosition=textvalue.indexOf($('.typeLabel3'+a+'>a').html());
-			var textNew1=textvalue.substr(0,strPosition);
-			var textNew2=textvalue.substr(strPosition+$('.typeLabel3'+a+'>a').html().length,textvalue.length);
-			//var textjiechu=textvalue.substr(strPosition,strPosition+$('.typeLabel3'+a+'>#a').html().length);
-			var textNew=textNew1+textNew2;
-			$("#textvalue").val(textNew);
-		}
-	}
-
-
-	function sub()
-	{
-		$("#subbutton3").attr("id","subbutton1");
-		$("#subbutton2").removeAttr("disabled");
-		$("#subbutton1").attr("disabled","disabled");
-		$("#subbutton2").attr("id","subbutton3");
-		$("#subbutton1").attr("id","subbutton2");
-	}
-		
-		
-	</script>
+</script>
 </head>
 <body style="background-color:#ffffff;">
-	
+	{% include 'public/common/header.html' %}
 	<div class="container" style="margin-top:45px">
 		<div class="row">
 <!-- left div -->
@@ -145,12 +139,12 @@
 					<form action="" method="post" enctype="multipart/form-data">
 						<div class="group_form_all">
 							<div class="group_form_name pull-left"> 课程系列名称 </div>
-							<div class="group_form pull-left"><input type="text"></div>
+							<div class="group_form pull-left"><input class="form-control" type="text" name="name" /></div>
 							<div class="clearfix"></div>
 						</div>
 						<div class="group_form_all">
 							<div class="group_form_name pull-left"> 课程图片 </div>
-							<div class="group_form pull-left"><input type="file"></div>
+							<div class="group_form pull-left"><input type="file" name="picture" /></div>
 							<div class="clearfix"></div>
 						</div>
 						<div class="group_form_all">
@@ -170,12 +164,18 @@
 						</div>
 						<div class="group_form_all">
 							<div class="group_form_name pull-left"> 课程简介 </div>
-							<div class="group_form pull-left"><textarea class="group_textarea"></textarea></div>
+							<div class="group_form group_form pull-left"><textarea class="form-control group_textarea" name="introduce"></textarea></div>
 							<div class="clearfix"></div>
 						</div>
 						<div class="group_form_all">
 							<div class="group_form_name pull-left"> 课程价格 </div>
-							<div class="group_form pull-left"><input type="text"></div>
+							<div class="group_form pull-left">
+								<div class="input-group">
+								  <span class="input-group-addon">￥</span>
+								  <input type="text" name="price" class="form-control">
+								  <span class="input-group-addon">.00</span>
+								</div>
+							</div>
 							<div class="clearfix"></div>
 						</div>
 						<div class="group_form_all">
@@ -183,14 +183,16 @@
 							<div class="right case4" id="case4">
 								<div>
 									<div class="group_form_name pull-left"> 课程分类 </div>
-									<div class="group_form pull-left"><input id="textvalue" type="text" name=""></div>
+									<div class="group_form pull-left"><input class="form-control" id="textvalue" type="text" name="tags"></div>
 									<div class="clearfix"></div>
 									<div>
 										<dl class="tags" style="margin-left:50px;">
-<!-- 循环显示分类标签 开始处 -->
-											<dd class="typeLabel12" onclick="typeLabels(2);" style="float:left;margin-top:10px;margin-left:5px;margin-right:5px;padding-top:2px;padding-bottom:2px;padding-left:8px;padding-right:8px;">
-												<a href="javascript:void(0)">  分类1</a>
+<!-- 循环显示分类标签 开始处 -->		
+										{% for i in tag %}
+											<dd class="typeLabel1{{i.id}}" onclick="typeLabels({{i.id}});" style="float:left;margin-top:10px;margin-left:5px;margin-right:5px;padding-top:2px;padding-bottom:2px;padding-left:8px;padding-right:8px;">
+												<a href="javascript:void(0)">  {{i.name}}</a>
 											</dd>
+										{% endfor %}
 <!-- 循环显示分类标签 结束处 -->			
 											<div class="clearfix"></div>						
 										</dl>

@@ -8,28 +8,33 @@
 <link href="../css/bootstrap.css" rel="stylesheet">
 <!-- Custom styles for this template -->
 <link href="../css/non-responsive.css" rel="stylesheet">
-
+<link href="../css/font-awesome.min.css" rel="stylesheet">
 <link href="../css/types.css" rel="stylesheet">    
- 
+<!-- jQuery文件。务必在bootstrap.min.js 之前引入 -->
+<script src="../js/jquery.min.js"></script>
+
+<!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
+<script src="../js/bootstrap.js"></script> 
 </head>
 <body>
-	
+	{% include 'public/common/header.html' %}
 	<div class="container" style="margin-top:45px">
 		<div class="row">
 <!-- left div -->
 			<div class="col-xs-9">
 <!-- 一个大分类 循环开始处 -->
+			{% for i in types %}
 				<div class="a_type pull-left">
 					<div class="a_type1 pull-left">
-						<div class="type_title"><b>大分类1</b></div>
-						<div class="type_inter"><button type="button" class="btn btn-primary btn-sm">进入</button></div>
+						<div class="type_title"><b>{{i.name}}</b></div>
+						<div class="type_inter"><a href="{% url 'courses:tinytypes' i.id %}" type="button" class="btn btn-primary btn-sm">进入</a></div>
 					</div>
 					<div class="a_type2 pull-left">
-						<img src="../../picture/type/normal/type.png" width="100px" height="130px"/>
+						<img src="../type/normal/type.png" width="100px" height="130px"/>
 					</div>
 					<div class="clearfix"></div>
 				</div>
-				
+			{% endfor %}
 <!-- 一个大分类 循环结束处 -->
 				<div class="clearfix"></div>
 			</div>
@@ -37,7 +42,11 @@
 <!-- right div -->
 			<div class="col-xs-3">
 				<div><img src="../img/lucky.png" width="100%"/></div>
-				<div class="hot_newpage"><a href=""><span class="glyphicon glyphicon-globe"></span> 热门推荐</a></div>
+				<div class="hot_newpage">
+					<div style="margin-bottom:5px"><a href=""><span class="glyphicon glyphicon-globe"></span> 热门推荐</a></div>
+					<div><a href="{% url 'courses:coursecreate' %}"><i class="icon-cloud-upload"></i> 创建新的课程</a></div>
+				</div>
+
 <!-- 推荐 -->
 				<div class="my">
 					<div class="my_title"><b>推荐</b></div>
@@ -70,15 +79,6 @@
 			</div>
 		</div>
 	</div>
-	
-	
-	
-	
-	<!-- jQuery文件。务必在bootstrap.min.js 之前引入 -->
-	<script src="../js/jquery.min.js"></script>
-	
-	<!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
-	<script src="../js/bootstrap.js"></script>
 	
 	<script type="text/javascript">
 	var start_id_num=0;
