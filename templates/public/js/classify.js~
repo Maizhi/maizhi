@@ -1,0 +1,27 @@
+var xmlHttp; 
+
+function createXMLRequest(){
+	if(window.XMLHttpRequest){
+		xmlHttp=new XMLHttpRequest();
+	} else {
+		xmlHttp=new ActiveXObject("Microsoft.XMLHttp");
+	}
+}
+
+function small(){
+	createXMLRequest();
+	var value=document.getElementById('big').value
+	var url="http://192.168.1.113:8866/courses/types/gettiny/?tiny="+value;
+	xmlHttp.open("GET",url);
+	xmlHttp.onreadystatechange=function(){
+		if(xmlHttp.readyState==4 && xmlHttp.status==200){
+			var result=xmlHttp.responseText.split(',')
+			document.getElementById('tiny').options.length=0;
+			for(var i=0;i<result.length;i++){
+				var o=result[i].split('*')
+				document.getElementById('tiny').add(new Option(o[0],o[1]))
+			}
+		}
+	};
+	xmlHttp.send(); 
+}
