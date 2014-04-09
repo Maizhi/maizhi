@@ -95,6 +95,7 @@ def coursecreate(request):
 		#return HttpResponse(str(int(round(float(coordinate[0]))+1))+"---"+str(int(coordinate[1]))+"---"+str(int(coordinate[2]))+"---"+str(int(coordinate[3])))
 	except:
 		m=Message.objects.filter(to=request.session['id']).order_by('-time')[0:5]
+		user=Info.objects.get(user_id=request.session['id'])
 		mess=[]
 		for k in m:
 			each=[]
@@ -108,7 +109,7 @@ def coursecreate(request):
 			if n.status==1:
 				havent+=1
 		tag=Types.objects.all()
-		return render(request,'courses/courseCreate.html',{'message':mess,'havent':havent,'tag':tag})
+		return render(request,'courses/courseCreate.html',{'message':mess,'havent':havent,'tag':tag,'user':user})
 
 def gettiny(request):
 	alltiny=Tiny_type.objects.filter(types_id=request.GET['tiny'])
