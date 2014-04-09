@@ -1,0 +1,99 @@
+@CHARSET "UTF-8";
+iv{
+	border:1px solid blue;
+}
+pan{
+	border:1px solid green;
+}
+a{
+
+	text-decoration:none;
+}
+a:hover{
+	color:black;
+	text-decoration:none;
+}
+
+
+
+
+
+
+.r_teacher_name2{
+	font-size:13px;
+	margin-top:5px;
+}
+.r_teacher_name a{
+	color:black;
+}
+.r_teacher_name{
+	width:70%;
+	padding-left:10px;
+}
+.r_teacher_img{
+	width:30%;
+}
+.r_a_teacher{
+	padding:10px 10px 10px 10px;
+}
+.r_course_intro{
+	padding:10px 10px 10px 10px;
+	font-size:13px;
+}
+.r_course_tea{
+	font-size:13px;
+	margin-top:5px;
+}
+.r_course_nam a{
+	color:black;
+}
+.r_course_nam{
+	font-size:15px;
+	display:block;/*内联对象需加*/
+	width:150px;
+	word-break:keep-all;/* 不换行 */
+	white-space:nowrap;/* 不换行 */
+	overflow:hidden;/* 内容超出宽度时隐藏超出部分的内容 */
+	text-overflow:ellipsis;/* 当对象内文本溢出时显示省略标记(...) ；需与overflow:hidden;一起使用。*/
+}
+.r_course_name{
+	width:70%;
+	padding-left:10px;
+}
+.r_course_img{
+	width:30%;
+}
+.r_a_course{
+	padding:10px 10px 10px 10px;
+	width:100%;
+}
+.r_topic_cnt{
+	font-size:12px;
+}
+.r_topic_name{
+	font-size:15px;
+}
+.r_topic_content a{
+	color:#ffffff;
+}
+.r_topic_content{
+	width:100%;
+	background-color:#545454;
+	color:#ffffff;
+	padding:10px 10px 10px 10px;
+}
+.tiles{
+	width:250px;
+}
+.search_a span{
+	padding-right:10px;
+}
+.search_a{
+	padding-bottom:20px;
+	padding-left:10px;
+	border-bottom:1px solid #BCBCBC;
+}
+.vessel{
+	position:relative;
+	margin-top:20px;
+}

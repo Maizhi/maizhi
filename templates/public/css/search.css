@@ -1,0 +1,90 @@
+@CHARSET "UTF-8";
+iv{
+	border:1px solid blue;
+}
+pan{
+	border:1px solid green;
+}
+a{
+	color:#428BCA;
+	text-decoration:none;
+}
+a:hover{
+	color:black;
+	text-decoration:none;
+}
+
+
+
+
+.s_a_hot{
+	padding-top:3px;
+	padding-bottom:3px;
+}
+.search_hot{
+	padding:10px 10px 10px 10px;
+	background-color:#F2F2F2;
+}
+.s_div_ctrl{
+	margin-top:10px;
+	display:block;/*内联对象需加*/
+	width:450px;
+	word-break:keep-all;/* 不换行 */
+	white-space:nowrap;/* 不换行 */
+	overflow:hidden;/* 内容超出宽度时隐藏超出部分的内容 */
+	text-overflow:ellipsis;/* 当对象内文本溢出时显示省略标记(...) ；需与overflow:hidden;一起使用。*/
+}
+.s_topic{
+	margin-top:20px;
+	border-bottom:1px solid #C9C9C9;
+}
+.s_btn{
+	width:100%;
+	background-color:#F2F2F2;
+}
+.s_btn_div{
+	width:100%;
+	margin-bottom:20px;
+}
+.s_div{
+	margin-top:10px;
+}
+.s_span{
+	margin-left:10px;
+}
+.yellow_star{
+	color:#FED986;
+}
+.s_intro{
+	width:88%;
+	padding:10px 5px 10px 5px;
+}
+.s_img{
+	width:12%;
+	padding:5px 5px 5px 5px;
+}
+.s_a_course{
+	margin-top:5px;
+	margin-bottom:10px;
+}
+.s_course{
+	border-bottom:1px solid #C9C9C9;
+}
+.row2{
+	border-top:1px solid #C9C9C9;
+}
+.search_btn{
+	width:30%;
+}
+.search_text{
+	width:70%;
+}
+.search_kuang{
+	margin-top:20px;
+}
+.search_a span{
+	padding-right:10px;
+}
+.search_a{
+	font-size:13px;
+}

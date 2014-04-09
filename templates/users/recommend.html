@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>麦知网——学问有余，乐为人师</title>
+
+<!-- Bootstrap core CSS -->
+<link href="../css/bootstrap.css" rel="stylesheet">
+<!-- Custom styles for this template -->
+<link href="../css/non-responsive.css" rel="stylesheet">
+<link href="../css/recommend.css" rel="stylesheet">    
+ 
+</head>
+<body>
+	
+	<div class="container" style="margin-top:45px">
+		<div class="row">
+			<div class="col-xs-12">
+				<div class="search_a">
+					<span><a id="a1" href="javascript:void(0)" onclick="search_change(1);" style="font-weight:bold;">热门</a></span>
+					<span><a id="a2" href="javascript:void(0)" onclick="search_change(2);">热门课程</a></span>
+					<span><a id="a3" href="javascript:void(0)" onclick="search_change(3);">热门话题</a></span>
+					<span><a id="a4" href="javascript:void(0)" onclick="search_change(4);">教师推荐</a></span>
+				</div>
+				<div id="vessel" class="vessel" style="border:1px solid red;">
+<!-- 一个热门话题  开始处 -->
+					<div class="tiles" style="border:1px solid blue;">
+						<div>
+							<div>
+								<a href=""><img src="../img/ad.jpg" width="100%"/></a>
+							</div>
+							<div class="r_topic_content">
+								<div class="r_topic_name"><a href="" title="话题名" target="_blank"><b>话题名</b></a></div>
+								<div class="r_topic_cnt">话题内容话题内容话题内容话题内容话题内容话题内容话题内容话题内容话题内容话题内容话题内容话题内容</div>
+							</div>
+						</div>
+					</div>
+<!-- 一个热门话题  结束处 -->
+<!-- 一个热门课程  开始处 -->
+					<div class="tiles" style="border:1px solid blue;">
+						<div class="r_a_course">
+							<div>
+								<div class="pull-left r_course_img">
+									<a href=""><img src="../img/rd.jpg" width="100%"/></a>
+								</div>
+								<div class="pull-left r_course_name">
+									<div class="r_course_nam"><a href="" title="形而上学形而上学形而上学" target="_blank"><b>形而上学形而上学形而上学</b></a></div>
+									<div class="r_course_tea"><i>亚里士多德亚里士多德</i></div>
+								</div>
+								<div class="clearfix"></div>
+							</div>
+							<div class="r_course_intro">
+								课程介绍课程介绍课程介绍课程介绍课程介绍课程介绍课程介绍课程介绍课程介绍课程介绍课程介绍课程介绍课程介绍课程介绍课程介绍课程介绍课程介绍课程介绍课程介绍课程介绍课程介绍课程介绍课程介绍课程介绍课程介绍课程介绍课程介绍课程介绍
+							</div>
+						</div>
+					</div>
+<!-- 一个热门课程  结束处 -->
+					<div class="tiles" style="border:1px solid blue;">
+						<div class="r_a_teacher">
+							<div class="pull-left r_teacher_img">
+								<a href="" target="_blank"><img src="../img/rd.jpg" width="100%"/></a>
+							</div>
+							<div class="pull-left r_teacher_name">
+								<div><a href="" title="教师名字教师名字" target="_blank"><b>教师名字教师名字名字</b></a></div>
+								<div class="r_teacher_name2"><i>我是一个老师。这里是我的个人介绍.我是一个老师。这里是我的个人介绍.我是一个老师。这里是我的个人介绍.我是一个老师。这里是我的个人介绍.</i></div>
+							</div>
+							<div class="clearfix"></div>
+						</div>
+					</div>
+
+				<!-- ... -->
+			</div>
+			</div>
+		</div>
+	</div>
+	
+	
+	
+	
+	<!-- jQuery文件。务必在bootstrap.min.js 之前引入 -->
+	<script src="../js/jquery.min.js"></script>
+	
+	<!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
+	<script src="../js/bootstrap.js"></script>
+	<script src="../js/jquery.wookmark.js"></script>
+	
+	<script type="text/javascript">
+	function search_change(num){
+		for(i=1;i<5;i++){
+			$("#a"+i).css("font-weight","normal");
+		}
+		$("#a"+num).css("font-weight","bold");
+		
+		alert(num);
+	}
+	
+	$(function(){
+		array=[];
+		//把每一个颜色， PUSH进ARRAY（有几个大分类就PUSH几个颜色）一共需要11个颜色
+		array.push("186,85,211");
+		array.push("138,43,226");
+		array.push("95,158,160");
+		array.push("0,191,255");
+		
+		array.push("186,85,211");
+		array.push("138,43,226");
+		array.push("95,158,160");
+		array.push("0,191,255");
+		array.push("186,85,211");
+		array.push("138,43,226");
+		array.push("95,158,160");
+
+		//取一个从0到10 的随机数
+		//Math.floor(Math.random()*10)
+		
+		//把颜色随机付给需要的课程div
+		$(".r_a_course").each(function(){
+			$(this).css("background-color","rgb("+array[Math.floor(Math.random()*10)]+")");
+		});
+		//把颜色随机付给需要的教师div
+		$(".r_a_teacher").each(function(){
+			$(this).css("background-color","rgb("+array[Math.floor(Math.random()*10)]+")");
+		});	
+	})
+	
+
+	$(window).scroll(function(){
+	　　var scrollTop = $(this).scrollTop();
+	　　var scrollHeight = $(document).height();
+	　　var windowHeight = $(this).height();
+	　　if(scrollTop + windowHeight == scrollHeight){
+	　　　　alert("you are in the bottom");
+	　　}
+	});
+	
+	
+	$(document).ready(new function() {
+		$("#vessel").append('<div class="tiles"><img src="../img/ad.jpg" width="250"><p>芸豆哈哈哈</p></div>');
+		// 调用插件的布局函数.
+		$('.tiles').wookmark({
+			autoResize: true,         // 当浏览器大小改变时会自动更新布局
+			container: $('#vessel'),   // 定义容器
+			offset: 20,                // 表格项(item)的间距
+			itemWidth: 270   ,         // 表格项(item)的宽度
+			ignoreInactiveItems:true,
+			fillEmptySpace:true,
+		});
+	});
+	</script>
+</body>
+</html>
