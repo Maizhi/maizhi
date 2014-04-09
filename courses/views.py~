@@ -75,7 +75,7 @@ def courselist(request,id):
 	return render(request,'courses/courseList.html',{'message':mess,'havent':havent,'course':course,'tiny':tiny,'types':types,'result':result})
 
 def coursecreate(request):
-	
+	try:
 		tj=time.time()
 		if 'picture' in request.FILES:
 			pic=request.FILES['picture']
@@ -93,7 +93,23 @@ def coursecreate(request):
 		Post_course(user_id=request.session['id'],post_course_id=course.id,status=1).save()
 		return render(request,'courses/success.html',{'status':status})
 		#return HttpResponse(str(int(round(float(coordinate[0]))+1))+"---"+str(int(coordinate[1]))+"---"+str(int(coordinate[2]))+"---"+str(int(coordinate[3])))
-	
+	except:
+		m=Message.objects.filter(to=request.session['id']).order_by('-time')[0:5]
+		user=Info.objects.get(user_id=request.session['id'])
+		mess=[]
+		for k in m:
+			each=[]
+			name=Info.objects.get(user_id=k.from_id).user_name
+			content=k.content
+			each.append(name)
+			each.append(content)
+			mess.append(each)
+		havent=0
+		for n in m:
+			if n.status==1:
+				havent+=1
+		tag=Types.objects.all()
+		return render(request,'courses/courseCreate.html',{'message':mess,'havent':havent,'tag':tag,'user':user})
 
 def gettiny(request):
 	alltiny=Tiny_type.objects.filter(types_id=request.GET['tiny'])
@@ -174,11 +190,11 @@ def purchase(request,id):
 	return render(request,'courses/purchase.html',{'course':course,'user':user})
 
 def addlession(request,id):
-	try:
+	#try:
 		if 'lessiondoc' in request.FILES:
 			#doc=request.FILES['lessiondoc'].name
 			doc=time.time()
-			dirs ='templates/doc/'+str(doc)
+			dirs ='templates/lession/doc/'+str(doc)
 			content = request.FILES['lessiondoc'].read()
 			if os.path.isfile(dirs):
 				os.remove(dirs) 
@@ -191,7 +207,7 @@ def addlession(request,id):
 		if 'lessionvideo' in request.FILES:
 			#video=request.FILES['lessiondoc'].name
 			video=time.time()
-			dirs ='templates/video/'+str(video)
+			dirs ='templates/lession/video/'+str(video)
 			content = request.FILES['lessionvideo'].read()
 			if os.path.isfile(dirs):
 				os.remove(dirs) 
@@ -203,11 +219,13 @@ def addlession(request,id):
 			video=''
 		result=Lession(course_id=id,name=request.POST['lessionname'],video=str(video),doc=str(doc))
 		result.save()
-		return render(request,'courses/addLession.html',{'user':user,'course':course,'result':id})
-	except:
 		user=Info.objects.get(user_id=request.session['id'])
 		course=Course.objects.get(id=id)
-		return render(request,'courses/addLession.html',{'user':user,'course':course})
+		return render(request,'courses/addLession.html',{'user':user,'course':course,'result':id})
+	#except:
+	#	user=Info.objects.get(user_id=request.session['id'])
+	#	course=Course.objects.get(id=id)
+	#	return render(request,'courses/addLession.html',{'user':user,'course':course})
 
 def buy(request,id):
 	course=Course.objects.get(id=id)

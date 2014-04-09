@@ -35,7 +35,7 @@
 	{% if result %}
 	<script>
 		window.onload=function(){
-			window.location="http://192.168.1.120:8866/courses/types/tiny/course/lession/{{result}}"
+			window.location="http://192.168.1.120:8866/courses/types/tiny/course/lession/"{{result}}
 		}
 	</script>
 	{% endif %}

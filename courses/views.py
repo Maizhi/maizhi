@@ -194,7 +194,7 @@ def addlession(request,id):
 		if 'lessiondoc' in request.FILES:
 			#doc=request.FILES['lessiondoc'].name
 			doc=time.time()
-			dirs ='templates/doc/'+str(doc)
+			dirs ='templates/lession/doc/'+str(doc)
 			content = request.FILES['lessiondoc'].read()
 			if os.path.isfile(dirs):
 				os.remove(dirs) 
@@ -207,7 +207,7 @@ def addlession(request,id):
 		if 'lessionvideo' in request.FILES:
 			#video=request.FILES['lessiondoc'].name
 			video=time.time()
-			dirs ='templates/video/'+str(video)
+			dirs ='templates/lession/video/'+str(video)
 			content = request.FILES['lessionvideo'].read()
 			if os.path.isfile(dirs):
 				os.remove(dirs) 
@@ -219,6 +219,8 @@ def addlession(request,id):
 			video=''
 		result=Lession(course_id=id,name=request.POST['lessionname'],video=str(video),doc=str(doc))
 		result.save()
+		user=Info.objects.get(user_id=request.session['id'])
+		course=Course.objects.get(id=id)
 		return render(request,'courses/addLession.html',{'user':user,'course':course,'result':id})
 	except:
 		user=Info.objects.get(user_id=request.session['id'])
