@@ -30,7 +30,6 @@ class Course(models.Model):
 
 class Lession(models.Model):
 	course=models.ForeignKey(Course)
-	lession_no=models.IntegerField()
 	name=models.CharField(max_length=49)
 	time=models.DateTimeField(auto_now_add=True)
 	video=models.FileField(upload_to='templates/lession/video')

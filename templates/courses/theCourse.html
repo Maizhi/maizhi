@@ -5,68 +5,100 @@
 <title>麦知网——学问有余，乐为人师</title>
 
 <!-- Bootstrap core CSS -->
-<link href="../css/bootstrap.css" rel="stylesheet">
+<link href="../../../../css/bootstrap.css" rel="stylesheet">
 <!-- Custom styles for this template -->
-<link href="../css/non-responsive.css" rel="stylesheet">
-
-<link href="../css/theCourse.css" rel="stylesheet">    
+<link href="../../../../css/non-responsive.css" rel="stylesheet">
+<link href="../../../../css/font-awesome.min.css" rel="stylesheet">
+<link href="../../../../css/theCourse.css" rel="stylesheet"> 	   
 </head>
 <body>
-	
+	{% include 'public/common/header.html' %}
 	<div class="container" style="margin-top:45px">
 		<div class="row">
 			<div class="col-xs-12">
 				<div>
 					<ol class="breadcrumb tc_breadcrumb">
-					  <li><a href="#">大分类</a></li>
-					  <li><a href="#">小分类</a></li>
-					  <li class="active">课程</li>
+					  <li><a href="{% url 'courses:types' %}">课程系列</a></li>
+					  <li><a href="{% url 'courses:tinytypes' type.id %}">{{type.name}}</a></li>
+					  <li><a href="{% url 'courses:courselist' tiny.id %}">{{tiny.name}}</a></li>
+					  <li class="active">{{course.name}}</li>
 					</ol>
 				</div>
 				<div class="tc_topDiv">
 					<div class="pull-left tc_topDiv1">
 						<div>
-							<img src="../img/rd.jpg" width="100%"/>
+							<img src="../../../../course/{{course.img}}" width="100%"/>
 						</div>
 <!-- 只有老师有  开始-->
-						<div class="change_img"><a id="change_img" href="#" data-toggle="popover" data-placement="bottom" data-content="<div><form action='' method='post' enctype='multipart/form-data'><div><input type='file'></div><div style='margin-top:15px;text-align:center'><input type='submit' value='确认修改'></div></form></div>" data-original-title title><b>修改图片</b></a></div>
+					{% ifequal limit '1' %}
+						<div class="change_img"><a id="change_img" href="#" data-toggle="popover" data-placement="bottom" data-content="<div>请选择180×180<form action='' method='post' enctype='multipart/form-data'><div><input type='file'></div><div style='margin-top:15px;text-align:center'><input type='submit' value='确认修改'></div></form></div>" data-original-title title>修改图片</a></div>
+					{% endifequal %}
 <!-- 只有老师有   结束 -->
 					</div>
 					<div class="pull-left tc_topDiv2">
 						<div>
 							<div class="cl_a_course_right1">
-								<div class="pull-left cl_course_name"><b>课程名课程名课程名课程名课程名</b></div>
+								<div class="pull-left cl_course_name"><b id="coursename">{{course.name}}</b></div>
 								<div class="pull-left">
 <!-- 用星星评价的地方    第一个span是黄色星星  第二个span是空心星星  分别循环   -->
+								
 									<span class="yellow_star">&#9733</span><span class="yellow_star">&#9733</span><span class="yellow_star">&#9733</span><span class="yellow_star">&#9733</span><span>☆</span>
+								
 <!-- 用星星评价的地方 结束 -->							
 								</div>
-								<div class="pull-left cl_font">（123人评价）</div>
-								<div class="pull-left cl_font">5566人购买</div>
-								<div class="pull-left price"><span class="badge">￥2555.00</span></div>
+								<div class="pull-left cl_font">（{{course.grade_con}}人评价）</div>
+								<div class="pull-left cl_font">{{course.purchase_con}}人购买</div>
+								<div class="pull-left price"><span class="badge">￥{{course.price}}</span></div>
 								<div class="pull-right">
-<!-- 老师  只有这1个button -->
-									<button type="button" class="btn btn-warning tc_btn_intro">添加课时</button>
-<!-- 其他用户  只有这两个button -->
-									<button type="button" class="btn btn-warning tc_btn_intro">购买</button>
+<!-- 老师  只有这1个button -->	
+								{% ifequal limit '1' %}
+									<a type="button" href="{% url 'courses:addlession' course.id %}" class="btn btn-warning tc_btn_intro">添加课时</a>
+								{% endifequal %}
+<!-- 其他用户  只有这两个button -->{% ifequal limit '4' %}
+									<a type="button" href="{% url 'courses:purchase' course.id %}" class="btn btn-warning tc_btn_intro">购买</a>
+								{% endifequal %}
+								{% ifequal limit '3' %}
+									<button type="button" class="btn btn-warning tc_btn_intro">去付款</button>
+								{% endifequal %}
+								{% ifequal limit '2' %}
+									<button type="button" class="btn btn-warning tc_btn_intro">已购买</button>
+								{% endifequal %}
+								{% ifnotequal limit '1' %}
 									<button type="button" class="btn btn-info tc_btn_intro">收藏</button>
+								{% endifnotequal %}
 								</div>
 								<div class="clearfix"></div>
 							</div>
 						</div>
 <!-- 只有老师有  开始-->
-						<div class="change_title"><a id="change_title" href="javascript:void(0)" data-toggle="popover" data-placement="bottom" data-content="<div><div><input type='text' maxlength='15' style='resize:none;width:200px;'></div><div style='margin-top:15px;text-align:center'><a href='' type='button' class='btn btn-default btn-xs'>确认修改</a></div></div>" data-original-title title><b>修改课程名</b></a></div>
+					{% ifequal limit '1' %}
+						<div class="change_title"><a id="change_title" href="javascript:void(0)" data-toggle="popover" data-placement="bottom" data-content="<div><div><input type='text' id='name' maxlength='15' style='resize:none;width:200px;' /></div><div style='margin-top:15px;text-align:center'><a href='javascript:void(0)' type='button' onclick='changename({{course.id}})' class='btn btn-default btn-xs'>确认修改</a></div></div>" data-original-title title>修改课程名</a></div>
+					{% endifequal %}
 <!-- 只有老师有   结束 -->
-						<div class="tc_introduce"><i>
+						<div class="tc_introduce"><i id="courseintro">
 <!-- 此处课程介绍需要由后台截断字符串 -->
-							课程介绍：形而上学，是一个传统的哲学分支，旨在解释存在和世界的基本性质。但是，如何准确地定义这个术语并不容易。传统上，形而上学试图用尽可能宽泛的措辞回答两个基本的问题： 根本上有什么存在？它是什么样的？ 形而上学家试图阐明人们用以理解世界的基本概念，例如存在、客体及其性质、空间和时间、因果和可能性。
+							{{course.introduce}}
 						</i></div>
 						<div class="tc_share">
+							{% ifequal limit '1' %}
 							<div class="pull-left">
-								<div class="change_intro"><a id="change_intro" href="javascript:void(0)" data-toggle="popover" data-placement="bottom" data-content="<div><div><textarea style='resize:none;width:200px;'></textarea></div><div style='margin-top:15px;text-align:center'><a href='' type='button' class='btn btn-default btn-xs'>确认修改</a></div></div>" data-original-title title><b>修改课程介绍</b></a></div>
+								<div class="change_intro"><a id="change_intro" href="javascript:void(0)" data-toggle="popover" data-placement="bottom" data-content="<div><div><textarea style='resize:none;width:200px;' id='intro'></textarea></div><div style='margin-top:15px;text-align:center'><a href='javascript:void(0)' onclick='changeintro({{course.id}})' type='button' class='btn btn-default btn-xs'>确认修改</a></div></div>" data-original-title title>修改课程介绍</a></div>
 							</div>
+							{% endifequal %}
 							<div class="pull-right">
-								分享到：XXXXXX
+								<!-- JiaThis Button BEGIN -->
+								分享到：
+								<div class="jiathis_style">
+									<a class="jiathis_button_qzone"></a>
+									<a class="jiathis_button_tsina"></a>
+									<a class="jiathis_button_tqq"></a>
+									<a class="jiathis_button_weixin"></a>
+									<a class="jiathis_button_renren"></a>
+									<a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jtico jtico_jiathis" target="_blank"></a>
+									<a class="jiathis_counter_style"></a>
+								</div>
+								<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js" charset="utf-8"></script>
+								<!-- JiaThis Button END -->
 							</div>
 							<div class="clearfix"></div>
 						</div>
@@ -80,16 +112,24 @@
 				<div class="tc_teacher_intro">
 					<div>
 						<div class="pull-left tc_tea_img">
-							<img src="../img/rd.jpg" class="img-circle" width="100%"/>
+							<img src="../../../../avatar/{{info.img}}" class="img-circle" width="100%"/>
 						</div>
 						<div class="pull-left tc_tea_name">
-							<div><b>亚里士多德少的看天意</b></div>
+							<div><b>{{info.user_name}}</b></div>
 							<div class="tc_tea_name2"><a href=""><b>关于他>></b></a></div>
-							<div><button type="button" class="btn btn-info btn-xs">+关注</button></div>
+							{% ifequal focus '0' %}
+							<div><span class="person_name"><a href=""><b>{{u.0}}</b></a></span><span class="focus"><button id="add{{course.teacher_id}}" type="button" onclick="add({{course.teacher_id}})" class="btn btn-info btn-xs">+ 关注</button><button id="abord{{course.teacher_id}}" style="display:none" type="button" onclick="add({{course.teacher_id}})" class="btn btn-danger btn-xs">取消关注</button></span></div>
+							{% endifequal %}
+							{% ifequal focus '1' %}
+							<div><span class="person_name"><a href=""><b>{{u.0}}</b></a></span><span class="focus"><button id="abord{{course.teacher_id}}" type="button" style="display:none" onclick="add({{course.teacher_id}})" class="btn btn-info btn-xs">+ 关注</button><button id="add{{course.teacher_id}}"  type="button" onclick="add({{course.teacher_id}})" class="btn btn-danger btn-xs">取消关注</button></span></div>
+							{% endifequal %}
+							{% ifequal focus '3' %}
+							<div><span class="person_name"><a href=""><b>{{u.0}}</b></a></span><span class="focus"><button id="add{{course.teacher_id}}" type="button" class="btn btn-success btn-xs">我的课程</button></span></div>
+							{% endifequal %}
 						</div>
 						<div class="clearfix"></div>
 					</div>
-					<div><i>关于亚里士多德的个人介绍：关于亚里士多德的个人介绍：关于亚里士多德的个人介绍关于亚里士多德的个人介绍关于亚里士多德的个人介绍：关于亚里士多德的个人介绍：关于亚里士多德的个人介绍：</i></div>
+					<div><i>{{info.introduce}}</i></div>
 				</div>
 			</div>
 			<div class="col-xs-9 row2_col">
@@ -109,15 +149,17 @@
 							<table class="table table-hover">
 								<tbody>
 <!-- 一条课时  循环开始处 -->
+								{% for i in lession %}
 									<tr>
 										<td>
 											<span class="glyphicon glyphicon-play-circle"></span>
 										</td>
 										<td class="td_12">
-											课时1：
-											<a href="" title="哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈">哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈</a>
+											课时{{i.lession_no}}：
+											<a href="" title="{{i.name}}">{{i.name}}</a>
 										</td>
 									</tr>
+								{% endfor %}
 <!-- 一条课时  循环结束处 -->
 								</tbody>
 							</table>
@@ -130,10 +172,16 @@
 					</div>
 <!-- 课程评价  标签第二签 -->
 					<div class="tab-pane" id="collect">
+					{% ifequal limit '5' %}
+						您已经评价过
+					{% else %}
+						您尚未评价本课程，您可以<a href="javascript:void(0)">评价</a>
+					{% endifequal %}
 <!-- 一条课程评价   循环开始处 -->
+					{% for i in discuss %}
 						<div class="tc_commit">
 							<div class="pull-left tc_commit1">
-								<div><img src="../img/rd.jpg" width="100%"/></div>
+								<div><img src="../../../../avatar/{{i.1}}" width="100%"/></div>
 							</div>
 							<div class="pull-left tc_commit2">
 								<div class="topdirection pull-left"></div>
@@ -142,14 +190,15 @@
 <!-- 用星星评价的地方    第一个span是黄色星星  第二个span是空心星星  分别循环   -->
 										<span class="yellow_star">&#9733</span><span class="yellow_star">&#9733</span><span class="yellow_star">&#9733</span><span class="yellow_star">&#9733</span><span>☆</span>
 <!-- 用星星评价的地方 结束 -->				
-										<span class="tc_commit_name"><a href="">芸豆炖白菜炖土豆</a></span>
-										<span class="tc_time">2014-5-2 12:54:23</span>
+										<span class="tc_commit_name"><a href="">{{i.0}}</a></span>
+										<span class="tc_time">{{i.4|date:"Y-m-d H:i:s"}}</span>
 									</div>
 									<div class="tc_commit_content">评价内容评价内容评价内容评价内容评价内容评价内容评价内容评价内容评价内容评价内容评价内容评价内容评价内容评价内容评价内容评价内容评价内容评价内容评价内容评价内容评价内容评价内容</div>
 								</div>
 							</div>
 							<div class="clearfix"></div>
 						</div>
+					{% endfor %}
 <!-- 一条课程评价   循环结束处 -->
 					</div>
 				</div>
@@ -158,18 +207,43 @@
 	
 	
 	<!-- jQuery文件。务必在bootstrap.min.js 之前引入 -->
-	<script src="../js/jquery.min.js"></script>
+
+	<script src="../../../../js/jquery.min.js"></script>
+<script src="../../../../js/course.js"></script>	
+<!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
+<script src="../../../../js/bootstrap.js"></script>	
 	
-	<!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
-	<script src="../js/bootstrap.js"></script>	
-	<script type="text/javascript">
-	$('#change_img').popover({html:true});
-	$('#change_title').popover({html:true});
-	$('#change_intro').popover({html:true});
-		
-		
-	</script>	
-	
+<script type="text/javascript">
+$('#change_img').popover({html:true});
+$('#change_title').popover({html:true});
+$('#change_intro').popover({html:true});	
+var xmlHttp; 
+
+function createXMLRequest(){
+	if(window.ActiveXObject){
+		xmlHttp=new ActiveXObject("Microsoft.XMLHttp");
+	} else if(window.XMLHttpRequest){
+		xmlHttp=new XMLHttpRequest();
+	}
+}
+
+function add(u_id){   
+	createXMLRequest();                       
+	var url="http://192.168.1.113:8866/users/add/?id="+u_id;
+	xmlHttp.open("GET",url);
+	var this_btn=document.getElementById('add'+u_id)
+	var that_btn=document.getElementById('abord'+u_id)
+	xmlHttp.onreadystatechange=function(){
+		if(xmlHttp.readyState==4 && xmlHttp.status==200){
+			if(xmlHttp.responseText==1){
+				this_btn.style.display='none';
+				that_btn.style.display='inline';
+			}
+		}
+	};
+	xmlHttp.send(); 
+}
+</script>
 
 </body>
 </html>

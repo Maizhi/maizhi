@@ -30,44 +30,55 @@
 					<select id="selectWay">   
 				        <option value="1">按价格排列</option>   
 				        <option value="2">按时间排列</option>   
-				        <option value="3">按人气排列/option>   
+				        <option value="3">按人气排列</option>   
 				   	</select>  
 				</div>
 				<div class="clearfix"></div>
 				</div>
 <!-- 一个课程 循环开始处 -->
+				{% for i in result %}
 				<div class="cl_a_course">
 					<div>
 						<div class="pull-left cl_a_course_left">
-							<img src="../../../img/rd.jpg" width="100%"/>
+							<img src="../../../course/{{i.0}}" width="100%"/>
 						</div>
 						<div class="pull-left cl_a_course_right">
 							<div class="cl_a_course_right1">
-								<div class="pull-left cl_course_name"><b>课程名</b></div>
+								<div class="pull-left cl_course_name"><b>{{i.1}}</b></div>
 								<div class="pull-left">
 <!-- 用星星评价的地方    第一个span是黄色星星  第二个span是空心星星  分别循环   -->
 									<span class="yellow_star">&#9733</span><span class="yellow_star">&#9733</span><span class="yellow_star">&#9733</span><span class="yellow_star">&#9733</span><span>☆</span>
 <!-- 用星星评价的地方 结束 -->							
 								</div>
-								<div class="pull-left cl_font">（123人评价）</div>
-								<div class="pull-left cl_font">5566人购买</div>
-								<div class="pull-right"><span class="badge">￥2555.00</span></div>
+								<div class="pull-left cl_font">（{{i.7}}人评价）</div>
+								<div class="pull-left cl_font">{{i.8}}人购买</div>
+								<div class="pull-right"><span class="badge">￥{{i.3}}</span></div>
 								<div class="clearfix"></div>
 							</div>
 							<div class="cl_intro"><i>
-								课程介绍课程介绍课程介绍课程介绍课程介绍课程介绍课程介绍课程介绍课程介绍课程介绍课程介绍课程介绍课程介绍课程介绍课程介绍课程介绍课程介绍课程介绍课程介绍课程介绍课程介绍课程介绍课程介绍课程介绍课程介绍课程介绍课程介绍课程介绍课程介绍
+								{{i.2}}
 							</i></div>
 						</div>
 						<div class="clearfix"></div>
 					</div>
 					<div class="a_course_bottom">
-						<div class="pull-left a_course_bottom1">讲师：<b>刘一峰</b></div>
-						<div class="pull-right a_course_bottom2"><a href="">点击查看</a></div>
+						<div class="pull-left a_course_bottom1">讲师：<b>{{i.3}}</b></div>
+						<div class="pull-right a_course_bottom2"><a href="{% url 'courses:thecourse' i.5 %}">点击查看</a></div>
 						<div class="clearfix"></div>
 					</div>
 				</div>
+				{% endfor %}
 <!-- 一个课程 循环结束处 -->
 				<div class="clearfix"></div>
+				<ul class="pager">
+				{% if course.has_previous %}
+					  <li><a href="?page={{ course.previous_page_number }}">&larr;上一页</a></li>
+					{% endif %}
+					共 {{ course.number }} 页  第 {{ course.paginator.num_pages }} 页.
+					{% if course.has_next %}
+					  <li><a href="?page={{ course.next_page_number }}">下一页&rarr;</a></li>
+				{% endif %}
+				</ul>
 			</div>
 
 <!-- right div -->

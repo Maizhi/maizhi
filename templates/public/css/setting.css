@@ -17,27 +17,13 @@ a:hover{
 
 
 
-/*切图*/
-.previewwDiv{
-	width:100px;
-	height:100px;
-	overflow:hidden;
-	margin-top:30px;
-	margin-left:20px;
-}
-.cutImgDiv{
-	padding:20px 30px 20px 30px;
-}
 
-.setting_image_btn{
-	text-align:center;
-	margin-top:20px;
-}
-.casee2{
+
+.case2{
 	display:none;
-}.casee3{
+}.case3{
 	display:none;
-}.casee4{
+}.case4{
 	display:none;
 }
 .subbox{
@@ -66,6 +52,9 @@ a:hover{
 	text-align:right;
 	padding:12px 0 10px 0;
 	height:35px;
+}
+.right div div{
+	background-color:#FAFAFA;
 }
 .right{
 	background-color:#FAFAFA;
