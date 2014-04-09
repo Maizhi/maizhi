@@ -15,8 +15,17 @@ urlpatterns = patterns('',
     url(r'^types/create$', views.coursecreate, name="coursecreate"),
     url(r'^css/(?P<path>.*)$', 'django.views.static.serve', 
         { 'document_root': '/home/tron/mz/maizhi/templates/public/css' } 
-	),
-	url(r'^js/(?P<path>.*)$', 'django.views.static.serve', 
+    ),
+    url(r'^course/(?P<path>.*)$', 'django.views.static.serve', 
+        { 'document_root': '/home/tron/mz/maizhi/templates/picture/course' } 
+    ),
+    url(r'^type/(?P<path>.*)$', 'django.views.static.serve', 
+        { 'document_root': '/home/tron/mz/maizhi/templates/picture/type' } 
+    ),
+    url(r'^tiny/(?P<path>.*)$', 'django.views.static.serve', 
+        { 'document_root': '/home/tron/mz/maizhi/templates/picture/tinyType' } 
+    ),
+    url(r'^js/(?P<path>.*)$', 'django.views.static.serve', 
         { 'document_root': '/home/tron/mz/maizhi/templates/public/js' } 
     ),
     url(r'^fonts/(?P<path>.*)$', 'django.views.static.serve', 

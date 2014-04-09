@@ -20,9 +20,7 @@
       <script src="http://cdn.bootcss.com/html5shiv/3.7.0/html5shiv.min.js"></script>
       <script src="http://cdn.bootcss.com/respond.js/1.3.0/respond.min.js"></script>
     <![endif]-->
-<link href="../css/index.css" rel="stylesheet">  
-<script src="../js/jquery.min.js"></script> 
-<script src="../js/bootstrap.js"></script> 
+<link href="../css/index.css" rel="stylesheet">   
 <script>
 var array=new Array();
 </script>
@@ -67,8 +65,9 @@ var array=new Array();
 								<span><font size="1"><i class="icon-suitcase"></i> {% if info.work %}{{info.work}}{% else %}未填写{% endif %}</font></span>
 							</div>
 							<div class="intro">
-								<span><font size="1"><i class="icon-pencil"></i></font></span>
-								<span><font size="1"><i>{% if info.sign %}{{info.sign}}{% else %}未填写{% endif %}</i></font></span>
+								<div class="pull-left"><font size="1"><i class="icon-pencil"></i></font></div>
+								<div class="span_ctrl pull-left"><font size="1"><i>{% if info.sign %}{{info.sign}}{% else %}未填写{% endif %}</i></font></div>
+								<div class="clearfix"></div>
 							</div>
 						</div>
 						<div class="clearfix"></div>
@@ -92,7 +91,7 @@ var array=new Array();
 <!-- 我的小组、课程、悬赏令 -->
 				<div class="my">
 					<div class="my_in">
-						<span class="pull-left"><a href=""><b>我的小组</b></a></span>
+						<span class="pull-left"><a href="{% url 'users:managegroup' %}"><b>我的小组</b></a></span>
 						<span class="pull-right"><a href=""><span class="label label-info">42</span></a></span>
 						<div class="clearfix"></div>
 					</div>
@@ -244,13 +243,21 @@ var array=new Array();
 											</div>
 											<div class="pull-right">
 												<span class=onclick="comment({{i.8}});"onclick="comment({{i.8}});""span_news"><a href="javascript:void(0)"><i class="icon-thumbs-up"></i> <span id="good{{i.8}}">{{i.5}}</span></a></span>
-												<span class="span_news"><a href="javascript:void(0)" onclick="cocomment({{i.8}});"><i class="icon-comment"></i> <span id="review{{i.8}}">{{i.7}}</a></span>
+												<span class="span_news"><a href="javascript:void(0)" onclick="cocomment({{i.8}},'{{i.0}}');"><i class="icon-comment"></i> <span id="review{{i.8}}">{{i.7}}</a></span>
 											</div>
 										</div>
 										<div class="clearfix"></div>
 <!-- 回复的回复 加入的div -->
 										<div>
-											
+											<div id="cocomment{{i.8}}" class="cocomment_act" style="display:none;">
+												<div class="comment_act1 pull-left">
+													<textarea id="cocomment_act1_tarea{{i.8}}" class="comment_act1_tarea"></textarea>
+												</div>
+												<div class="comment_act2 pull-left">
+													<button type="button" class="btn btn-info comment_act_btn">评论</button>
+												</div>
+												<div class="clearfix"></div>
+											</div>
 										</div>
 									</div>
 
@@ -278,13 +285,6 @@ var array=new Array();
 		</div>
 	</div>
 
-	<!-- jQuery文件。务必在bootstrap.min.js 之前引入 -->
-	
-	<script src="../js/publish_news.js"></script>
-	<script src="../js/sco.message.js"></script>
-	<script src="../js/good.js"></script>
-	<script src="../js/message.js"></script>
-	<!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
 	
 
 	<script type="text/javascript">
@@ -410,6 +410,11 @@ var array=new Array();
 			$(".larger").css("cursor","pointer");
 		}
 
+		function cocomment(id,name)
+		{
+			$("#cocomment"+id).toggle();
+			$("#cocomment_act1_tarea"+id).html("回复"+name+":")
+		}
 		
 	</script>
 </body>

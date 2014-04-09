@@ -15,14 +15,38 @@ urlpatterns = patterns('',
     url(r'^types/create$', views.coursecreate, name="coursecreate"),
     url(r'^css/(?P<path>.*)$', 'django.views.static.serve', 
         { 'document_root': '/home/tron/mz/maizhi/templates/public/css' } 
-	),
-	url(r'^js/(?P<path>.*)$', 'django.views.static.serve', 
+    ),
+    url(r'^course/(?P<path>.*)$', 'django.views.static.serve', 
+        { 'document_root': '/home/tron/mz/maizhi/templates/picture/course' } 
+    ),
+    url(r'^type/(?P<path>.*)$', 'django.views.static.serve', 
+        { 'document_root': '/home/tron/mz/maizhi/templates/picture/tinyType' } 
+    ),
+    url(r'^tiny/(?P<path>.*)$', 'django.views.static.serve', 
+        { 'document_root': '/home/tron/mz/maizhi/templates/picture/type' } 
+    ),
+    url(r'^js/(?P<path>.*)$', 'django.views.static.serve', 
         { 'document_root': '/home/tron/mz/maizhi/templates/public/js' } 
     ),
     url(r'^fonts/(?P<path>.*)$', 'django.views.static.serve', 
         { 'document_root': '/home/tron/mz/maizhi/templates/public/fonts' } 
     ), 
     url(r'^img/(?P<path>.*)$', 'django.views.static.serve', 
-        { 'document_root': '/home/tron/mz/maizhi/templates/public/img' } 
+        { 'document_root': '/home/tron/mz/templates/public/img' } 
+    ), 
+    url(r'^news/(?P<path>.*)$', 'django.views.static.serve', 
+        { 'document_root': '/home/tron/mz/maizhi/templates/picture/news' } 
+    ), 
+    url(r'^ico/(?P<path>.*)$', 'django.views.static.serve', 
+        { 'document_root': '/home/tron/mz/maizhi/templates/picture/ico' } 
+    ), 
+    url(r'^avatar/(?P<path>.*)$', 'django.views.static.serve', 
+        { 'document_root': '/home/tron/mz/maizhi/templates/picture/avatar/' } 
+    ), 
+    url(r'^group/(?P<path>.*)$', 'django.views.static.serve', 
+        { 'document_root': '/home/tron/mz/maizhi/templates/picture/group/image' } 
+    ), 
+    url(r'^file/(?P<path>.*)$', 'django.views.static.serve', 
+        { 'document_root': '/home/tron/mz/maizhi/templates/picture/group/file' } 
     ), 
 )
