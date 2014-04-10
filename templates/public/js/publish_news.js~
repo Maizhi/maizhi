@@ -26,7 +26,7 @@ function push(){
 		imgs=imgs.replace(/\+/g,"*")
 		xmlHttp.send('news='+news+'&img='+imgs); 
 	} else {
-		xmlHttp.send('news='+news); 
+		xmlHttp.send('news='+news+'&img='+imgs); 
 	}
 	document.getElementById('list').innerHTML="";
 	document.getElementById('file').value="";
