@@ -5,9 +5,11 @@ from django.core.paginator import PageNotAnInteger, Paginator, InvalidPage, Empt
 from django.core.urlresolvers import reverse
 from django.shortcuts import render
 from courses.models import Types,Tiny_type,Course,Lession,Course_comment
+from login.models import Register
 from users.models import Info,Teacher,News,Review_of_news,Message,Follow_topic,Follow_user,Follow_group,Follow_course,Post_reward,Post_course,Purchase,Good_news,Good_review_of_news
 from django.utils import timezone 
 from PIL import Image
+from django.contrib import messages
 import re,md5,os,time
 
 def types(request):
@@ -85,7 +87,7 @@ def coursecreate(request):
 			#region=(0,0,100,100)
 			cropImg = pic.crop(region)
 			#cropImg=pic.thumbnail((int(coordinate[2]),int(coordinate[3])),Image.ANTIALIAS)
-			cropImg.save(r"/home/tron/mz/maizhi/templates/picture/course/"+str(tj)+".jpg")
+			cropImg.save(r"/home/tron/Dropbox/mz/templates/picture/course/"+str(tj)+".jpg")
 			#pic.save("/home/tron/Dropbox/mz/templates/picture/course/"+str(tj)+".jpg","jpg")
 		course=Course(name=request.POST['name'],img=str(tj)+".jpg",introduce=request.POST['introduce'],tiny_type_id=request.POST['tiny'],price=request.POST['price'],status=0,over=0,teacher_id=request.session['id'],grade=0)
 		course.save()
@@ -134,6 +136,12 @@ def changes(request):
 	except:
 		return HttpResponse('2')
 
+def finish(request):
+	course=Course.objects.get(id=request.GET['course'])
+	course.over=1
+	course.save()
+	return HttpResponse('1')
+
 def thecourse(request,id):
 	course=Course.objects.get(id=id)
 	tiny=Tiny_type.objects.get(id=course.tiny_type_id)
@@ -153,7 +161,6 @@ def thecourse(request,id):
 		limit='1'
 	else:
 		user=Purchase.objects.filter(user_id=request.session['id']).filter(status=1)
-		comment=Course_comment.objects.filter(user_id=request.session['id']).filter(course_id=course.id)
 		own=[]
 		for u in user:
 			own.append(u.purchase_id)
@@ -168,21 +175,38 @@ def thecourse(request,id):
 				limit='3'
 			else:
 				limit='4'
-		if comment:
-			limit='5'
+	comment=Course_comment.objects.filter(user_id=request.session['id']).filter(course_id=course.id)
+	if comment:
+		review='1'
+	else:
+		review='0'
 	dis=Course_comment.objects.filter(course_id=course.id)
 	discuss=[]
-	for d in discuss:
+	for d in dis:
 		each=[]
-		info=Info.objects.get(user_id=d.user_id)
-		each.append(info.user_name)      #0
-		each.append(info.img)			 #1
+		i=Info.objects.get(user_id=d.user_id)
+		each.append(i.user_name)      	 #0
+		each.append(i.img)			 	 #1
 		each.append(d.content)			 #2
 		each.append(d.grade)			 #3
 		each.append(d.time)				 #4
+		each.append(d.id)				 #5
 		discuss.append(each)
 	lessions=Lession.objects.filter(course_id=course.id)
-	return render(request,'courses/theCourse.html',{'course':course,'info':info,'limit':limit,'tiny':tiny,'type':types,'focus':focus,'lession':lessions,'discuss':discuss})
+	#messages.success(request, 'Hello world.')  
+	statu=Register.objects.get(id=course.teacher_id)
+	purview=''
+	if int(statu.status)==int(2):
+		purview='1'
+	elif int(statu.status)==int(3):
+		purview='2'
+	fc=Follow_course.objects.filter(user_id=request.session['id']).filter(follow_course_id=course.id)
+	collect=''
+	if fc:
+		collect='1'
+	else:
+		collect='2'
+	return render(request,'courses/theCourse.html',{'course':course,'info':info,'limit':limit,'tiny':tiny,'type':types,'focus':focus,'lession':lessions,'discuss':discuss,'review':review,'purview':purview,'collect':collect})
 
 def purchase(request,id):
 	course=Course.objects.get(id=id)
@@ -194,7 +218,7 @@ def addlession(request,id):
 		if 'lessiondoc' in request.FILES:
 			#doc=request.FILES['lessiondoc'].name
 			doc=time.time()
-			dirs ='templates/lession/doc/'+str(doc)
+			dirs ='templates/doc/'+str(doc)
 			content = request.FILES['lessiondoc'].read()
 			if os.path.isfile(dirs):
 				os.remove(dirs) 
@@ -207,7 +231,7 @@ def addlession(request,id):
 		if 'lessionvideo' in request.FILES:
 			#video=request.FILES['lessiondoc'].name
 			video=time.time()
-			dirs ='templates/lession/video/'+str(video)
+			dirs ='templates/video/'+str(video)
 			content = request.FILES['lessionvideo'].read()
 			if os.path.isfile(dirs):
 				os.remove(dirs) 
@@ -219,8 +243,6 @@ def addlession(request,id):
 			video=''
 		result=Lession(course_id=id,name=request.POST['lessionname'],video=str(video),doc=str(doc))
 		result.save()
-		user=Info.objects.get(user_id=request.session['id'])
-		course=Course.objects.get(id=id)
 		return render(request,'courses/addLession.html',{'user':user,'course':course,'result':id})
 	except:
 		user=Info.objects.get(user_id=request.session['id'])
@@ -238,6 +260,37 @@ def buy(request,id):
 		course.save()
 		return render(request,'courses/wait.html',{'id':course.id})
 
+def comment(request):
+	Course_comment(user_id=request.session['id'],course_id=request.GET['course'],content=request.GET['content'],grade=request.GET['star']).save()
+	
+	return HttpResponse('1')
+
+def collect(request):
+	Follow_course(user_id=request.session['id'],follow_course_id=request.GET['course']).save()
+	return HttpResponse('1')
+
+def update(request,id):
+	course=Course.objects.get(id=id)
+	if 'courseImg' in request.FILES:
+		image=request.FILES['courseImg']
+		filename=course.img
+		dirs ='templates/picture/course/'+str(filename)
+		content = image.read()
+		if os.path.isfile(dirs):
+			os.remove(dirs) 
+		fp=open(dirs, 'wb')
+		fp.write(content)
+		fp.flush()
+		fp.close()
+		course.img=str(filename)
+		course.save()
+		return render(request,'courses/wait.html',{'id':course.id})
+	else:
+		return HttpResponse('1')
 
 def play(request,id):
-	return render(request,'courses/play.html')
+	lession=Lession.objects.get(id=id)
+	course=Course.objects.get(id=lession.course_id)
+	tiny=Tiny_type.objects.get(id=course.tiny_type_id)
+	types=Types.objects.get(id=tiny.types_id)
+	return render(request,'courses/play.html',{'lession':lession,'course':course,'tiny':tiny,'types':types})
