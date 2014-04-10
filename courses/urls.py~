@@ -8,6 +8,10 @@ urlpatterns = patterns('',
     url(r'^types/tiny/course/lession/add/(.+)$', views.addlession, name="addlession"),
     url(r'^types/tiny/course/purchase/(.+)$', views.purchase, name="purchase"),
     url(r'^types/tiny/course/buy/(.+)$', views.buy, name="buy"),
+    url(r'^types/tiny/course/lession/finish/$', views.finish, name="finish"),
+    url(r'^types/tiny/course/lession/comment/$', views.comment, name="comment"),
+    url(r'^types/tiny/course/lession/collect/$', views.collect, name="collect"),
+    url(r'^types/tiny/course/lession/update/(.+)$', views.update, name="update"),
     url(r'^types/tiny/course/lession/(.+)$', views.thecourse, name="thecourse"),
     url(r'^types/tiny/course/(.+)$', views.courselist, name="courselist"),
     url(r'^types/tiny/(.+)$', views.tinytypes, name="tinytypes"),
@@ -20,10 +24,10 @@ urlpatterns = patterns('',
         { 'document_root': '/home/tron/mz/maizhi/templates/picture/course' } 
     ),
     url(r'^type/(?P<path>.*)$', 'django.views.static.serve', 
-        { 'document_root': '/home/tron/mz/maizhi/templates/picture/tinyType' } 
+        { 'document_root': '/home/tron/mz/maizhi/templates/picture/type' } 
     ),
     url(r'^tiny/(?P<path>.*)$', 'django.views.static.serve', 
-        { 'document_root': '/home/tron/mz/maizhi/templates/picture/type' } 
+        { 'document_root': '/home/tron/mz/maizhi/templates/picture/tinyType' } 
     ),
     url(r'^js/(?P<path>.*)$', 'django.views.static.serve', 
         { 'document_root': '/home/tron/mz/maizhi/templates/public/js' } 
