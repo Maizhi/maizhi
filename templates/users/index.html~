@@ -33,6 +33,7 @@ var array=new Array();
 <script src="../js/sco.message.js"></script>
 <script src="../js/good.js"></script>
 <script src="../js/message.js"></script>
+<script src="../js/comment.js"></script>
 
 
 </head>
@@ -180,13 +181,13 @@ var array=new Array();
 								<div class="content">{{i.2}}</div>
 								<div class="larger_pic">
 									{% if i.4 %}
-									<img id="larger{{i.8}}" class="larger" src="news/{{i.4}}" width="100%" onclick="larger({{i.8}})" onmouseover="change();"/>
+									<a name="larger_a{{i.8}}" href="#larger_a{{i.8}}"><img id="larger{{i.8}}" class="larger" src="news/{{i.4}}" width="100%" onclick="larger({{i.8}})" onmouseover="change();"/></a>
 									{% endif %}
 								</div>
 								<div class="pull-right">
 									<span class="span_news"><a href="javascript:void(0)" onclick="clickgood({{i.8}})"><i class="icon-thumbs-up"></i> <span id="good{{i.8}}">{{i.5}}</span></a></span>
 									<span class="span_news"><a href="#" data-toggle="modal" data-target="#shareThis{{i.8}}" title="分享到我的新鲜事"><i class="icon-share-alt"></i> <span id="share{{i.8}}">{{i.6}}</span></a></span>
-									<span class="span_news"><a href="javascript:void(0)" onclick="comment({{i.8}});"><i class="icon-comment"></i> <span id="review{{i.8}}">{{i.7}}</span></a></span>
+									<span class="span_news"><a href="javascript:void(0)" id="redirect{{i.8}}" onclick="comment({{i.8}});"><i class="icon-comment"></i> <span id="review{{i.8}}">{{i.7}}</span></a></span>
 								</div>
 								<div class="modal fade" id="shareThis{{i.8}}" tabindex="-1" role="dialog" aria-hidden="true">
 								  <div class="modal-dialog">
@@ -216,40 +217,46 @@ var array=new Array();
 								<div id="comment{{i.8}}" class="comment" style="display:none;">
 									<div class="comment_act">
 										<div class="comment_act1 pull-left">
-											<textarea class="comment_act1_tarea"></textarea>
+											<textarea class="comment_act1_tarea" id="comment_tarea{{i.8}}"></textarea>
 										</div>
-										<div class="comment_act2 pull-left">
-											<button type="button" class="btn btn-info comment_act_btn">评论</button>
+										<div id="coAndcocomment{{i.8}}" class="comment_act2 pull-left">
+											<button type="button" class="btn btn-info comment_act_btn" onclick="comment_t({{i.8}});">评论</button>
 										</div>
 										<div class="clearfix"></div>
 									</div>
 <!-- 某条新鲜事的评论 循环开始处 -->
 									<div class="a_comment">
-										<div class="pull-left comment_img">
-											<a href=""><img src="../avatar/{{i.1}}" class="img-circle" width="100%"></a>
-										</div>
-										<div class="pull-left comment_content">
-											<div>
-												<div class="pull-left">
-													<a href=""><b>TRON</b></a>
+										<div id="first_commend{{i.8}}">
+											{% if i.16 %}
+											<div class="comment_a_style">
+												<div class="pull-left comment_img">
+													<a href="{% url 'users:home' i.21 %}"><img src="../avatar/{{i.16}}" class="img-circle" width="100%"></a>
 												</div>
-												<div class="pull-right comment_time">
-													2014-3-5 12:12:12
+												<div class="pull-left comment_content">
+													<div>
+														<div class="pull-left">
+															<a href="{% url 'users:home' i.21 %}"><b>{{i.15}}</b></a>
+														</div>
+														<div class="pull-right comment_time">
+															{{i.19|date:"Y-m-d H:i:s"}}
+														</div>
+														<div class="clearfix"></div>
+													</div>
+													<div class="comment_concontent">
+														{{i.14}}
+													</div>
+													<div class="pull-right">
+														<span class="span_news"><a href="javascript:void(0)" onclick="cogood({{i.13}})"><i class="icon-thumbs-up"></i> <span id="cogood{{i.13}}">{{i.18}}</span></a></span>
+														<span class="span_news"><a href="javascript:void(0)" onclick="cocomment({{i.13}},'{{i.15}}',{{i.17}},{{i.8}});"><i class="icon-comment"></i> <span id="cocomment_span{{i.13}}">{{i.20}}</a></span></span>
+													</div>
 												</div>
 												<div class="clearfix"></div>
 											</div>
-											<div class="comment_concontent">
-												一个女生在雨里痛哭，作为一个陌生男人应该过去安慰一下吗？一个女生在雨里痛哭，作为一个陌生男人应该过去安慰一下吗？一个女生在雨里痛哭，作为一个陌生男人应该过去安慰一下吗？一个女生在雨里痛哭，作为一个陌生男人应该过去安慰一下吗？一个女生在雨里痛哭，作为一个陌生男人应该过去安慰一下吗？
-											</div>
-											<div class="pull-right">
-												<span class=onclick="comment({{i.8}});"onclick="comment({{i.8}});""span_news"><a href="javascript:void(0)"><i class="icon-thumbs-up"></i> <span id="good{{i.8}}">{{i.5}}</span></a></span>
-												<span class="span_news"><a href="javascript:void(0)" onclick="cocomment({{i.8}},'{{i.0}}');"><i class="icon-comment"></i> <span id="review{{i.8}}">{{i.7}}</a></span>
-											</div>
+											{% endif %}
 										</div>
-										<div class="clearfix"></div>
-<!-- 回复的回复 加入的div -->
+<!-- 回复的回复 加入的div 
 										<div>
-											<div id="cocomment{{i.8}}" class="cocomment_act" style="display:none;">
+											<div id="cocomment{{i.13}}" class="cocomment_act" style="display:none;">
 												<div class="comment_act1 pull-left">
 													<textarea id="cocomment_act1_tarea{{i.8}}" class="comment_act1_tarea"></textarea>
 												</div>
@@ -258,9 +265,16 @@ var array=new Array();
 												</div>
 												<div class="clearfix"></div>
 											</div>
+										</div>-->
+										
+										<div style="margin-top:5px;" id="see_more_re{{i.8}}"> 
+											{% if i.16 %}
+											<a href="javascript:void(0)" onclick="get_more_re({{i.8}});">查看更多评论</a>
+											{% endif %}
 										</div>
+										
 									</div>
-
+									
 <!-- 某条新鲜事的评论 循环结束处 -->
 								</div>
 							</div>
@@ -403,6 +417,7 @@ var array=new Array();
 			{
 				$("#larger"+a).css("width","380px");
 			}
+
 		}
 
 		function change()
@@ -410,12 +425,8 @@ var array=new Array();
 			$(".larger").css("cursor","pointer");
 		}
 
-		function cocomment(id,name)
-		{
-			$("#cocomment"+id).toggle();
-			$("#cocomment_act1_tarea"+id).html("回复"+name+":")
-		}
 		
 	</script>
 </body>
 </html>
+
