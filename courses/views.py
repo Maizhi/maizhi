@@ -262,8 +262,11 @@ def buy(request,id):
 
 def comment(request):
 	Course_comment(user_id=request.session['id'],course_id=request.GET['course'],content=request.GET['content'],grade=request.GET['star']).save()
-	
-	return HttpResponse('1')
+	info=Info.objects.get(user_id=request.session['id'])
+	name=str(info.user_name)
+	img=str(info.img)
+
+	return HttpResponse('1,'+name+','+img)
 
 def collect(request):
 	Follow_course(user_id=request.session['id'],follow_course_id=request.GET['course']).save()

@@ -223,11 +223,13 @@
 					</div>
 <!-- 课程评价  标签第二签 -->
 					<div class="tab-pane" id="collect">
+
 					{% ifequal review '1' %}
 						您已经评价过
 					{% else %}
-						您尚未评价本课程，您可以<a id="score" href="javascript:void(0)" data-toggle="popover" data-placement="bottom" data-content="<div>课程打分：<span class='rating' id='rate'><span class='star' onclick='star(5);' style='width:20px;'>☆</span><span class='star' onclick='star(4);' style='width:20px;'>☆</span><span class='star' onclick='star(3);' style='width:20px;'>☆</span><span class='star' onclick='star(2);' style='width:20px;'>☆</span><span class='star' onclick='star(1);' style='width:20px;'>☆</span></span></div><div><span class='score_text1'>课程评价：</span><textarea class='score_text' id='commentInfo'></textarea></div><div class='intro_btn'><button type='button' onclick='comment({{course.id}})' class='btn btn-warning btn-xs'>添加评价</button></div>" data-original-title title>评价</a>
-
+						<div id="change_content">
+						您尚未评价本课程，您可以<a id="score" href="javascript:void(0)" data-placement="bottom" data-content="<div>课程打分：<span class='rating' id='rate'><span class='star' onclick='star(5);' style='width:20px;'>☆</span><span class='star' onclick='star(4);' style='width:20px;'>☆</span><span class='star' onclick='star(3);' style='width:20px;'>☆</span><span class='star' onclick='star(2);' style='width:20px;'>☆</span><span class='star' onclick='star(1);' style='width:20px;'>☆</span></span></div><div><span class='score_text1'>课程评价：</span><textarea class='score_text' id='commentInfo'></textarea></div><div class='intro_btn'><button type='button' onclick='comment({{course.id}})' class='btn btn-warning btn-xs'>添加评价</button></div>" data-original-title title>评价</a>
+						</div>
 		 <!--				 <div id="disqus_thread"></div>
 
    
@@ -245,10 +247,13 @@
     <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
     <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
 	-->
+						<div id="tc_commentt" class="tc_commit"></div>
 					{% endifequal %}
 <!-- 一条课程评价   循环开始处 -->
+						
 					{% for i in discuss %}
 						<div class="tc_commit">
+							
 							<div class="pull-left tc_commit1">
 								<div><img src="../../../../avatar/{{i.1}}" width="100%"/></div>
 							</div>
@@ -307,7 +312,7 @@ function createXMLRequest(){
 
 function add(u_id){   
 	createXMLRequest();                       
-	var url="http://192.168.1.120:8866/users/add/?id="+u_id;
+	var url="http://192.168.1.109:8866/users/add/?id="+u_id;
 	xmlHttp.open("GET",url);
 	var this_btn=document.getElementById('add'+u_id)
 	var that_btn=document.getElementById('abord'+u_id)
@@ -324,7 +329,7 @@ function add(u_id){
 
 function finish(course){
 	createXMLRequest();                       
-	var url="http://192.168.1.120:8866/courses/types/tiny/course/lession/finish/?course="+course;
+	var url="http://192.168.1.109:8866/courses/types/tiny/course/lession/finish/?course="+course;
 	xmlHttp.open("GET",url);
 	var this_btn=document.getElementById('unfinal')
 	var that_btn=document.getElementById('over')
@@ -339,35 +344,19 @@ function finish(course){
 	xmlHttp.send(); 
 }
 
-function comment(course){
-	createXMLRequest();                      
-	var commentInfo=document.getElementById('commentInfo').value;
-	var url="http://192.168.1.120:8866/courses/types/tiny/course/lession/comment/?course="+course+"&star="+starCount+"&content="+commentInfo;
-	xmlHttp.open("GET",url);
-	xmlHttp.onreadystatechange=function(e){
-		if(xmlHttp.readyState==4 && xmlHttp.status==200){
-			if(xmlHttp.responseText==1){
-				e.preventDefault();
-		    	$.scojs_message('您评论成功！', $.scojs_message.TYPE_OK);
-			} else {
-				e.preventDefault();
-    			$.scojs_message('服务器出错啦～ ：）', $.scojs_message.TYPE_ERROR);
-			}
-		}
-	};
-	xmlHttp.send(); 
-}
+
 
 var starCount=0;
 
 function star(integ){
 	starCount=integ
 	document.getElementById('rate').innerHTML=""
-	for (var j=5;j>integ;j--) {
-		document.getElementById('rate').innerHTML+="<span class='star' onclick='star("+j+")' style='width:20px'>☆</span>";
-	}
+	
 	for (var i=1;i<=integ;i++) {
 		document.getElementById('rate').innerHTML+="<span class='yellow_star' onclick='star("+parseInt(integ+1-i)+")' style='width:20px'>★</span>";
+	}
+	for (var j=5;j>integ;j--) {
+		document.getElementById('rate').innerHTML+="<span class='star' onclick='star("+j+")' style='width:20px'>☆</span>";
 	}
 }
 
@@ -392,7 +381,53 @@ function collect(course){
 //window.onload=function(){
 //	document.getElementById('table').rows[0].frame="below"
 //}
+
+
+function comment(course){
+	createXMLRequest();                      
+	var commentInfo=document.getElementById('commentInfo').value;
+	var url="http://192.168.1.109:8866/courses/types/tiny/course/lession/comment/?course="+course+"&star="+starCount+"&content="+commentInfo;
+	xmlHttp.open("GET",url);
+	xmlHttp.onreadystatechange=function(e){
+		if(xmlHttp.readyState==4 && xmlHttp.status==200){
+			return_array=xmlHttp.responseText.split(',');alert(starCount);
+			var str1='<div class="pull-left tc_commit1"><div><img src="../../../../avatar/'+return_array[2]+'" width="100%"/></div></div><div class="pull-left tc_commit2"><div class="topdirection pull-left"></div>';
+			var str2='<div class="pull-left tc_commit32"><div><span id="gradehehe"></span>';
+			var str3='<span class="tc_commit_name"><a href="">'+return_array[1]+'</a></span><span class="tc_time">刚刚更新</span></div>';
+			var str4='<div class="tc_commit_content">'+commentInfo+'</div></div></div><div class="clearfix"></div>';
+			var strr=str1+str2+str3+str4;
+			 
+			if(return_array[0]==1){
+				$("#score").popover('toggle');
+				//$("#collect").html('<div style="padding-bottom:20px;">您已经评价过</div>'+strr);
+				$("#tc_commentt").html(strr);
+				$("#change_content").html('您已经评价过');
+				for (var i=1;i<=starCount;i++){
+					document.getElementById('gradehehe').innerHTML+="<span class='yellow_star'>&#9733</span>";
+				}
+				for (var j=5;j>starCount;j--){
+					document.getElementById('gradehehe').innerHTML+="<span class='star'>☆</span>";
+				}
+
+
+				e.preventDefault();
+		    	$.scojs_message('您评论成功！', $.scojs_message.TYPE_OK);
+		    	
+			} else {
+				e.preventDefault();
+    			$.scojs_message('服务器出错啦～ ：）', $.scojs_message.TYPE_ERROR);
+			}
+		}
+	};
+	xmlHttp.send(); 
+}
+
+
+
 </script>
 
 </body>
 </html>
+
+
+		
