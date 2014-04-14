@@ -303,7 +303,14 @@ def comment(request):
 	review_con=int(topic.review_con)+int(1)
 	topic.review_con=review_con
 	topic.save()
-	return HttpResponse(result.id)
+	info=Info.objects.get(user_id=request.session['id'])
+	name=info.user_name
+	img=info.img
+	good_con=result.good_con
+	reviewCon=result.review_con;
+
+	return HttpResponse(str(result.id)+','+str(img)+','+str(name)+','+str(reviewCon)+','+str(good_con))
+
 
 def change(request):
 	group=Group.objects.get(id=request.GET['id'])
