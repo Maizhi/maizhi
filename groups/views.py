@@ -188,7 +188,15 @@ def publish(request):
 	try:
 		content=request.POST['editor'].replace('*','+')
 		content=content.replace('}',';')
-		topic=Topic(group_id=request.POST['group'],user_id=request.session['id'],name=request.POST['title'],content=content)
+		tname=time.time()
+		dirs ='templates/topic/'+str(tname)
+		if os.path.isfile(dirs):
+			os.remove(dirs) 
+		fp=open(dirs, 'wb')
+		fp.write(content)
+		fp.flush()
+		fp.close()
+		topic=Topic(group_id=request.POST['group'],user_id=request.session['id'],name=request.POST['title'],content=str(tname))
 		topic.save()
 		return HttpResponse(topic.id)
 	except:
@@ -197,6 +205,10 @@ def publish(request):
 def thetopic(request,id):
 	#try:
 		topic=Topic.objects.get(id=id)
+		dirs ='templates/topic/'+topic.content
+		fp=open(dirs)
+		value=fp.read()
+		fp.close()
 		user=Info.objects.get(user_id=topic.user_id)
 		group=Group.objects.get(id=topic.group_id)
 		m=Message.objects.filter(to=request.session['id']).order_by('-time')[0:5]
@@ -245,7 +257,7 @@ def thetopic(request,id):
 			each.append(info.img)                         #5
 			each.append(r.id)                             #6
 			review.append(each)
-		return render(request,'groups/theTopic.html',{'topic':topic,'user':user,'group':group,'message':mess,'havent':havent,'competence':competence,'recommend':recommend,'abord':abord,'review':review,'topics':topics})
+		return render(request,'groups/theTopic.html',{'topic':topic,'user':user,'group':group,'message':mess,'havent':havent,'competence':competence,'recommend':recommend,'abord':abord,'review':review,'topics':topics,'content':value})
 	#except:
 	#	return HttpResponse('404')
 
