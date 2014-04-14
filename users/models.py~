@@ -40,9 +40,8 @@ class Review_of_news(models.Model):
 	content=models.TextField()
 	from_id=models.IntegerField()
 	to=models.IntegerField()
-	good_con=models.IntegerField(default=0)
+	good_con=models.IntegerField()
 	time=models.DateTimeField(auto_now_add=True)
-	review_con=models.IntegerField(default=0)
 
 class Message(models.Model):
 	status=models.IntegerField()
