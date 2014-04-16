@@ -297,12 +297,12 @@ def collect(request):
 	return HttpResponse('1')
 
 def comment(request):
-	result=Review_of_topic(topic_id=request.GET['id'],from_id=request.session['id'],content=request.GET['content'])
-	result.save()
 	topic=Topic.objects.get(id=request.GET['id'])
 	review_con=int(topic.review_con)+int(1)
 	topic.review_con=review_con
 	topic.save()
+	result=Review_of_topic(topic_id=request.GET['id'],from_id=request.session['id'],to=topic.user_id,content=request.GET['content'])
+	result.save()
 	info=Info.objects.get(user_id=request.session['id'])
 	name=info.user_name
 	img=info.img
@@ -310,6 +310,30 @@ def comment(request):
 	reviewCon=result.review_con;
 
 	return HttpResponse(str(result.id)+','+str(img)+','+str(name)+','+str(reviewCon)+','+str(good_con))
+
+def cccomment(request):	
+	re_id=int(request.GET['id'])
+	reoftopic=Review_of_topic.objects.get(id=re_id)
+	rre_topicid=reoftopic.topic_id
+	rre_fromid=request.session['id']
+	rre_to=reoftopic.from_id
+	rre=Review_of_topic(topic_id=rre_topicid,from_id=rre_fromid,to=rre_to,content=request.GET['content'],to_review=re_id)
+	rre.save()
+	rre_id=rre.id
+	reviewCon=int(reoftopic.review_con)+int(1)
+	reoftopic.review_con=reviewCon
+	reoftopic.save()
+	topic=Topic.objects.get(id=rre_topicid)
+	review_con=int(topic.review_con)+int(1)
+	topic.review_con=review_con
+	topic.save()
+	info=Info.objects.get(user_id=request.session['id'])
+	name=info.user_name
+	img=info.img
+	
+
+	return HttpResponse(str(rre_id)+','+str(img)+','+str(name)+','+str(0)+','+str(0))
+	
 
 
 def change(request):

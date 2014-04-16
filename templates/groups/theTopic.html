@@ -63,7 +63,7 @@
 						</div>
 						<div class="pull-right">
 							<span class="span_news"><a href=""><i class="icon-share-alt"></i> {{topic.share_con}}</a></span>
-							<span class="span_news"><a href="javascript:void(0)" onclick="topic_comment();"><i class="icon-comment"></i> {{topic.review_con}}</a></span>
+							<span id="reviewOfTopic_con" class="span_news"><a href="javascript:void(0)" onclick="topic_comment();"><i class="icon-comment"></i> <span id="reviewOfTopic_con{{topic.id}}">{{topic.review_con}}<span></a></span>
 						</div>
 						<div class="clearfix"></div>
 <!-- 评论框  评论时候点击出现 -->
@@ -76,6 +76,20 @@
 									<button type="button" onclick="comment_topic({{topic.id}})" class="btn btn-info comment_act_btn">评论</button>
 								</div>
 								<div class="clearfix"></div>
+							</div>
+						</div>
+<!-- 评论评论框  评论评论时候点击出现 -->
+						<div class="group_comment" id="group_cccomment">
+							<div class="comment_act">
+								<div class="comment_act1 pull-left">
+									<input type="hidden" id="rere_hidden">
+									<textarea id="cccomment" class="comment_act1_tarea"></textarea>
+								</div>
+								<div class="comment_act2 pull-left">
+									<button type="button" onclick="cccomment_topic({{topic.id}})" class="btn btn-info comment_act_btn">评论</button>
+								</div>
+								<div class="clearfix"></div>
+								<div class="roll_comment"><a href="javascript:void(0)" onclick="roll_comment();">收起回复</a></div>
 							</div>
 						</div>
 					</div>
@@ -114,16 +128,16 @@
 								<div>{{r.0}}</div>
 								<div style="text-align:right;">
 									<span class="span_news"><a href="javascript:void(0)" onclick="clickgood({{r.6}})"><i class="icon-thumbs-up"></i> <span id="good{{r.6}}">{{r.2}}</span></a></span>
-									<span class="span_news"><a href="javascript:void(0)" onclick="topic_cocomment({{r.6}},'{{r.4}}');"><i class="icon-comment"></i> {{r.3}}</a></span>
+									<span class="span_news"><a href="javascript:void(0)" onclick="topic_cocomment({{r.6}},'{{r.4}}');"><i class="icon-comment"></i> <span id="rerecomment_con{{r.6}}">{{r.3}}</span></a></span>
 								</div>
 <!-- 评论的评论 
-								<div id="group_cocomment{{r.6}}" class="group_comment2">
+								<div id="group_cccomment{{r.6}}" class="group_comment2">
 									<div class="comment_act">
 										<div class="comment_act1 pull-left">
-											<textarea class="comment_act1_tarea"></textarea>
+											<textarea id="cccomment_act1_tarea{{r.6}}" class="comment_act1_tarea"></textarea>
 										</div>
 										<div class="comment_act2 pull-left">
-											<button type="button" class="btn btn-info comment_act_btn">评论</button>
+											<button type="button" class="btn btn-info comment_act_btn" onclick="fuck({{r.6}});">评论</button>
 										</div>
 										<div class="clearfix"></div>
 									</div>
@@ -189,16 +203,24 @@
 	<script type="text/javascript">
 		function topic_comment()
 		{
+			$("#group_cccomment").hide();
 			$("#group_comment").toggle();
 		}
 		
 		function topic_cocomment(re_id,name)
 		{
-			$("#comment").val('回复'+name+':');
-			$("#group_comment").show();
-			$(window).scrollTop($("#comment").offset().top-200);
+			$("#group_comment").hide();
+			$("#cccomment").val('回复'+name+':');
+			$("#group_cccomment").show();
+			$(window).scrollTop($("#cccomment").offset().top-200);
+			$("#rere_hidden").val(re_id);
 			//$("#group_cocomment"+re_id).toggle();
 		}
+		function roll_comment()
+		{
+			$("#group_cccomment").hide();
+		}
+
 	</script>
 </body>
 </html>
