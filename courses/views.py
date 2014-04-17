@@ -10,7 +10,23 @@ from users.models import Info,Teacher,News,Review_of_news,Message,Follow_topic,F
 from django.utils import timezone 
 from PIL import Image
 from django.contrib import messages
-import re,md5,os,time
+import re,md5,os,time,qiniu.io,qiniu.conf,qiniu.rs
+
+class PutPolicy(object):
+    scope = 'mzvideoimg'         
+    expires = 3600       
+    callbackUrl = None
+    callbackBody = None
+    returnUrl = None
+    returnBody = None
+    endUser = None
+    asyncOps = None
+
+    def __init__(self, scope):
+        self.scope = scope
+
+qiniu.conf.ACCESS_KEY = "EW8idy4EFnJDBicDJZhPIVIVDU9AL0g4waW5MNtJ"
+qiniu.conf.SECRET_KEY = "C1qaP_-sgjVgQb6GGHJ-vCle0qTiGI8qtbgOumOB"
 
 def types(request):
 	types=Types.objects.all()
@@ -27,7 +43,9 @@ def types(request):
 	for n in m:
 		if n.status==1:
 			havent+=1
-	return render(request,'courses/types.html',{'message':mess,'havent':havent,'types':types})
+	top5=Course.objects.all().order_by('-grade')[0:5]
+	top20=Course.objects.all().order_by('-grade')[0:20]
+	return render(request,'courses/types.html',{'message':mess,'havent':havent,'types':types,'top5':top5,'top20':top20})
 
 def tinytypes(request,ty):
 	tiny=Tiny_type.objects.filter(types_id=int(ty))
@@ -79,18 +97,23 @@ def courselist(request,id):
 def coursecreate(request):
 	try:
 		tj=time.time()
+		policy = qiniu.rs.PutPolicy('mzvideoimg')
+		uptoken = policy.token()
 		if 'picture' in request.FILES:
 			pic=request.FILES['picture']
+			suffix=pic.name.split('.')[-1]
 			pic=Image.open(pic)
 			coordinate=request.POST['coordinate'].split('*')
 			region = (int(round(float(coordinate[0]))+1),int(coordinate[1]),int(coordinate[2]),int(coordinate[3]))
 			#region=(0,0,100,100)
 			cropImg = pic.crop(region)
 			#cropImg=pic.thumbnail((int(coordinate[2]),int(coordinate[3])),Image.ANTIALIAS)
-			cropImg.save(r"/home/tron/Dropbox/mz/templates/picture/course/"+str(tj)+".jpg")
+			cropImg.save(r"/home/tron/Dropbox/mz/templates/picture/course/"+str(tj)+'.'+suffix)
 			#pic.save("/home/tron/Dropbox/mz/templates/picture/course/"+str(tj)+".jpg","jpg")
-		course=Course(name=request.POST['name'],img=str(tj)+".jpg",introduce=request.POST['introduce'],tiny_type_id=request.POST['tiny'],price=request.POST['price'],status=0,over=0,teacher_id=request.session['id'],grade=0)
+		domain='mzvideoimg.qiniudn.com'
+		course=Course(name=request.POST['name'],img=str(tj)+'.'+suffix,file_domain=domain,src=domain+'/'+str(tj)+'.'+suffix,file_key=str(tj)+'.'+suffix,introduce=request.POST['introduce'],tiny_type_id=request.POST['tiny'],price=request.POST['price'],status=0,over=0,teacher_id=request.session['id'],grade=0)
 		course.save()
+		qiniu.io.put_file(uptoken,str(tj)+'.'+suffix,r"/home/tron/Dropbox/mz/templates/picture/course/"+str(tj)+'.'+suffix)
 		status=course.id
 		Post_course(user_id=request.session['id'],post_course_id=course.id,status=1).save()
 		return render(request,'courses/success.html',{'status':status})
@@ -144,6 +167,7 @@ def finish(request):
 
 def thecourse(request,id):
 	course=Course.objects.get(id=id)
+	img=course.file_domain+'/'+course.file_key
 	tiny=Tiny_type.objects.get(id=course.tiny_type_id)
 	types=Types.objects.get(id=tiny.types_id)
 	info=Info.objects.get(user_id=course.teacher_id)
@@ -206,7 +230,7 @@ def thecourse(request,id):
 		collect='1'
 	else:
 		collect='2'
-	return render(request,'courses/theCourse.html',{'course':course,'info':info,'limit':limit,'tiny':tiny,'type':types,'focus':focus,'lession':lessions,'discuss':discuss,'review':review,'purview':purview,'collect':collect})
+	return render(request,'courses/theCourse.html',{'img':img,'course':course,'info':info,'limit':limit,'tiny':tiny,'type':types,'focus':focus,'lession':lessions,'discuss':discuss,'review':review,'purview':purview,'collect':collect})
 
 def purchase(request,id):
 	course=Course.objects.get(id=id)
@@ -262,11 +286,8 @@ def buy(request,id):
 
 def comment(request):
 	Course_comment(user_id=request.session['id'],course_id=request.GET['course'],content=request.GET['content'],grade=request.GET['star']).save()
-	info=Info.objects.get(user_id=request.session['id'])
-	name=str(info.user_name)
-	img=str(info.img)
-
-	return HttpResponse('1,'+name+','+img)
+	
+	return HttpResponse('1')
 
 def collect(request):
 	Follow_course(user_id=request.session['id'],follow_course_id=request.GET['course']).save()
@@ -296,4 +317,52 @@ def play(request,id):
 	course=Course.objects.get(id=lession.course_id)
 	tiny=Tiny_type.objects.get(id=course.tiny_type_id)
 	types=Types.objects.get(id=tiny.types_id)
-	return render(request,'courses/play.html',{'lession':lession,'course':course,'tiny':tiny,'types':types})
+	info=Info.objects.get(user_id=course.teacher_id)
+	statu=Register.objects.get(id=course.teacher_id)
+	if request.session['id']!=course.teacher_id:
+		past=Purchase.objects.filter(user_id=request.session['id']).get(purchase_id=course.id)
+		if past.process=="":
+			past.process=str(past.process)+str(lession.id)
+		else:
+			#lists=past.process.split(',')
+			lists=list(past.process)
+			if str(lession.id) in lists:
+				pass
+			else:
+				past.process=str(past.process)+str(lession.id)
+		past.save()
+	else:
+		past=""
+	purview=''
+	if int(statu.status)==int(2):
+		purview='1'
+	elif int(statu.status)==int(3):
+		purview='2'
+	
+	f=Follow_user.objects.filter(user_id=request.session['id'])
+	follow=[]
+	for i in f:
+		follow.append(i.follow_user_id)
+	if request.session['id']==course.teacher_id:
+		focus='3'
+	elif course.teacher_id in follow:
+		focus='1'
+	else:
+		focus='0'
+	lessions=Lession.objects.filter(course_id=course.id)
+	if request.session['id']!=course.teacher_id:
+		studied=Purchase.objects.filter(user_id=request.session['id']).get(purchase_id=course.id)
+		studied=list(studied.process)
+		alllessions=[]
+		for j in lessions:
+			each=[]
+			if j.id in studied:
+				each.append(1)
+			else:
+				each.append(0)
+			each.append(j.name)
+			each.append(studied)
+			alllessions.append(each)
+	else:
+		alllessions=lessions
+	return render(request,'courses/play.html',{'lession':lession,'course':course,'tiny':tiny,'types':types,'info':info,'purview':purview,'focus':focus,'alllessions':alllessions})

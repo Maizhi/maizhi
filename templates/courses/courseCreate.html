@@ -48,12 +48,12 @@
 						</div>
 						<div class="group_form_all">
 							<div class="group_form_name pull-left"> 课程图片 </div>
-							<div class="group_form pull-left"><input type="file" id="picture" name="picture" /></div>
+							<div class="group_form pull-left"><input type="file" id="picture" name="picture" onChange="show_cut();"/></div>
 							<div class="clearfix"></div>
 						</div>
 						<div class="group_form_all">
 <!-- js cutimg begin -->
-							<div class="cutImgDiv">
+							<div id="show_cut" class="cutImgDiv" style="display:none;">
 								<div id="haha" class="pull-left" style="width:330px;overflow:hidden;">
 									
 								</div>
@@ -130,13 +130,14 @@
 <!-- right div -->
 			<div class="col-xs-4">
 				<div class="agreement">
-					在此处要告诉发布者 要在课程系列里面添加课时
+					在此处要告诉发布者 要在课程系列里面添加课时											<div class="cutImgDiv"			<div class="cutImgDiv"
 				</div>
 			</div>
 		</div>
 	</div>
 <script type="text/javascript">
 function handleFileSelect(evt) {
+	$("#show_cut").show();
 	var files = evt.target.files; // FileList object
 	// Loop through the FileList and render image files as thumbnails.
 	for (var i = 0, f; f = files[i]; i++) {

@@ -18,6 +18,9 @@ class Course(models.Model):
 	teacher_id=models.IntegerField()
 	password=models.CharField(max_length=49,blank=True,null=True)
 	name=models.CharField(max_length=49)
+	file_domain=models.CharField(max_length=99)
+	file_key=models.CharField(max_length=99)
+	src=models.CharField(max_length=99)
 	introduce=models.TextField()
 	tag=models.CommaSeparatedIntegerField(max_length=99)
 	price=models.FloatField()
@@ -30,6 +33,7 @@ class Course(models.Model):
 
 class Lession(models.Model):
 	course=models.ForeignKey(Course)
+	lession_no=models.IntegerField()
 	name=models.CharField(max_length=49)
 	time=models.DateTimeField(auto_now_add=True)
 	video=models.FileField(upload_to='templates/lession/video')

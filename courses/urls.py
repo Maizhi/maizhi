@@ -13,9 +13,9 @@ urlpatterns = patterns('',
     url(r'^types/tiny/course/lession/collect/$', views.collect, name="collect"),
     url(r'^types/tiny/course/lession/update/(.+)$', views.update, name="update"),
     url(r'^types/tiny/course/lession/(.+)$', views.thecourse, name="thecourse"),
+    url(r'^types/tiny/course/play/(.+)$', views.play, name="play"),
     url(r'^types/tiny/course/(.+)$', views.courselist, name="courselist"),
     url(r'^types/tiny/(.+)$', views.tinytypes, name="tinytypes"),
-    url(r'^types/tiny/course/play/(.+)$', views.play, name="play"),
     url(r'^types/create$', views.coursecreate, name="coursecreate"),
     url(r'^css/(?P<path>.*)$', 'django.views.static.serve', 
         { 'document_root': '/home/tron/mz/maizhi/templates/public/css' } 
@@ -52,5 +52,8 @@ urlpatterns = patterns('',
     ), 
     url(r'^file/(?P<path>.*)$', 'django.views.static.serve', 
         { 'document_root': '/home/tron/mz/maizhi/templates/picture/group/file' } 
+    ), 
+    url(r'^player/(?P<path>.*)$', 'django.views.static.serve', 
+        { 'document_root': '/home/tron/Dropbox/mz/templates/public/player' } 
     ), 
 )

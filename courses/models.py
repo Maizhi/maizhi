@@ -18,6 +18,9 @@ class Course(models.Model):
 	teacher_id=models.IntegerField()
 	password=models.CharField(max_length=49,blank=True,null=True)
 	name=models.CharField(max_length=49)
+	file_domain=models.CharField(max_length=99)
+	file_key=models.CharField(max_length=99)
+	src=models.CharField(max_length=99)
 	introduce=models.TextField()
 	tag=models.CommaSeparatedIntegerField(max_length=99)
 	price=models.FloatField()
@@ -26,7 +29,7 @@ class Course(models.Model):
 	purchase_con=models.IntegerField(default=0)
 	time=models.DateTimeField(auto_now_add=True)
 	deadline=models.DateTimeField(auto_now_add=True)
-	img=models.ImageField(upload_to='templates/picture/course/')
+	img=models.CharField(max_length=99)
 
 class Lession(models.Model):
 	course=models.ForeignKey(Course)
