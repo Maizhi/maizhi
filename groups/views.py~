@@ -113,7 +113,11 @@ def thegroup(request,id):
 		for i in f:
 			follow.append(i.follow_group_id)
 		if group.id in follow:
-			status='2'
+			user=Follow_group.objects.filter(follow_group_id=group.id).get(user_id=request.session['id'])
+			if int(user.status)==int(1):
+				status='2'
+			else:
+				status='4'
 		else:
 			status='3'
 	m=Message.objects.filter(to=request.session['id']).order_by('-time')[0:5]
@@ -150,6 +154,15 @@ def thegroup(request,id):
 		each.append(k.review_con)    #3
 		each.append(k.id)            #4
 		each.append(k.user_id)       #5
+		try:
+			user=Follow_group.objects.filter(follow_group_id=group.id).get(user_id=k.user_id)
+			each.append(user.status) #6
+		except:
+			each.append('3')         #6
+		if k.user_id == group.user_id:
+			each.append('1')         #7
+		else:
+			each.append('2')         #7
 		topic.append(each)
 	return render(request,'groups/theGroup.html',{'group':group,'status':status,'actman':actman,'message':mess,'havent':havent,'topic':topic,'topics':topics,'recommend':recommend})
 
@@ -175,63 +188,78 @@ def publish(request):
 	try:
 		content=request.POST['editor'].replace('*','+')
 		content=content.replace('}',';')
-		topic=Topic(group_id=request.POST['group'],user_id=request.session['id'],name=request.POST['title'],content=content)
+		tname=time.time()
+		dirs ='templates/topic/'+str(tname)
+		if os.path.isfile(dirs):
+			os.remove(dirs) 
+		fp=open(dirs, 'wb')
+		fp.write(content)
+		fp.flush()
+		fp.close()
+		topic=Topic(group_id=request.POST['group'],user_id=request.session['id'],name=request.POST['title'],content=str(tname))
 		topic.save()
 		return HttpResponse(topic.id)
 	except:
 		return HttpResponse('Wrong')
 
 def thetopic(request,id):
-	topic=Topic.objects.get(id=id)
-	user=Info.objects.get(user_id=topic.user_id)
-	group=Group.objects.get(id=topic.group_id)
-	m=Message.objects.filter(to=request.session['id']).order_by('-time')[0:5]
-	mess=[]
-	for k in m:
-		each=[]
-		name=Info.objects.get(user_id=k.from_id).user_name
-		content=k.content
-		each.append(name)
-		each.append(content)
-		mess.append(each)
-	havent=0
-	for n in m:
-		if n.status==1:
-			havent+=1
-	competence=None
-	if group.user_id==request.session['id']:
-		competence=True
-	recommend=Topic.objects.filter(group_id=group.id).order_by('-review_con')[0:5]
-	c=Follow_topic.objects.filter(user_id=request.session['id'])
-	collect=[]
-	for j in c:
-		collect.append(j.follow_topic_id)
-	abord=None
-	if topic.id in collect:
-		abord=True
-	limit = 15
-	topics=Review_of_topic.objects.filter(topic_id=topic.id).order_by('-time')
-	paginator = Paginator(topics, limit)
-	page = request.GET.get('page')
-	try:
-	    topics = paginator.page(page)
-	except PageNotAnInteger:
-	    topics = paginator.page(1)
-	except EmptyPage:
-	    topics = paginator.page(paginator.num_pages)
-	review=[]
-	for r in topics:
-		each=[]
-		each.append(r.content)                        #0
-		each.append(r.time)                           #1
-		each.append(r.good_con)                       #2
-		each.append(r.review_con)                     #3
-		info=Info.objects.get(user_id=r.from_id)
-		each.append(info.user_name)                   #4
-		each.append(info.img)                         #5
-		each.append(r.id)                             #6
-		review.append(each)
-	return render(request,'groups/theTopic.html',{'topic':topic,'user':user,'group':group,'message':mess,'havent':havent,'competence':competence,'recommend':recommend,'abord':abord,'review':review,'topics':topics})
+	#try:
+		topic=Topic.objects.get(id=id)
+		dirs ='templates/topic/'+topic.content
+		fp=open(dirs)
+		value=fp.read()
+		fp.close()
+		user=Info.objects.get(user_id=topic.user_id)
+		group=Group.objects.get(id=topic.group_id)
+		m=Message.objects.filter(to=request.session['id']).order_by('-time')[0:5]
+		mess=[]
+		for k in m:
+			each=[]
+			name=Info.objects.get(user_id=k.from_id).user_name
+			content=k.content
+			each.append(name)
+			each.append(content)
+			mess.append(each)
+		havent=0
+		for n in m:
+			if n.status==1:
+				havent+=1
+		competence=None
+		if group.user_id==request.session['id']:
+			competence=True
+		recommend=Topic.objects.filter(group_id=group.id).order_by('-review_con')[0:5]
+		c=Follow_topic.objects.filter(user_id=request.session['id'])
+		collect=[]
+		for j in c:
+			collect.append(j.follow_topic_id)
+		abord=None
+		if topic.id in collect:
+			abord=True
+		limit = 15
+		topics=Review_of_topic.objects.filter(topic_id=topic.id).order_by('-time')
+		paginator = Paginator(topics, limit)
+		page = request.GET.get('page')
+		try:
+		    topics = paginator.page(page)
+		except PageNotAnInteger:
+		    topics = paginator.page(1)
+		except EmptyPage:
+		    topics = paginator.page(paginator.num_pages)
+		review=[]
+		for r in topics:
+			each=[]
+			each.append(r.content)                        #0
+			each.append(r.time)                           #1
+			each.append(r.good_con)                       #2
+			each.append(r.review_con)                     #3
+			info=Info.objects.get(user_id=r.from_id)
+			each.append(info.user_name)                   #4
+			each.append(info.img)                         #5
+			each.append(r.id)                             #6
+			review.append(each)
+		return render(request,'groups/theTopic.html',{'topic':topic,'user':user,'group':group,'message':mess,'havent':havent,'competence':competence,'recommend':recommend,'abord':abord,'review':review,'topics':topics,'content':value})
+	#except:
+	#	return HttpResponse('404')
 
 def good(request):
 	entire=Good_review_of_topic.objects.filter(review_of_topic_id=request.GET['id'])
@@ -269,13 +297,44 @@ def collect(request):
 	return HttpResponse('1')
 
 def comment(request):
-	result=Review_of_topic(topic_id=request.GET['id'],from_id=request.session['id'],content=request.GET['content'])
-	result.save()
 	topic=Topic.objects.get(id=request.GET['id'])
 	review_con=int(topic.review_con)+int(1)
 	topic.review_con=review_con
 	topic.save()
-	return HttpResponse(result.id)
+	result=Review_of_topic(topic_id=request.GET['id'],from_id=request.session['id'],to=topic.user_id,content=request.GET['content'])
+	result.save()
+	info=Info.objects.get(user_id=request.session['id'])
+	name=info.user_name
+	img=info.img
+	good_con=result.good_con
+	reviewCon=result.review_con;
+
+	return HttpResponse(str(result.id)+','+str(img)+','+str(name)+','+str(reviewCon)+','+str(good_con))
+
+def cccomment(request):	
+	re_id=int(request.GET['id'])
+	reoftopic=Review_of_topic.objects.get(id=re_id)
+	rre_topicid=reoftopic.topic_id
+	rre_fromid=request.session['id']
+	rre_to=reoftopic.from_id
+	rre=Review_of_topic(topic_id=rre_topicid,from_id=rre_fromid,to=rre_to,content=request.GET['content'],to_review=re_id)
+	rre.save()
+	rre_id=rre.id
+	reviewCon=int(reoftopic.review_con)+int(1)
+	reoftopic.review_con=reviewCon
+	reoftopic.save()
+	topic=Topic.objects.get(id=rre_topicid)
+	review_con=int(topic.review_con)+int(1)
+	topic.review_con=review_con
+	topic.save()
+	info=Info.objects.get(user_id=request.session['id'])
+	name=info.user_name
+	img=info.img
+	
+
+	return HttpResponse(str(rre_id)+','+str(img)+','+str(name)+','+str(0)+','+str(0))
+	
+
 
 def change(request):
 	group=Group.objects.get(id=request.GET['id'])
@@ -330,6 +389,7 @@ def groupcreate(request):
 def download(request,group):
 	group=Group.objects.get(id=group)
 	space=float(group.filespace)/float(2097152)*100
+	free=float(group.filespace)/1024
 	competence=None
 	if request.session['id']==group.user_id:
 		competence=True
@@ -370,11 +430,12 @@ def download(request,group):
 		if n.status==1:
 			havent+=1
 	info=Info.objects.get(user_id=request.session['id'])
-	return render(request,'groups/download.html',{'group':group,'space':space,'competence':competence,'message':mess,'havent':havent,'document':document,'files':files})
+	return render(request,'groups/download.html',{'group':group,'space':space,'competence':competence,'message':mess,'havent':havent,'document':document,'files':files,'free':free})
 
 def upload(request,group):
 	group=Group.objects.get(id=group)
 	space=float(group.filespace)/float(2097152)*100
+	free=float(group.filespace)/1024
 	try:
 		user=request.session['id']
 		intro=request.POST['intro']
@@ -394,7 +455,7 @@ def upload(request,group):
 			fp.close()
 		else:
 			f=None
-		result=Group_file(user_id=user,group_id=group.id,introduce=intro,name=filename,file_path=realname)
+		result=Group_file(user_id=user,group_id=group.id,introduce=intro,name=filename,file_path=realname,file_length=int(filesize)/int(1024))
 		result.save()
 		group.filespace=int(group.filespace)-int(filesize)/int(1024)
 		if group.filespace<=0:
@@ -402,7 +463,7 @@ def upload(request,group):
 		else:
 			leftspace='1'
 			group.save()
-		return render(request,'groups/upload.html',{'result':'1','space':space,'group':group,'space':space,'filesize':filesize})
+		return render(request,'groups/upload.html',{'result':'1','space':space,'group':group,'space':space,'filesize':filesize,'free':free})
 	except:
 		m=Message.objects.filter(to=request.session['id']).order_by('-time')[0:5]
 		mess=[]
@@ -418,7 +479,7 @@ def upload(request,group):
 			if n.status==1:
 				havent+=1
 		info=Info.objects.get(user_id=request.session['id'])
-		return render(request,'groups/upload.html',{'message':mess,'havent':havent,'group':group,'space':space})
+		return render(request,'groups/upload.html',{'message':mess,'havent':havent,'group':group,'space':space,'free':free})
 
 def down(request):
 	files=Group_file.objects.get(id=request.GET['id'])
@@ -426,3 +487,34 @@ def down(request):
 	files.down_con=down
 	files.save()
 	return HttpResponse('ok')
+
+def delete(request):
+	files=Group_file.objects.get(id=request.GET['id'])
+	group=Group.objects.get(id=files.group_id)
+	group.filespace=int(group.filespace)+int(files.file_length)
+	group.save()
+	files.delete()
+	return HttpResponse('OK')
+
+def deleteTopic(request):
+	topic=Topic.objects.get(id=request.GET['id'])
+	topic.delete()
+	return HttpResponse('OK')
+
+def deleteReview(request):
+	review=Review_of_topic.objects.get(id=request.GET['id'])
+	review.delete()
+	return HttpResponse('OK')
+
+def ban(request):
+	user=Follow_group.objects.get(user_id=request.GET['id'])
+	if user.status==2:
+		user.status=1
+		user.save()
+		return HttpResponse('2')
+	else:
+		user.status=2
+		user.save()
+		return HttpResponse('1')
+		
+	
