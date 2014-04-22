@@ -49,9 +49,9 @@ var array=new Array();
 					<div>
 						<div class="person_img pull-left">
 							{% if info.img %}
-							<img src="../avatar/{{info.img}}" width="100%"/>
+							<img src="{{info.domain}}/{{info.img}}" width="100%"/>
 							{% else %}
-							<img src="../avatar/default.png" width="100%"/>
+							<img src="{{info.domain}}/default.png" width="100%"/>
 							{% endif %}
 						</div>
 						<div class="pull-left person_intro">
@@ -125,7 +125,7 @@ var array=new Array();
 					<div class="newsDiv">
 						<div class="in_newsDiv"> 
 							<div class="news_photo pull-left">
-									<a href="{% url 'users:home' i.10 %}" ><img src="../avatar/{{i.1}}" width="100%"/></a>
+									<a href="{% url 'users:home' i.10 %}" ><img src="{{info.domain}}/{{info.img}}-mzhead" width="100%"/></a>
 							</div>
 
 							<div class="news_content pull-left">
@@ -181,7 +181,7 @@ var array=new Array();
 								<div class="content">{{i.2}}</div>
 								<div class="larger_pic">
 									{% if i.4 %}
-									<a name="larger_a{{i.8}}" href="#larger_a{{i.8}}"><img id="larger{{i.8}}" class="larger" src="news/{{i.4}}" width="100%" onclick="larger({{i.8}})" onmouseover="change();"/></a>
+									<a name="larger_a{{i.8}}"><img src="{{i.4}}-mzimg" /></a>
 									{% endif %}
 								</div>
 								<div class="pull-right">
@@ -199,7 +199,7 @@ var array=new Array();
 								      <div class="modal-body">
 								      	<div class="content" style="margin-bottom:20px"><textarea id="sharemsg{{i.8}}" class="form-control">//{{i.0}}:{{i.2}}</textarea></div>
 								        {% if i.4 %}
-										<img id="larger{{i.8}}" class="larger" src="news/{{i.4}}" width="320" />
+										<img src="{{i.4}}" />
 										{% endif %}
 								      </div>
 								      <div class="modal-footer">
@@ -230,7 +230,7 @@ var array=new Array();
 											{% if i.16 %}
 											<div class="comment_a_style">
 												<div class="pull-left comment_img">
-													<a href="{% url 'users:home' i.21 %}"><img src="../avatar/{{i.16}}" class="img-circle" width="100%"></a>
+													<a href="{% url 'users:home' i.21 %}"><img src="{{i.22}}/{{i.16}}" class="img-circle" width="100%"></a>
 												</div>
 												<div class="pull-left comment_content">
 													<div>
