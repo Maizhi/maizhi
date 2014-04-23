@@ -80,63 +80,66 @@
 	</script>
 </head>
 <body>
-	
+	{% include 'public/common/header.html' %}
 	<div class="container" style="margin-top:45px">
 		<div class="row">
 <!-- left div -->
 			<div class="col-xs-8">
 				<div>
 					<div class="publisher_img pull-left">
-						<img src="../img/rd.jpg" width="100%" class="img-circle"/>
+						<img src="../../avatar/{{user_img}}" width="100%" class="img-circle"/>
 					</div>
 					<div class="publisher_name pull-left">
-						<div class="cc_title"><b>创建我的悬赏</b></div>
-						<div class="publisher_sign"><i>我一共创建了33条悬赏</i></div>
+						<div class="cc_title"><b>创建{{user_name}}的悬赏</b></div>
+						<div class="publisher_sign"><i>{{user_name}}一共创建了33条悬赏</i></div>
 					</div>
 					<div class="clearfix"></div>
 				</div>
 				<div>
 					<div class="topdirection"></div>
 					<div class="group_mes">
-					<form action="" method="post" enctype="multipart/form-data">
+					<form action="{% url 'rewards:addReward' %}" method="post" enctype="multipart/form-data">
+						{% csrf_token %}
 						<div class="group_form_all">
 							<div class="group_form_name pull-left"> 求购课程名 </div>
-							<div class="group_form pull-left"><input type="text"></div>
+							<div class="group_form pull-left"><input type="text" name="course_name" class="form-control"></div>
 							<div class="clearfix"></div>
 						</div>
 						<div class="group_form_all">
 							<div class="group_form_name pull-left"> 求购课程描述 </div>
-							<div class="group_form pull-left"><textarea class="group_textarea"></textarea></div>
+							<div class="group_form pull-left"><textarea name="course_intro" class="form-control group_textarea"></textarea></div>
 							<div class="clearfix"></div>
 						</div>
 						<div class="group_form_all">
 							<div class="group_form_name pull-left"> 悬赏金额 </div>
-							<div class="group_form pull-left"><input type="text"></div>
+							<div class="group_form pull-left">
+								<div class="input-group">
+								  <span class="input-group-addon">￥</span>
+								  <input type="text" name="price" class="form-control">
+								  <span class="input-group-addon">.00</span>
+								</div>
+							</div>
 							<div class="clearfix"></div>
 						</div>
 						<div class="group_form_all">
 <!-- 标签设置  -->	
 							<div class="right case4" id="case4">
-								<div>
+								<div class="group_form_all">
 									<div class="group_form_name pull-left"> 课程分类 </div>
-									<div class="group_form pull-left"><input id="textvalue" type="text" name=""></div>
-									<div class="clearfix"></div>
-									<div>
-										<dl class="tags" style="margin-left:50px;">
-<!-- 循环显示分类标签 开始处 -->
-											<dd class="typeLabel12" onclick="typeLabels(2);" style="float:left;margin-top:10px;margin-left:5px;margin-right:5px;padding-top:2px;padding-bottom:2px;padding-left:8px;padding-right:8px;">
-												<a href="javascript:void(0)">  分类1</a>
-											</dd>
-<!-- 循环显示分类标签 结束处 -->			
+									<div class="group_form pull-left">
+										<select name="belongtype" class="form-control">
+<!-- 循环显示分类标签 开始处 -->{% for t in types %}
+											<option value="{{t.id}}">{{t.name}}</option>
+<!-- 循环显示分类标签 结束处 -->{% endfor %}
 											<div class="clearfix"></div>						
-										</dl>
+										</select>
 									</div>
-									
+									<div class="clearfix"></div>							
 									<div class="subbox">
 										<input id="subbox" type="checkbox" onclick="sub()" checked>我已阅读并同意排队网服务协议
 									</div>
 									<div>
-										<div style="text-align:center;"><button id="subbutton3" type="submit" class="btn btn-info">创建悬赏</button></div>
+										<div style="text-align:center;"><input id="subbutton3" type="submit" class="btn btn-info" value="创建悬赏"></div>
 									</div>
 								</div>
 							</div>
