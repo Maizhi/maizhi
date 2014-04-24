@@ -502,5 +502,28 @@ def ban(request):
 		user.status=2
 		user.save()
 		return HttpResponse('1')
-		
+
+def cccomment(request):	
+	re_id=int(request.GET['id'])
+	reoftopic=Review_of_topic.objects.get(id=re_id)
+	rre_topicid=reoftopic.topic_id
+	rre_fromid=request.session['id']
+	rre_to=reoftopic.from_id
+	rre=Review_of_topic(topic_id=rre_topicid,from_id=rre_fromid,to=rre_to,content=request.GET['content'],to_review=re_id)
+	rre.save()
+	rre_id=rre.id
+	reviewCon=int(reoftopic.review_con)+int(1)
+	reoftopic.review_con=reviewCon
+	reoftopic.save()
+	topic=Topic.objects.get(id=rre_topicid)
+	review_con=int(topic.review_con)+int(1)
+	topic.review_con=review_con
+	topic.save()
+	info=Info.objects.get(user_id=request.session['id'])
+	name=info.user_name
+	img=info.img
+	
+
+	return HttpResponse(str(rre_id)+','+str(img)+','+str(name)+','+str(0)+','+str(0))
+	#return HttpResponse(re_id)	
 	

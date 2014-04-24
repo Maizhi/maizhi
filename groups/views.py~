@@ -11,7 +11,23 @@ from django.views.decorators.csrf import csrf_exempt
 import sys
 reload(sys)
 sys.setdefaultencoding('utf-8')
-import re,md5,os,time,json,simplejson
+import re,md5,os,time,json,qiniu.io,qiniu.conf,qiniu.rs
+
+class PutPolicy(object):
+    scope = 'maizhi'         
+    expires = 3600       
+    callbackUrl = None
+    callbackBody = None
+    returnUrl = None
+    returnBody = None
+    endUser = None
+    asyncOps = None
+
+    def __init__(self, scope):
+        self.scope = scope
+
+qiniu.conf.ACCESS_KEY = "EW8idy4EFnJDBicDJZhPIVIVDU9AL0g4waW5MNtJ"
+qiniu.conf.SECRET_KEY = "C1qaP_-sgjVgQb6GGHJ-vCle0qTiGI8qtbgOumOB"
 
 def groups(request):
 	gro=Group.objects.all()
@@ -34,6 +50,7 @@ def groups(request):
 				join=None
 				each.append('0')   #2
 			each.append(i.id)      #3
+			each.append(i.domain)  #4
 			group.append(each)
 	m=Message.objects.filter(to=request.session['id']).order_by('-time')[0:5]
 	mess=[]
@@ -297,44 +314,13 @@ def collect(request):
 	return HttpResponse('1')
 
 def comment(request):
+	result=Review_of_topic(topic_id=request.GET['id'],from_id=request.session['id'],content=request.GET['content'])
+	result.save()
 	topic=Topic.objects.get(id=request.GET['id'])
 	review_con=int(topic.review_con)+int(1)
 	topic.review_con=review_con
 	topic.save()
-	result=Review_of_topic(topic_id=request.GET['id'],from_id=request.session['id'],to=topic.user_id,content=request.GET['content'])
-	result.save()
-	info=Info.objects.get(user_id=request.session['id'])
-	name=info.user_name
-	img=info.img
-	good_con=result.good_con
-	reviewCon=result.review_con;
-
-	return HttpResponse(str(result.id)+','+str(img)+','+str(name)+','+str(reviewCon)+','+str(good_con))
-
-def cccomment(request):	
-	re_id=int(request.GET['id'])
-	reoftopic=Review_of_topic.objects.get(id=re_id)
-	rre_topicid=reoftopic.topic_id
-	rre_fromid=request.session['id']
-	rre_to=reoftopic.from_id
-	rre=Review_of_topic(topic_id=rre_topicid,from_id=rre_fromid,to=rre_to,content=request.GET['content'],to_review=re_id)
-	rre.save()
-	rre_id=rre.id
-	reviewCon=int(reoftopic.review_con)+int(1)
-	reoftopic.review_con=reviewCon
-	reoftopic.save()
-	topic=Topic.objects.get(id=rre_topicid)
-	review_con=int(topic.review_con)+int(1)
-	topic.review_con=review_con
-	topic.save()
-	info=Info.objects.get(user_id=request.session['id'])
-	name=info.user_name
-	img=info.img
-	
-
-	return HttpResponse(str(rre_id)+','+str(img)+','+str(name)+','+str(0)+','+str(0))
-	
-
+	return HttpResponse(result.id)
 
 def change(request):
 	group=Group.objects.get(id=request.GET['id'])
@@ -347,16 +333,12 @@ def groupcreate(request):
 		if Group.objects.filter(name=request.POST['groupName']):
 			return HttpResponse('小组已存在 ! ')
 		else:
+			policy = qiniu.rs.PutPolicy('mzgroup')
+			uptoken = policy.token()
 			if 'groupImg' in request.FILES:
+				tj=time.time()
 				image=request.FILES['groupImg']
-				pattern=re.compile(r'\.') 
-				head=pattern.split(str(image))
-				#tj=str(timezone.now())
-				#tj=tj.split('.')
-				#timej=time.mktime(time.strptime(tj[0],'%Y-%m-%d %H:%M:%S'))
-				head[0]=request.POST['groupName']
-				filename=head[0]+'.'+head[1]
-				dirs ='templates/picture/group/image/'+filename
+				dirs ='templates/picture/group/image/'+str(tj)
 				content = image.read()
 				if os.path.isfile(dirs):
 					os.remove(dirs) 
@@ -364,9 +346,13 @@ def groupcreate(request):
 				fp.write(content)
 				fp.flush()
 				fp.close()
+				domain="http://mzgroup.qiniudn.com"
+				ret=qiniu.io.put_file(uptoken,str(tj),r"/home/tron/Maizhi/templates/picture/group/image/"+str(tj))
+				if ret:
+					os.remove(dirs)
 			else:
 				filename=None
-			g=Group(name=request.POST['groupName'],introduce=request.POST['groupIntro'],img=filename,user_id=request.session['id'])
+			g=Group(name=request.POST['groupName'],introduce=request.POST['groupIntro'],img=str(tj),domain=domain,user_id=request.session['id'])
 			g.save()
 			return render(request,'groups/success.html',{'g':g.id})
 	except:
@@ -516,5 +502,28 @@ def ban(request):
 		user.status=2
 		user.save()
 		return HttpResponse('1')
-		
+
+def cccomment(request):	
+	re_id=int(request.GET['id'])
+	reoftopic=Review_of_topic.objects.get(id=re_id)
+	rre_topicid=reoftopic.topic_id
+	rre_fromid=request.session['id']
+	rre_to=reoftopic.from_id
+	rre=Review_of_topic(topic_id=rre_topicid,from_id=rre_fromid,to=rre_to,content=request.GET['content'],to_review=re_id)
+	rre.save()
+	rre_id=rre.id
+	reviewCon=int(reoftopic.review_con)+int(1)
+	reoftopic.review_con=reviewCon
+	reoftopic.save()
+	topic=Topic.objects.get(id=rre_topicid)
+	review_con=int(topic.review_con)+int(1)
+	topic.review_con=review_con
+	topic.save()
+	info=Info.objects.get(user_id=request.session['id'])
+	name=info.user_name
+	img=info.img
+	
+
+	return HttpResponse(str(rre_id)+','+str(img)+','+str(name)+','+str(0)+','+str(0))
+	#return HttpResponse(re_id)	
 	
