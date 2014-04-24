@@ -9,7 +9,7 @@
 <!-- Custom styles for this template -->
 <link href="../css/non-responsive.css" rel="stylesheet">
 <link href="../css/font-awesome.min.css" rel="stylesheet">
-
+<link href="../ico/favicon.ico" rel="shortcut icon" type="image/vnd.microsoft.icon"/>
     <!-- Just for debugging purposes. Don't actually copy this line! -->
     <!--[if lt IE 9]><script src="../../docs-assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
 
@@ -28,10 +28,10 @@
 <!-- 左侧div -->
 			<div class="col-xs-4">
 <!--我的主页 个人名片  -->
-				{% ifequal identity 0 %}
+				{% ifequal identity '1' %}
 				<div class="person">
 					<div>
-						<div class="person_img pull-left"><img src="../../avatar/{{info.img}}" width="100%"/></div>
+						<div class="person_img pull-left"><img src="{{info.domain}}//{{info.img}}" width="100%"/></div>
 						<div class="pull-left person_intro">
 							<div class="intro">
 								<span><a href=""><font size="4">{{info.user_name|capfirst}}</font></a></span>
@@ -64,12 +64,13 @@
 						<div class="clearfix"></div>
 					</div>
 				</div>
+				{% endifequal %}
 <!--我的主页 个人名片  结束-->
-				{% else %}
+				{% ifequal identity '0' %}
 <!--他的主页 个人名片  -->
 				<div class="person">
 					<div>
-						<div class="person_img pull-left"><img src="../img/rd.jpg" width="100%"/></div>
+						<div class="person_img pull-left"><img src="{{info.domain}}/{{info.img}}" width="100%"/></div>
 						<div class="pull-left person_intro">
 							<div class="intro">
 								<span><a href=""><font size="4">{{info.user_name|capfirst}}</font></a></span>
@@ -106,41 +107,47 @@
 				{% endifequal %}
 <!--他的主页 个人名片  结束-->
 <!--我的主页 管理我的课程、小组、悬赏 -->
+			{% ifequal identity '1' %}
 				<div class="manage">
 					<div class="a_manage"><a href=""><strong>>>管理我的小组</strong></a></div>
 					<div class="a_manage"><a href=""><strong>>>管理我的课程</strong></a></div>
 					<div class="a_manage"><a href=""><strong>>>管理我的悬赏</strong></a></div>
 				</div>
+			{% endifequal %}
 <!-- 他的主页 个人介绍 -->
+			{% ifequal identity '0' %}
 				<div class="person_introduce">
 					<div><strong>个人介绍</strong></div>
 					<div class="person_intro_content">
 						{{info.introduce}}
 					</div>
 				</div>
+			{% endifequal %}
 <!-- 他的主页 个人介绍 结束处-->
-<!-- 推荐课程 -->
+<!-- 推荐课程 
 				<div class="my">
-					<div class="interest_course_title"><strong>推荐小组</strong></div>
+					<div class="interest_course_title"><strong>{% ifequal info.sex 1 %}他{% else %}她{% endifequal %}的小组</strong></div>
+
 					<div class="interest_course">
-<!-- 一条推荐课程 循环开始处 -->
+一条推荐课程 循环开始处 
 						<div class="a_course1 pull-left">
 							<div><a href=""><img src="../img/rd.jpg" width="100%"/></a></div>
 							<div class="course" style=""><a href=""><strong>小组名</strong></a></div>
 							<div class="course">1263关注</div>
 						</div>
-<!-- 一条推荐课程 循环结束处 -->
+一条推荐课程 循环结束处 
 						<div class="clearfix"></div>
 					</div>
 				</div>
+-->
 <!-- 推荐课程 结束处-->
 <!-- 推荐好友 -->
 				<div class="my">
-					<div><b>推荐好友</b></div>
+					<div><b>{% ifequal info.sex 1 %}他{% else %}她{% endifequal %}的好友</b></div>
 <!-- 一个推荐的好友 循环开始处 -->
 					<div class="a_guy">
 						{% for u in guy %}
-						<div class="pull-left person_avatar"><a href=""><img src="../../avatar/{{u.3}}" width="100%"/></a></div>
+						<div class="pull-left person_avatar"><a href=""><img src="{{u.5}}/{{u.3}}" width="100%"/></a></div>
 						<div class="pull-left person_content">
 							<div><span class="person_name"><a href=""><b>{{u.0}}</b></a></span><span class="focus"><button id="add{{u.4}}" type="button" onclick="add({{u.4}})" class="btn btn-info btn-xs">+ 关注</button><button id="abord{{u.4}}" style="display:none" type="button" onclick="abord({{u.4}})" class="btn btn-danger btn-xs">取消关注</button></span></div>
 							<div class="show_person"><a href=""><b>查看资料</b></a></div>
@@ -172,68 +179,127 @@
 <!-- 动态 标签第一签 -->
 								<div class="tab-pane active" id="dongtai">
 <!-- 一条动态 循环开始处 -->
+							{% for i in news %}
 									<div class="a_dongtai">
 										<div class="dongtai_img pull-left">
-											<img src="../img/rd.jpg" width="100%"/>
+											<img src="{{info.domain}}/{{info.img}}" width="100%"/>
 										</div>
 										<div class="dongtai_content pull-left">
 											<div class="triangle pull-left"></div>
 											<div class="dongtai_content1 pull-left">
-												<div class="time">2014-2-5 12:45:44</div>
+												<div class="time">{{i.time|date:"Y-m-d H:i:s"}}</div>
 												<div class="news_cont">
-													<div>新鲜事内容：刘一峰在东莞落网~喜大普奔~！</div>
-													<div style="width:100px;"><img id="news_image1" class="news_image" src="../img/rd.jpg" width="100%" onmouseover="change();" onclick="larger(1);"/></div>
+													<div>{{i.content}}</div>
+													{% if i.img %}
+													<div style="width:100px;"><img id="news_image1" class="news_image" src="{{i.src}}-mzimg" onmouseover="change();" onclick="larger(1);"/></div>
+													{% endif %}
 													<div class="news_act">
-														<span class="span_news"><a href=""><i class="icon-thumbs-up"></i> 690</a></span>
-														<span class="span_news"><a href=""><i class="icon-share-alt"></i> 69</a></span>
-														<span class="span_news"><a href=""><i class="icon-comment"></i> 150</a></span>
+														<span class="span_news"><a href="javascript:void(0)" onclick="clickgoodgood({{i.id}})"><i class="icon-thumbs-up"></i> <span id="good{{i.id}}">{{i.good_con}}</span></a></span>
+														<span class="span_news"><a href="javascript:void(0)" data-toggle="modal" data-target="#shareThis{{i.id}}" title="分享到我的新鲜事"><i class="icon-share-alt"></i> <span id="share{{i.id}}">{{i.share_con}}</span></a></span>
+														<span class="span_news"><a href="javascript:void(0)"><i class="icon-comment"></i> {{i.review_con}}</a></span>
 													</div>
 												</div>
+												<div class="modal fade" id="shareThis{{i.id}}" tabindex="-1" role="dialog" aria-hidden="true">
+												  <div class="modal-dialog">
+												    <div class="modal-content">
+												      <div class="modal-header">
+												        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+												        <h4 class="modal-title">分享到我的新鲜事</h4>
+												      </div>
+												      <div class="modal-body">
+												      	<div class="content" style="margin-bottom:20px"><textarea id="sharemsg{{i.id}}" class="form-control">//{{info.user_name|capfirst}}:{{i.content}}</textarea></div>
+												        {% if i.img %}
+														<img id="larger{{i.id}}" class="larger" src="../news/{{i.img}}" width="320" />
+														{% endif %}
+												      </div>
+												      <div class="modal-footer">
+												        <button type="button" onclick="shareTo({{i.id}})" class="btn btn-primary">分享</button>
+												      </div>
+												    </div><!-- /.modal-content -->
+												  </div><!-- /.modal-dialog -->
+												</div><!-- /.modal -->
 											</div>
 											<div class="clearfix"></div>
 										</div>
 										<div class="clearfix"></div>
 									</div>
+							{% endfor %}
 <!-- 一条动态 循环结束处 -->
 								</div>
 <!-- XX的小组 标签第二签 -->
 								<div class="tab-pane" id="xiaozu">
 									<div class="join_groups">
-										<div class="pull-left arrow"><b><</b></div>
-										<div class="pull-left join_content">
-											<div class="join_title"><b>他加入的小组</b></div>
-											<div class="join_all_group">
-<!-- 他加入的小组  分页开始处 每页七个 -->
-												<div class="pull-left join_a_group">
-													<a href=""><img src="../img/rd.jpg" width="100%"/></a>
-												</div>
-<!-- 他加入的小组  分页结束处 -->
+										<div class="join_content">
+<!-- 他加入的小组  幻灯片开始处 每页七个 -->		
+											<div class="join_title">
+												<span class="pull-left"><b>他加入的小组</b></span>
+												<span class="pull-right home_all_join_groups"><a href="">查看更多</a></span>
 												<div class="clearfix"></div>
 											</div>
+											<div class="bs-example" style="width:100%;">
+										      <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
+										        <div class="carousel-inner">
+										          <div class="item active">
+<!-- 一个小组 幻灯片  第一页   共循环6个 循环开始处-->
+										          	<div class="pull-left join_a_group">
+										          		<div class="includegroups">
+															<a href="#" title="小组名"><img src="public/img/rd.jpg" width="100%"/></a>
+														</div>
+													</div>
+<!-- 一个小组 幻灯片    第一页  共循环6个 循环结束处-->
+													<div class="clearfix"></div>
+										          </div>
+										          <div class="item">
+<!-- 一个小组 幻灯片  第二页   共循环6个 循环开始处-->
+										          	<div class="pull-left join_a_group">
+										          		<div class="includegroups">
+															<a href="#" title="小组名"><img src="public/img/rd.jpg" width="100%"/></a>
+														</div>
+													</div>
+<!-- 一个小组 幻灯片  第二页   共循环6个 循环结束处-->													
+													<div class="clearfix"></div>
+												  </div>
+										        </div>
+										        <a class="left carousel-control" href="#carousel-example-generic" data-slide="prev">
+										          <span class="glyphicon glyphicon-chevron-left"></span>
+										        </a>
+										        <a class="right carousel-control" href="#carousel-example-generic" data-slide="next">
+										          <span class="glyphicon glyphicon-chevron-right"></span>
+										        </a>
+										      </div>
+										    </div>
+<!--  他加入的小组  幻灯片结束处 -->
+												
 										</div>
-										<div class="pull-right arrow"><b><</b></div>
 										<div class="clearfix"></div>
 									</div>
 									<div class="create_group">
 										<div class="create_title"><b>他创建的小组</b></div>
 <!-- 他创建的小组 循环开始处 -->
+									{% for i in mygroup %}
 										<div class="a_group">
 											<div>
 												<div class="group_img pull-left">
-													<a href=""><img src="../img/rd.jpg" width="100%"/></a>
+													<a href=""><img src="{{i.1}}/{{i.2}}" width="100%"/></a>
 												</div>
 												<div class="group_intro pull-left">
 													<div>
 														<div class="pull-left">
-															<a href=""><b>小组名</b></a>
+															<a href=""><b>{{i.0}}</b></a>
 														</div>
+														{% ifequal identity '0' %}
 														<div class="btn_join_group pull-left">
+															{% ifequal i.4 '1' %}
+															<button type="button" class="btn btn-danger btn-xs">退出小组</button>
+															{% else %}
 															<button type="button" class="btn btn-info btn-xs">加入小组</button>
+															{% endifequal %}
 														</div>
+														{% endifequal %}
 														<div class="clearfix"></div>
 													</div>
 													<div class="group_introduce">
-														小组介绍小组介绍小组介绍小组介绍小组介绍小组介绍小组介绍小组介绍小组介绍小组介绍小组介绍小组介绍小组介绍小组介绍小组介绍小组介绍小组介绍小组介绍小组介绍小组介绍小组介绍小组介绍小组介绍小组介绍
+														{{i.3}}
 													</div>
 												</div>
 												<div class="clearfix"></div>
@@ -258,6 +324,7 @@
 												</div>
 											</div>
 										</div>
+									{% endfor %}
 <!-- 他创建的小组 循环结束处 -->
 									</div>
 								</div>
@@ -420,6 +487,8 @@
 	<script src="../js/jquery.min.js"></script>
 	<script src="../js/bootstrap.js"></script>
 	<script src="../js/add.js"></script>
+	<script src="../js/good.js"></script>
+	<script src="../js/share.js"></script>
 	<script type="text/javascript">
 		function larger(a){
 			var wid=$("#news_image"+a).css("width");

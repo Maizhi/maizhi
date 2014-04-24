@@ -56,7 +56,7 @@ var array=new Array();
 						</div>
 						<div class="pull-left person_intro">
 							<div class="intro">
-								<span><a href="{% url 'users:home' id %}"><font size="4"><strong>{{info.user_name|capfirst}}</strong></font></a></span>
+								<span><a href="{% url 'users:home' id %}"><font size="4"><strong>{{info.user_name|capfirst}}</strong></font></a></span>{% ifequal purview '1' %}<i class="icon-check" title="认证用户" style="margin-left:7px"></i>{% endifequal %}{% ifequal purview '2' %}<i class="icon-home" title="企业用户" style="margin-left:7px"></i>{% endifequal %}
 								<span class="span_span"><a href="{% url 'users:setting' %}" title="设置"> <i class="icon-cogs"></i></a></span>
 								<span class="pull-right"><a href="" title="管理我的课程"><i class="icon-table icon-large"></i></a></span>
 								<div class="clearfix"></div>

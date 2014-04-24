@@ -71,7 +71,7 @@ a:hover{
 .intro_mes{
 	margin-left:5px;
 }
-.td_12{
+.td12{
 	display:block;/*内联对象需加*/
 	width:450px;
 	word-break:keep-all;/* 不换行 */

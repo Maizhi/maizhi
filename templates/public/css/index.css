@@ -15,25 +15,11 @@ a:hover{
 	text-decoration:none;
 }
 
-
-
-
-
-
-
-.comment_a_style{
-	margin-top:5px;
-	border-bottom:1px solid #ffffff;
-	padding-bottom: 5px;
+.cocomment_act{
+	width:90%;
+	margin-left:10%;
 }
-.span_ctrl{
-display:block;/*ÄÚÁª¶ÔÏóÐè¼Ó*/
-	width:140px;
-	word-break:keep-all;/* ²»»»ÐÐ */
-	white-space:nowrap;/* ²»»»ÐÐ */
-	overflow:hidden;/* ÄÚÈÝ³¬³ö¿í¶ÈÊ±Òþ²Ø³¬³ö²¿·ÖµÄÄÚÈÝ */
-	text-overflow:ellipsis;/* µ±¶ÔÏóÄÚÎÄ±¾Òç³öÊ±ÏÔÊ¾Ê¡ÂÔ±ê¼Ç(...) £»ÐèÓëoverflow:hidden;Ò»ÆðÊ¹ÓÃ¡£*/
-}
+
 .loading {
  position:absolute;
  top:0;

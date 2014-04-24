@@ -32,7 +32,7 @@
 <!-- 小组信息div -->
 				<div class="groupMes">
 					<div class="group_img pull-left">
-						<img src="../group/{{group.img}}" width="100%" />
+						<img src="{{group.domain}}/{{group.img}}" width="100%" />
 					</div>
 					<div class="group_names pull-left">
 						<div class="group_name">
@@ -259,7 +259,7 @@
 					{% endifequal %}
 <!-- 自己的小组  才有 -->
 					{% ifequal status '1' %}
-					<span class="btnSpan2"><a type="button" href="{% url 'groups:upload' group.id %}" class="btn btn-warning btn_file"><b><i class="icon-file"></i> 管理小组文件</b></a></span>
+					<span class="btnSpan2"><a href="{% url 'groups:upload' group.id %}" type="button" class="btn btn-warning btn_file"><b><i class="icon-file"></i> 管理小组文件</b></a></span>
 					{% endifequal %}
 				</div>
 <!-- 本群活跃用户 -->
@@ -311,7 +311,7 @@
 
 	function join(id,way){   
 		createXMLRequest();                       
-		var url="http://192.168.1.120:8866/groups/join/?id="+id;
+		var url="http://192.168.1.113:8866/groups/join/?id="+id;
 		xmlHttp.open("GET",url);
 		xmlHttp.onreadystatechange=function(){
 			if(xmlHttp.readyState==4 && xmlHttp.status==200){

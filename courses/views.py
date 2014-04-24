@@ -13,7 +13,7 @@ from django.contrib import messages
 import re,md5,os,time,qiniu.io,qiniu.conf,qiniu.rs
 
 class PutPolicy(object):
-    scope = 'mzvideoimg'         
+    scope = 'maizhi'         
     expires = 3600       
     callbackUrl = None
     callbackBody = None
@@ -43,9 +43,23 @@ def types(request):
 	for n in m:
 		if n.status==1:
 			havent+=1
-	top5=Course.objects.all().order_by('-grade')[0:5]
-	top20=Course.objects.all().order_by('-grade')[0:20]
-	return render(request,'courses/types.html',{'message':mess,'havent':havent,'types':types,'top5':top5,'top20':top20})
+	course=Course.objects.all().order_by('-grade')[0:20]
+	c=Follow_course.objects.filter(user_id=request.session['id'])
+	follow=[]
+	courses=[]
+	for j in c:
+		follow.append(j.follow_course_id)
+	for i in course:
+		if i.id in follow:
+			pass
+		else:
+			each=[]
+			each.append(i.domain)		#0
+			each.append(i.img)		#1
+			each.append(i.id)		#2
+			each.append(i.name)		#3
+			courses.append(each)
+	return render(request,'courses/types.html',{'message':mess,'havent':havent,'types':types,'courses1':courses[0:4],'courses1':courses[0:4],'courses2':courses[5:8],'courses3':courses[9:13]})
 
 def tinytypes(request,ty):
 	tiny=Tiny_type.objects.filter(types_id=int(ty))
@@ -91,8 +105,28 @@ def courselist(request,id):
 		each.append(i.grade) 		#6
 		each.append(i.grade_con)	#7
 		each.append(i.purchase_con)	#8
+		each.append(i.domain)		#9
 		result.append(each)
-	return render(request,'courses/courseList.html',{'message':mess,'havent':havent,'course':course,'tiny':tiny,'types':types,'result':result})
+	user=Info.objects.all().order_by('fan_con')
+	users=Follow_user.objects.filter(user_id=request.session['id'])
+	follow=[]
+	recommend=[]
+	for j in users:
+		follow.append(j.follow_user_id)
+	for u in user:
+		if u.user_id in follow:
+			pass
+		else:
+			each=[]
+			each.append(u.user_name)		#0
+			each.append(u.domain)		#1
+			each.append(u.img)			#2
+			each.append(u.sign)			#3
+			each.append(u.id)			#4
+			h=Info.objects.get(user_id=u.user_id)	
+			each.append(h.id)			#5
+			recommend.append(each)
+	return render(request,'courses/courseList.html',{'message':mess,'havent':havent,'course':course,'tiny':tiny,'types':types,'result':result,'user1':recommend[0:3],'user2':recommend[4:6]})
 
 def coursecreate(request):
 	try:
@@ -101,19 +135,27 @@ def coursecreate(request):
 		uptoken = policy.token()
 		if 'picture' in request.FILES:
 			pic=request.FILES['picture']
-			suffix=pic.name.split('.')[-1]
-			pic=Image.open(pic)
-			coordinate=request.POST['coordinate'].split('*')
-			region = (int(round(float(coordinate[0]))+1),int(coordinate[1]),int(coordinate[2]),int(coordinate[3]))
+			#suffix=pic.name.split('.')[-1]
+			#pic=Image.open(pic)
+			#coordinate=request.POST['coordinate'].split('*')
+			#region = (int(round(float(coordinate[0]))+1),int(coordinate[1]),int(coordinate[2]),int(coordinate[3]))
 			#region=(0,0,100,100)
-			cropImg = pic.crop(region)
+			#cropImg = pic.crop(region)
 			#cropImg=pic.thumbnail((int(coordinate[2]),int(coordinate[3])),Image.ANTIALIAS)
-			cropImg.save(r"/home/tron/Dropbox/mz/templates/picture/course/"+str(tj)+'.'+suffix)
+			#cropImg.save(r"/home/tron/Dropbox/mz/templates/picture/course/"+str(tj)+'.'+suffix)
 			#pic.save("/home/tron/Dropbox/mz/templates/picture/course/"+str(tj)+".jpg","jpg")
-		domain='mzvideoimg.qiniudn.com'
-		course=Course(name=request.POST['name'],img=str(tj)+'.'+suffix,file_domain=domain,src=domain+'/'+str(tj)+'.'+suffix,file_key=str(tj)+'.'+suffix,introduce=request.POST['introduce'],tiny_type_id=request.POST['tiny'],price=request.POST['price'],status=0,over=0,teacher_id=request.session['id'],grade=0)
+			dirs ='templates/picture/course/'+str(tj)
+			if os.path.isfile(dirs):
+				os.remove(dirs) 
+			fp=open(dirs, 'wb')
+			content=pic.read()
+			fp.write(content)
+			fp.flush()
+			fp.close()
+		domain='http://mzvideoimg.qiniudn.com'
+		course=Course(name=request.POST['name'],img=str(tj),domain=domain,introduce=request.POST['introduce'],tiny_type_id=request.POST['tiny'],price=request.POST['price'],status=0,over=0,teacher_id=request.session['id'],grade=0)
 		course.save()
-		qiniu.io.put_file(uptoken,str(tj)+'.'+suffix,r"/home/tron/Dropbox/mz/templates/picture/course/"+str(tj)+'.'+suffix)
+		qiniu.io.put_file(uptoken,str(tj),r"/home/tron/Maizhi/templates/picture/course/"+str(tj))
 		status=course.id
 		Post_course(user_id=request.session['id'],post_course_id=course.id,status=1).save()
 		return render(request,'courses/success.html',{'status':status})
@@ -134,7 +176,8 @@ def coursecreate(request):
 			if n.status==1:
 				havent+=1
 		tag=Types.objects.all()
-		return render(request,'courses/courseCreate.html',{'message':mess,'havent':havent,'tag':tag,'user':user})
+		mycourse=Course.objects.filter(teacher_id=request.session['id']).count()
+		return render(request,'courses/courseCreate.html',{'message':mess,'havent':havent,'tag':tag,'user':user,'mycourse':mycourse})
 
 def gettiny(request):
 	alltiny=Tiny_type.objects.filter(types_id=request.GET['tiny'])
@@ -167,7 +210,6 @@ def finish(request):
 
 def thecourse(request,id):
 	course=Course.objects.get(id=id)
-	img=course.file_domain+'/'+course.file_key
 	tiny=Tiny_type.objects.get(id=course.tiny_type_id)
 	types=Types.objects.get(id=tiny.types_id)
 	info=Info.objects.get(user_id=course.teacher_id)
@@ -209,12 +251,13 @@ def thecourse(request,id):
 	for d in dis:
 		each=[]
 		i=Info.objects.get(user_id=d.user_id)
-		each.append(i.user_name)      	 #0
+		each.append(i.user_name)      			 #0
 		each.append(i.img)			 	 #1
 		each.append(d.content)			 #2
-		each.append(d.grade)			 #3
+		each.append(d.grade)				 #3
 		each.append(d.time)				 #4
 		each.append(d.id)				 #5
+		each.append(i.domain)				 #6
 		discuss.append(each)
 	lessions=Lession.objects.filter(course_id=course.id)
 	#messages.success(request, 'Hello world.')  
@@ -230,7 +273,7 @@ def thecourse(request,id):
 		collect='1'
 	else:
 		collect='2'
-	return render(request,'courses/theCourse.html',{'img':img,'course':course,'info':info,'limit':limit,'tiny':tiny,'type':types,'focus':focus,'lession':lessions,'discuss':discuss,'review':review,'purview':purview,'collect':collect})
+	return render(request,'courses/theCourse.html',{'course':course,'info':info,'limit':limit,'tiny':tiny,'type':types,'focus':focus,'lession':lessions,'discuss':discuss,'review':review,'purview':purview,'collect':collect})
 
 def purchase(request,id):
 	course=Course.objects.get(id=id)
@@ -239,10 +282,15 @@ def purchase(request,id):
 
 def addlession(request,id):
 	try:
+		user=Info.objects.get(user_id=request.session['id'])
+		course=Course.objects.get(id=id)
 		if 'lessiondoc' in request.FILES:
+			policy = qiniu.rs.PutPolicy('mzvideodoc')
+			uptoken = policy.token()
 			#doc=request.FILES['lessiondoc'].name
 			doc=time.time()
-			dirs ='templates/doc/'+str(doc)
+			suffix=request.FILES['lessiondoc'].name.split('.')[-1]
+			dirs ='templates/doc/'+str(doc)+'.'+suffix
 			content = request.FILES['lessiondoc'].read()
 			if os.path.isfile(dirs):
 				os.remove(dirs) 
@@ -250,12 +298,16 @@ def addlession(request,id):
 			fp.write(content)
 			fp.flush()
 			fp.close()
+			qiniu.io.put_file(uptoken,str(doc)+'.'+suffix,r"/home/tron/Maizhi/templates/doc/"+str(doc)+'.'+suffix)
 		else:
 			doc=''
 		if 'lessionvideo' in request.FILES:
+			policy = qiniu.rs.PutPolicy('mzvideo')
+			uptoken = policy.token()
 			#video=request.FILES['lessiondoc'].name
 			video=time.time()
-			dirs ='templates/video/'+str(video)
+			suffix=request.FILES['lessionvideo'].name.split('.')[-1]
+			dirs ='templates/video/'+str(video)+'.'+suffix
 			content = request.FILES['lessionvideo'].read()
 			if os.path.isfile(dirs):
 				os.remove(dirs) 
@@ -263,16 +315,19 @@ def addlession(request,id):
 			fp.write(content)
 			fp.flush()
 			fp.close()
+			qiniu.io.put_file(uptoken,str(video)+'.'+suffix,r"/home/tron/Maizhi/templates/video/"+str(video)+'.'+suffix)
 		else:
 			video=''
-		result=Lession(course_id=id,name=request.POST['lessionname'],video=str(video),doc=str(doc))
+		domaindoc="http://mzvideodoc.qiniudn.com"
+		domainvideo="http://mzvideo.qiniudn.com"
+		result=Lession(course_id=id,name=request.POST['lessionname'],video=domainvideo+str(video)+'.'+suffix,doc=domaindoc+str(doc)+'.'+suffix,lession_no=request.POST['lessionid'])
 		result.save()
-		return render(request,'courses/addLession.html',{'user':user,'course':course,'result':id})
+		return render(request,'courses/addLession.html',{'user':user,'course':course,'result':result.id})
 	except:
 		user=Info.objects.get(user_id=request.session['id'])
 		course=Course.objects.get(id=id)
 		return render(request,'courses/addLession.html',{'user':user,'course':course})
-
+	
 def buy(request,id):
 	course=Course.objects.get(id=id)
 	if float(request.GET['price'])!=float(course.price):

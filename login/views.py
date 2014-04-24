@@ -4,6 +4,7 @@ from django.http import HttpResponse,HttpResponseRedirect
 from django.core.urlresolvers import reverse
 from django.shortcuts import render
 from login.models import Register
+from groups.models import Group
 from users.models import Info,Follow_user
 from django.utils import timezone
 from email.mime.text import MIMEText
@@ -56,8 +57,8 @@ def register(request):
 				s=Register(password=password,email=email)
 				s.save()
 				mail(email)
-				i=Info(user_id=s.id,user_name=request.GET['name'],img='default.png')
-				#Follow_user(user_id=s.id,follow_user_id=s.id()).save()
+				i=Info(user_id=s.id,user_name=request.GET['name'],img='default.png',domain="http://mzhead.qiniudn.com")
+				Follow_user(user_id=s.id,follow_user_id=s.id).save()
 				i.save()
 				#return render(request,'login/home.html',{'email':email,'status':0})
 				request.session['email']=email
@@ -77,21 +78,25 @@ def verification(request):
 		user=Register.objects.get(email=email)
 		user.status=2
 		user.save()
-		return HttpResponse("邮箱通过验证")
+		ver="邮箱通过验证"
+		return render(request,"users/setting.html",{"ver":ver})
 		#return render(request,'login/home.html',{'email':email,'status':"邮箱通过验证"})
 	except:
 		return HttpResponse(' 服务器崩溃 !')
 
 def addmajor(request):
-	return render(request,'login/add.html',{'name':request.session['name']})
+	group1=Group.objects.all[0:5]
+	group2=Group.objects.all[6:10]
+	group3=Group.objects.all[10:15]
+	group4=Group.objects.all[16:20]
+	return render(request,'login/add.html',{'name':request.session['name'],'group1':group1,'group2':group2,'group3':group3,'group4':group4})
 
 def adduser(request):
-	recommend=Register.objects.filter(status==2).order_by('?')[0:20]
-	show=[]
-	for i in recommend:
-		info=Info.objects.get(user_id=i.id)
-		show.append(info)
-	return render(request,'login/user.html',{'name':request.session['name'],'show':show})
+	user1=Info.objects.all().order_by('-fan_con')[0:5]
+	user2=Info.objects.all().order_by('-focus_con')[0:5]
+	user3=Info.objects.all().order_by('-follow_group_con')[0:5]
+	user4=Info.objects.all()[0:5]
+	return render(request,'login/user.html',{'name':request.session['name'],'user1':user1,'user2':user2,'user3':user3,'user4':user4})
 
 def mail(address):
 	mailto_list=address

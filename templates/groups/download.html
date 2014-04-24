@@ -25,7 +25,7 @@
 		<div class="row">
 			<div class="col-xs-12">
 				<div class="dl_groupMes">
-					<div class="pull-left group_img"><img src="../../group/{{group.img}}" width="100%"/></div>
+					<div class="pull-left group_img"><img src="{{group.domain}}/{{group.img}}" width="100%"/></div>
 					<div class="pull-left group_name">
 						<div class="group_nam"><b>{{group.name}}</b></div>
 						<div class="return_group"><a href="{% url 'groups:thegroup' group.id %}"><span class="glyphicon glyphicon-arrow-left"></span> 返回小组</a></div>

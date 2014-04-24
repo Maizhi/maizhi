@@ -10,11 +10,13 @@
 <link href="../css/non-responsive.css" rel="stylesheet">
 <link href="../css/font-awesome.min.css" rel="stylesheet">
 <link href="../css/types.css" rel="stylesheet">    
+<link href="../css/unslider.css" rel="stylesheet">  
 <!-- jQuery文件。务必在bootstrap.min.js 之前引入 -->
 <script src="../js/jquery.min.js"></script>
-
+<script src="../js/unslider.js"></script>
 <!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
 <script src="../js/bootstrap.js"></script> 
+
 </head>
 <body>
 	{% include 'public/common/header.html' %}
@@ -46,68 +48,88 @@
 					<div style="margin-bottom:5px"><a href=""><span class="glyphicon glyphicon-globe"></span> 热门推荐</a></div>
 					<div><a href="{% url 'courses:coursecreate' %}"><i class="icon-cloud-upload"></i> 创建新的课程</a></div>
 				</div>
-
+{{recommend}}
 <!-- 推荐 -->
 				<div class="my">
-					<div class="my_title"><b>推荐</b></div>
-					<div class="pageChange">
-						<span><button type="button" class="btn btn-default btn-xs" onclick="frontPage()"><</button></span>
-						<span><button type="button" class="btn btn-default btn-xs" onclick="nextPage()">></button></span>
+					<div class="banner" style="width:500px;">
+						<ul style="height:500px;">
+							<li style="background-color:#F8F8FF;">
+								<div class="inner">
+									<div class="my_title"><b>推荐课程</b></div>
+<!-- 前三个推荐  循环开始处 -->
+								{% for i in courses1 %}
+									<div class="a_guy">
+										<div class="pull-left person_avatar"><a href="{% url 'courses:thecourse' i.2 %}"><img src="{{i.0}}/{{i.1}}" width="100%"/></a></div>
+										<div class="pull-left person_content">
+											<div><span class="person_name"><a href="{% url 'courses:thecourse' i.2 %}"><b>{{i.3}}</b></a></span></div>
+											
+											
+										</div>
+										<div class="clearfix"></div> 
+									</div>
+								{% endfor %}
+<!-- 前三个推荐  循环结束处 -->
+								</div>
+							</li>
+			
+					
+					<li style="background-color:#F8F8FF;">
+								<div class="inner">
+									<div class="my_title"><b>推荐课程</b></div>
+<!-- 三个推荐  循环开始处 -->
+								{% for i in courses2 %}
+									<div class="a_guy">
+										<div class="pull-left person_avatar"><a href="{% url 'courses:thecourse' i.2 %}"><img src="{{i.0}}/{{i.1}}" width="100%"/></a></div>
+										<div class="pull-left person_content">
+											<div><span class="person_name"><a href="{% url 'courses:thecourse' i.2 %}"><b>{{i.3}}</b></a></span></div>
+											
+											
+										</div>
+										<div class="clearfix"></div> 
+									</div>
+								{% endfor %}
+<!-- 三个推荐  循环结束处 -->
+								</div>
+							</li>		
+
+							<li style="background-color:#F8F8FF;">
+								<div class="inner">
+									<div class="my_title"><b>推荐课程</b></div>
+<!-- 后三个推荐  循环开始处 -->
+									{% for i in courses2 %}
+									<div class="a_guy">
+										<div class="pull-left person_avatar"><a href="{% url 'courses:thecourse' i.2 %}"><img src="{{i.0}}/{{i.1}}" width="100%"/></a></div>
+										<div class="pull-left person_content">
+											<div><span class="person_name"><a href="{% url 'courses:thecourse' i.2 %}"><b>{{i.3}}</b></a></span></div>
+											
+											
+										</div>
+										<div class="clearfix"></div> 
+									</div>
+								{% endfor %}
+<!-- 后三个推荐  循环结束处 -->
+								</div>
+							</li>
+			
+						</ul>
 					</div>
-<!-- 前五个推荐 循环开始处 -->
-					<div class="a_guy">
-						<div class="pull-left person_avatar"><a href=""><img src="../img/rd.jpg" width="100%"/></a></div>
-						<div class="pull-left person_content">
-							<div><span class="person_name"><a href=""><b>PHP</b></a></span></div>
-							<div class="show_person"><a href="">点击查看</a></div>
-						</div>
-						<div class="clearfix"></div>
-					</div>
-<!-- 前五个推荐 循环结束处 -->
-<!-- 所有20（id为a0到a19）个推荐 循环开始处 -->
-					<div id="a0" class="a_guy" style="display:none;">
-						<div class="pull-left person_avatar"><a href=""><img src="../img/rd.jpg" width="100%"/></a></div>
-						<div class="pull-left person_content">
-							<div><span class="person_name"><a href=""><b>PHP</b></a></span></div>
-							<div class="show_person"><a href="">点击查看</a></div>
-						</div>
-						<div class="clearfix"></div>
-					</div>
-<!-- 所有20个推荐  循环结束处 -->
+		
 				</div>
 <!-- 推荐 结束处-->
 			</div>
 		</div>
 	</div>
-	
 	<script type="text/javascript">
-	var start_id_num=0;
-		function frontPage()
-		{	if(start_id_num > 0)
-			{
-				start_id_num-=5;alert(start_id_num);
-				$(".a_guy").css("display","none");
-				$("#a"+start_id_num).css("display","block");
-				$("#a"+(start_id_num+1)).css("display","block");
-				$("#a"+(start_id_num+2)).css("display","block");
-				$("#a"+(start_id_num+3)).css("display","block");
-				$("#a"+(start_id_num+4)).css("display","block");
-			}
+	if(window.chrome) {
+			$('.banner li').css('background-size', '100% 100%');
 		}
-		function nextPage()
-		{
-			if(start_id_num < 15)
-			{
-				start_id_num+=5;alert(+start_id_num);
-				$(".a_guy").css("display","none");
-				$("#a"+start_id_num).css("display","block");
-				$("#a"+(start_id_num+1)).css("display","block");
-				$("#a"+(start_id_num+2)).css("display","block");
-				$("#a"+(start_id_num+3)).css("display","block");
-				$("#a"+(start_id_num+4)).css("display","block");
-			}
-		
-		}
+
+		$('.banner').unslider({
+			//arrows: true,
+			fluid: true,
+			dots: true
+		});
+
 		
 		
 	</script>

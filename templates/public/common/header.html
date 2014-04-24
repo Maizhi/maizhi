@@ -18,7 +18,25 @@
 				</div>
 				<div class="clearfix"></div>
             </li>
-            <li><a id="selectPartner" href="javascript:void(0)" data-toggle="popover" data-placement="bottom" data-content="{% for k in message %}<div style='width:180px;'><span style='font-size:10px'>{{k.0}}给您发了一条私信 : <i>{{k.1}}</i></span></div><div style='font-size:10px' class='pull-right'><a href='#'>回复</a></div><hr />{% endfor %}<a href='javascript:void(0)' class='pull-right' style='font-size:8px'>查看更多 >></a>" data-original-title title><i class="icon-bell-alt"></i>{% ifequal havent 0 %}<span></span>{% else %}<span class="badge">{{havent}}</span>{% endifequal %}</a></li>
+            <li><a id="selectPartner" href="javascript:void(0)" class="dropdown-toggle" data-toggle="dropdown"><i class="icon-bell-alt"></i>{% ifequal havent 0 %}<span></span>{% else %}<span class="badge">{{havent}}</span>{% endifequal %}</a>
+            		<ul class="dropdown-menu">
+            			{% for k in message %}
+		                <li><a href="#">{{k.0}}给您发了一条私信 : <i>{{k.1}}</i></span></div><div style='font-size:10px' class='pull-right'><a href='#'>回复</a></a></li>
+		             {% endfor %}
+		                <li><a href='javascript:void(0)' style='font-size:8px'>查看更多 >></a></li>
+		</ul>
+            </li>
+            <!--<div style='width:180px;'><span style='font-size:10px'>{{k.0}}给您发了一条私信 : <i>{{k.1}}</i></span></div><div style='font-size:10px' class='pull-right'><a href='#'>回复</a></div><hr /><a href='javascript:void(0)' class='pull-right' style='font-size:8px'>查看更多 >></a>-->
+            <li><a href="javascript:void(0)" class="dropdown-toggle" data-toggle="dropdown"><i class="icon-reorder"></i></a>
+            		<ul class="dropdown-menu">
+		                <li><a href="#"><i class="icon-check"></i> 申请发布者权限</a></li>
+		                <li><a href="#"><i class="icon-home"></i> 我的主页</a></li>
+		                <li class="divider"></li>
+		                <li><a href="#"><i class="icon-user-md"></i> 联系我们</a></li>
+		                <li class="divider"></li>
+		                <li><a href="#"><i class="icon-signout"></i> 登出</a></li>
+		</ul>
+            </li>
           </ul>
         </div><!--/.nav-collapse -->
       </div>

@@ -30,7 +30,7 @@
 				<div class="tc_topDiv">
 					<div class="pull-left tc_topDiv1">
 						<div>
-							<img src="{{course.src}}" width="100%"/>
+							<img src="{{course.domain}}/{{course.img}}" width="100%"/>
 						</div>
 <!-- 只有老师有  开始-->
 					{% ifequal limit '1' %}
@@ -169,7 +169,7 @@
 				<div class="tc_teacher_intro">
 					<div>
 						<div class="pull-left tc_tea_img">
-							<img src="../../../../avatar/{{info.img}}" class="img-circle" width="100%"/>
+							<img src="{{info.domain}}/{{info.img}}" class="img-circle" width="100%"/>
 						</div>
 						<div class="pull-left tc_tea_name">
 							<div style="margin-bottom:10px;margin-top:10px"><b><a href="{% url 'users:home' info.user_id %}">{{info.user_name}}</a></b>{% ifequal purview '1' %}<i class="icon-check" title="认证用户" style="margin-left:7px"></i>{% endifequal %}{% ifequal purview '2' %}<i class="icon-home" title="企业用户" style="margin-left:7px"></i>{% endifequal %}</div>
@@ -250,7 +250,7 @@
 					{% for i in discuss %}
 						<div class="tc_commit">
 							<div class="pull-left tc_commit1">
-								<div><img src="../../../../avatar/{{i.1}}" width="100%"/></div>
+								<div><img src=" {{i.6}}/{{i.1}}" width="100%"/></div>
 							</div>
 							<div class="pull-left tc_commit2">
 								<div class="topdirection pull-left"></div>
