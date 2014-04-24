@@ -6,6 +6,7 @@ class Group(models.Model):
 	filespace=models.IntegerField(default=2097152)
 	user_id=models.IntegerField()
 	introduce=models.TextField()
+	domain=models.CharField(max_length=99)
 	img=models.ImageField(upload_to='templates/picture/group/image/',blank=True,null=True)
 	name=models.CharField(max_length=99)
 	crew_con=models.IntegerField(default=1)

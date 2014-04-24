@@ -13,6 +13,7 @@ class Info(models.Model):
 	img=models.ImageField(upload_to='templates/picture/avatar/',blank=True,null=True)
 	follow_group_con=models.IntegerField(default=0)
 	fan_con=models.IntegerField(default=0)
+	domain=models.CharField(max_length=99)
 	focus_con=models.IntegerField(default=0)
 	constellation=models.CharField(max_length=12,blank=True,null=True)
 	tag=models.CommaSeparatedIntegerField(max_length=255,blank=True,null=True)
@@ -33,6 +34,7 @@ class News(models.Model):
 	share_con=models.IntegerField()
 	review_con=models.IntegerField()
 	img=models.ImageField(upload_to='templates/picture/news/',blank=True,null=True)
+	src=models.CharField(max_length=99)
 	time=models.DateTimeField(auto_now_add=True)
 
 class Review_of_news(models.Model):
@@ -40,7 +42,7 @@ class Review_of_news(models.Model):
 	content=models.TextField()
 	from_id=models.IntegerField()
 	to=models.IntegerField()
-	good_con=models.IntegerField(default=0)
+	good_con=models.IntegerField()
 	time=models.DateTimeField(auto_now_add=True)
 	review_con=models.IntegerField(default=0)
 
@@ -87,6 +89,7 @@ class Purchase(models.Model):
 	user=models.ForeignKey(Register)
 	purchase_id=models.IntegerField()
 	teacher_id=models.IntegerField()
+	status=models.IntegerField()
 	process=models.CharField(max_length=255)
 	time=models.DateTimeField(auto_now_add=True)
 
