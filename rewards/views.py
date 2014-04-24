@@ -168,11 +168,16 @@ def thereward(request,id):
 		a_re_reward.append(r.from_id)				#4
 		re_rewards.append(a_re_reward)
 
+	if Uncover.objects.filter(reward_id=id).filter(to=request.session['id']):
+		uncover_exist=1
+	else:
+		uncover_exist=0
+
 
 	yellow_stars=range(0,info.credit)
 	hollow_stars=range(0,(5-info.credit))
 
-	return render(request,'rewards/theReward.html',{'areward':areward,'re_rewards':re_rewards,'yellow_stars':yellow_stars,'hollow_stars':hollow_stars})
+	return render(request,'rewards/theReward.html',{'areward':areward,'re_rewards':re_rewards,'yellow_stars':yellow_stars,'hollow_stars':hollow_stars,'uncover_exist':uncover_exist})
 
 
 def addreview(request):

@@ -56,7 +56,7 @@
 						$("#ajax_comment").html(strr);
 						$("#ajax_comment").removeAttr("id");
 						$("#reOfReward_texta").val('');
-						//$("#group_comment").hide();
+						$("#tr_commit").hide();
 						
 						e.preventDefault();
 			    		$.scojs_message('您回复成功！', $.scojs_message.TYPE_OK);
@@ -81,6 +81,7 @@
 			if(xmlHttp.readyState==4 && xmlHttp.status==200){
 					//re_array=xmlHttp.responseText.split(',');
 					if(xmlHttp.responseText) {
+						$("#jiebang").html('<span><button type="button" class="btn btn-warning" disabled="disabled">您已揭榜</button></span>');
 						e.preventDefault();
 			    		$.scojs_message('您揭榜成功！', $.scojs_message.TYPE_OK);
 					}else{
@@ -149,7 +150,13 @@
 						<div>{{areward.1}}</div>
 					</div>
 					<div class="tr_btns">
+						<span id="jiebang">
+						{% ifequal uncover_exist 0 %}
 						<span><button type="button" class="btn btn-warning" onclick="uncover({{areward.10}});">我要揭榜</button></span>
+						{% else %}
+						<span><button type="button" class="btn btn-warning" disabled="disabled">您已揭榜</button></span>
+						{% endifequal %}
+						</span>
 						<span><button type="button" class="btn btn-primary" onclick="tr_commit()">留言</button></span>
 					</div>
 					<div class="tr_commit" id="tr_commit">
@@ -164,9 +171,12 @@
 						</form>
 					</div>
 					<div>
-<!-- 一条留言   循环开始处 -->{% for r in re_rewards %}
-						<div class="tc_commit">
-							<div id="ajax_comment" style="padding-bottom:40px;"></div>
+
+						<div id="ajax_comment"></div>
+<!-- 一条留言   循环开始处 -->
+{% for r in re_rewards %}
+						<div class="tc_commit" style="padding-top:25px;">
+							
 							<div class="pull-left tc_commit1">
 								<div><img src="../../avatar/{{r.0}}" class="img-circle" width="100%"/></div>
 							</div>
