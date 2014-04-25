@@ -29,6 +29,7 @@ qiniu.conf.ACCESS_KEY = "EW8idy4EFnJDBicDJZhPIVIVDU9AL0g4waW5MNtJ"
 qiniu.conf.SECRET_KEY = "C1qaP_-sgjVgQb6GGHJ-vCle0qTiGI8qtbgOumOB"
 
 def types(request):
+	info=info.objects.filter(user_id=request.session['id'])
 	types=Types.objects.all()
 	m=Message.objects.filter(to=request.session['id']).order_by('-time')[0:5]
 	mess=[]
@@ -59,14 +60,16 @@ def types(request):
 			each.append(i.id)		#2
 			each.append(i.name)		#3
 			courses.append(each)
-	return render(request,'courses/types.html',{'message':mess,'havent':havent,'types':types,'courses1':courses[0:4],'courses1':courses[0:4],'courses2':courses[5:8],'courses3':courses[9:13]})
+	return render(request,'courses/types.html',{'info':info,'message':mess,'havent':havent,'types':types,'courses1':courses[0:4],'courses1':courses[0:4],'courses2':courses[5:8],'courses3':courses[9:13]})
 
 def tinytypes(request,ty):
 	tiny=Tiny_type.objects.filter(types_id=int(ty))
 	types=Types.objects.get(id=int(ty))
+	info=Info.objects.get(user_id=request.session['id'])
 	return render(request,'courses/tinyTypes.html',{'tiny':tiny,'types':types})
 
 def courselist(request,id):
+	info=Info.objects.get(user_id=request.session['id'])
 	course=Course.objects.filter(tiny_type_id=id).order_by('grade')
 	tiny=Tiny_type.objects.get(id=id)
 	types=Types.objects.get(id=tiny.types_id)
@@ -99,8 +102,8 @@ def courselist(request,id):
 		each.append(i.name)			#1
 		each.append(i.introduce)	#2
 		each.append(i.price)		#3
-		info=Info.objects.get(user_id=i.teacher_id)
-		each.append(info.user_name)	#4
+		k=Info.objects.get(user_id=i.teacher_id)
+		each.append(k.user_name)	#4
 		each.append(i.id) 			#5
 		each.append(i.grade) 		#6
 		each.append(i.grade_con)	#7
@@ -126,7 +129,7 @@ def courselist(request,id):
 			h=Info.objects.get(user_id=u.user_id)	
 			each.append(h.id)			#5
 			recommend.append(each)
-	return render(request,'courses/courseList.html',{'message':mess,'havent':havent,'course':course,'tiny':tiny,'types':types,'result':result,'user1':recommend[0:3],'user2':recommend[4:6]})
+	return render(request,'courses/courseList.html',{'info':info,'message':mess,'havent':havent,'course':course,'tiny':tiny,'types':types,'result':result,'user1':recommend[0:3],'user2':recommend[4:6]})
 
 def coursecreate(request):
 	try:
@@ -162,7 +165,7 @@ def coursecreate(request):
 		#return HttpResponse(str(int(round(float(coordinate[0]))+1))+"---"+str(int(coordinate[1]))+"---"+str(int(coordinate[2]))+"---"+str(int(coordinate[3])))
 	except:
 		m=Message.objects.filter(to=request.session['id']).order_by('-time')[0:5]
-		user=Info.objects.get(user_id=request.session['id'])
+		info=Info.objects.get(user_id=request.session['id'])
 		mess=[]
 		for k in m:
 			each=[]
@@ -177,7 +180,7 @@ def coursecreate(request):
 				havent+=1
 		tag=Types.objects.all()
 		mycourse=Course.objects.filter(teacher_id=request.session['id']).count()
-		return render(request,'courses/courseCreate.html',{'message':mess,'havent':havent,'tag':tag,'user':user,'mycourse':mycourse})
+		return render(request,'courses/courseCreate.html',{'message':mess,'havent':havent,'tag':tag,'info':info,'mycourse':mycourse})
 
 def gettiny(request):
 	alltiny=Tiny_type.objects.filter(types_id=request.GET['tiny'])
@@ -209,10 +212,11 @@ def finish(request):
 	return HttpResponse('1')
 
 def thecourse(request,id):
+	info=Info.objects.get(user_id=request.session['id'])
 	course=Course.objects.get(id=id)
 	tiny=Tiny_type.objects.get(id=course.tiny_type_id)
 	types=Types.objects.get(id=tiny.types_id)
-	info=Info.objects.get(user_id=course.teacher_id)
+	tinfo=Info.objects.get(user_id=course.teacher_id)
 	f=Follow_user.objects.filter(user_id=request.session['id'])
 	follow=[]
 	for i in f:
@@ -273,16 +277,17 @@ def thecourse(request,id):
 		collect='1'
 	else:
 		collect='2'
-	return render(request,'courses/theCourse.html',{'course':course,'info':info,'limit':limit,'tiny':tiny,'type':types,'focus':focus,'lession':lessions,'discuss':discuss,'review':review,'purview':purview,'collect':collect})
+	return render(request,'courses/theCourse.html',{'info':info,'course':course,'tinfo':tinfo,'limit':limit,'tiny':tiny,'type':types,'focus':focus,'lession':lessions,'discuss':discuss,'review':review,'purview':purview,'collect':collect})
 
 def purchase(request,id):
 	course=Course.objects.get(id=id)
 	user=Info.objects.get(user_id=course.teacher_id)
-	return render(request,'courses/purchase.html',{'course':course,'user':user})
+	info=Info.objects.get(user_id=request.session['id'])
+	return render(request,'courses/purchase.html',{'info':info,'course':course,'user':user})
 
 def addlession(request,id):
 	try:
-		user=Info.objects.get(user_id=request.session['id'])
+		info=Info.objects.get(user_id=request.session['id'])
 		course=Course.objects.get(id=id)
 		if 'lessiondoc' in request.FILES:
 			policy = qiniu.rs.PutPolicy('mzvideodoc')
@@ -322,14 +327,15 @@ def addlession(request,id):
 		domainvideo="http://mzvideo.qiniudn.com"
 		result=Lession(course_id=id,name=request.POST['lessionname'],video=domainvideo+str(video)+'.'+suffix,doc=domaindoc+str(doc)+'.'+suffix,lession_no=request.POST['lessionid'])
 		result.save()
-		return render(request,'courses/addLession.html',{'user':user,'course':course,'result':result.id})
+		return render(request,'courses/addLession.html',{'info':info,'course':course,'result':result.id})
 	except:
-		user=Info.objects.get(user_id=request.session['id'])
+		info=Info.objects.get(user_id=request.session['id'])
 		course=Course.objects.get(id=id)
-		return render(request,'courses/addLession.html',{'user':user,'course':course})
+		return render(request,'courses/addLession.html',{'info':info,'course':course})
 	
 def buy(request,id):
 	course=Course.objects.get(id=id)
+	info=Info.objects.get(user_id=request.session['id'])
 	if float(request.GET['price'])!=float(course.price):
 		return HttpResponse('碧池，滚粗！！！！')
 	else:
@@ -337,7 +343,7 @@ def buy(request,id):
 		con=int(course.purchase_con)+int(1)
 		course.purchase_con=con
 		course.save()
-		return render(request,'courses/wait.html',{'id':course.id})
+		return render(request,'courses/wait.html',{'id':course.id,'info':info})
 
 def comment(request):
 	Course_comment(user_id=request.session['id'],course_id=request.GET['course'],content=request.GET['content'],grade=request.GET['star']).save()

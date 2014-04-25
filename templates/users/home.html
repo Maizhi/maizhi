@@ -31,10 +31,10 @@
 				{% ifequal identity '1' %}
 				<div class="person">
 					<div>
-						<div class="person_img pull-left"><img src="{{info.domain}}//{{info.img}}" width="100%"/></div>
+						<div class="person_img pull-left"><img src="{{userinfo.domain}}//{{userinfo.img}}" width="100%"/></div>
 						<div class="pull-left person_intro">
 							<div class="intro">
-								<span><a href=""><font size="4">{{info.user_name|capfirst}}</font></a></span>
+								<span><a href=""><font size="4">{{userinfo.user_name|capfirst}}</font></a></span>
 								<span style="color:#FFAD33;"><i class="icon-lightbulb icon-large"></i></span>
 							</div>
 							<div class="intro">
@@ -43,20 +43,20 @@
 							</div>
 							<div class="intro sign">
 								<font size="1"><i class="icon-pencil"></i></font>
-								<font size="1" title="{{info.sign}}"><i>{{info.sign}}</i></font>
+								<font size="1" title="{{userinfo.sign}}"><i>{{userinfo.sign}}</i></font>
 							</div>	
 							<div class="intro2">
 								<div class="inintro2 pull-left">
 									<div><strong>关注</strong></div>
-									<div>{{info.focus_con}}</div>
+									<div>{{userinfo.focus_con}}</div>
 								</div>
 								<div class="inintro2 pull-left">
 									<div><strong>粉丝</strong></div>
-									<div>{{info.fan_con}}</div>
+									<div>{{userinfo.fan_con}}</div>
 								</div>
 								<div class="inintro3 pull-left">
 									<div><strong>小组</strong></div>
-									<div>{{info.follow_group_con}}</div>
+									<div>{{userinfo.follow_group_con}}</div>
 								</div>
 								<div class="clearfix"></div>
 							</div>					
@@ -70,33 +70,33 @@
 <!--他的主页 个人名片  -->
 				<div class="person">
 					<div>
-						<div class="person_img pull-left"><img src="{{info.domain}}/{{info.img}}" width="100%"/></div>
+						<div class="person_img pull-left"><img src="{{userinfo.domain}}/{{userinfo.img}}" width="100%"/></div>
 						<div class="pull-left person_intro">
 							<div class="intro">
-								<span><a href=""><font size="4">{{info.user_name|capfirst}}</font></a></span>
+								<span><a href=""><font size="4">{{userinfo.user_name|capfirst}}</font></a></span>
 								<span style="color:#FFAD33;"><i class="icon-lightbulb icon-large"></i></span>
 							</div>
 							<div class="intro">
-								<span><button type="button" class="btn btn-info btn-xs">+关注</button></span>
+								<span><button type="button" class="btn btn-userinfo btn-xs">+关注</button></span>
 								<span><button style="margin-left:20px;" type="button" class="btn btn-warning btn-xs">私信</button></span>
 								<div class="clearfix"></div>
 							</div>
 							<div class="intro sign">
 								<font size="1"><i class="icon-pencil"></i></font>
-								<font size="1" title="{{info.sign}}"><i>{{info.sign}}</i></font>
+								<font size="1" title="{{userinfo.sign}}"><i>{{userinfo.sign}}</i></font>
 							</div>	
 							<div class="intro2">
 								<div class="inintro2 pull-left">
 									<div><strong>关注</strong></div>
-									<div>{{info.focus_con}}</div>
+									<div>{{userinfo.focus_con}}</div>
 								</div>
 								<div class="inintro2 pull-left">
 									<div><strong>粉丝</strong></div>
-									<div>{{info.fan_con}}</div>
+									<div>{{userinfo.fan_con}}</div>
 								</div>
 								<div class="inintro3 pull-left">
 									<div><strong>小组</strong></div>
-									<div>{{info.follow_group_con}}</div>
+									<div>{{userinfo.follow_group_con}}</div>
 								</div>
 								<div class="clearfix"></div>
 							</div>					
@@ -119,14 +119,14 @@
 				<div class="person_introduce">
 					<div><strong>个人介绍</strong></div>
 					<div class="person_intro_content">
-						{{info.introduce}}
+						{{userinfo.introduce}}
 					</div>
 				</div>
 			{% endifequal %}
 <!-- 他的主页 个人介绍 结束处-->
 <!-- 推荐课程 
 				<div class="my">
-					<div class="interest_course_title"><strong>{% ifequal info.sex 1 %}他{% else %}她{% endifequal %}的小组</strong></div>
+					<div class="interest_course_title"><strong>{% ifequal userinfo.sex 1 %}他{% else %}她{% endifequal %}的小组</strong></div>
 
 					<div class="interest_course">
 一条推荐课程 循环开始处 
@@ -143,13 +143,13 @@
 <!-- 推荐课程 结束处-->
 <!-- 推荐好友 -->
 				<div class="my">
-					<div><b>{% ifequal info.sex 1 %}他{% else %}她{% endifequal %}的好友</b></div>
+					<div><b>{% ifequal userinfo.sex 1 %}他{% else %}她{% endifequal %}的好友</b></div>
 <!-- 一个推荐的好友 循环开始处 -->
 					<div class="a_guy">
 						{% for u in guy %}
 						<div class="pull-left person_avatar"><a href=""><img src="{{u.5}}/{{u.3}}" width="100%"/></a></div>
 						<div class="pull-left person_content">
-							<div><span class="person_name"><a href=""><b>{{u.0}}</b></a></span><span class="focus"><button id="add{{u.4}}" type="button" onclick="add({{u.4}})" class="btn btn-info btn-xs">+ 关注</button><button id="abord{{u.4}}" style="display:none" type="button" onclick="abord({{u.4}})" class="btn btn-danger btn-xs">取消关注</button></span></div>
+							<div><span class="person_name"><a href=""><b>{{u.0}}</b></a></span><span class="focus"><button id="add{{u.4}}" type="button" onclick="add({{u.4}})" class="btn btn-userinfo btn-xs">+ 关注</button><button id="abord{{u.4}}" style="display:none" type="button" onclick="abord({{u.4}})" class="btn btn-danger btn-xs">取消关注</button></span></div>
 							<div class="show_person"><a href=""><b>查看资料</b></a></div>
 						</div>
 						<div class="clearfix"></div>
@@ -167,10 +167,10 @@
 						<div class="in_newsDiv"> 
 							<ul class="nav nav-tabs" id="myTab">
 							  <li class="active"><a href="#dongtai" data-toggle="tab">动态</a></li>
-							  <li><a href="#xiaozu" data-toggle="tab">{{info.user_name|capfirst}}的小组</a></li>
+							  <li><a href="#xiaozu" data-toggle="tab">{{userinfo.user_name|capfirst}}的小组</a></li>
 							  <li><a href="#kecheng" data-toggle="tab">发布的课程</a></li>
 <!-- 只有他的主页有 开始处 -->
-							  <li><a href="#xuanshang" data-toggle="tab">{{info.user_name|capfirst}}的悬赏</a></li>
+							  <li><a href="#xuanshang" data-toggle="tab">{{userinfo.user_name|capfirst}}的悬赏</a></li>
 							  <li><a href="#xinxi" data-toggle="tab">详细信息</a></li>
 <!-- 只有他的主页有结束处 -->
 							</ul>
@@ -182,7 +182,7 @@
 							{% for i in news %}
 									<div class="a_dongtai">
 										<div class="dongtai_img pull-left">
-											<img src="{{info.domain}}/{{info.img}}" width="100%"/>
+											<img src="{{userinfo.domain}}/{{userinfo.img}}" width="100%"/>
 										</div>
 										<div class="dongtai_content pull-left">
 											<div class="triangle pull-left"></div>
@@ -207,7 +207,7 @@
 												        <h4 class="modal-title">分享到我的新鲜事</h4>
 												      </div>
 												      <div class="modal-body">
-												      	<div class="content" style="margin-bottom:20px"><textarea id="sharemsg{{i.id}}" class="form-control">//{{info.user_name|capfirst}}:{{i.content}}</textarea></div>
+												      	<div class="content" style="margin-bottom:20px"><textarea id="sharemsg{{i.id}}" class="form-control">//{{userinfo.user_name|capfirst}}:{{i.content}}</textarea></div>
 												        {% if i.img %}
 														<img id="larger{{i.id}}" class="larger" src="../news/{{i.img}}" width="320" />
 														{% endif %}
@@ -292,7 +292,7 @@
 															{% ifequal i.4 '1' %}
 															<button type="button" class="btn btn-danger btn-xs">退出小组</button>
 															{% else %}
-															<button type="button" class="btn btn-info btn-xs">加入小组</button>
+															<button type="button" class="btn btn-userinfo btn-xs">加入小组</button>
 															{% endifequal %}
 														</div>
 														{% endifequal %}
@@ -358,7 +358,7 @@
 														<div class="pull-right">
 															<span style="margin-right:20px;"><b>￥35.00</b></span>
 															<span><button type="button" class="btn btn-warning btn-xs"><b>购&nbsp;&nbsp;买</b></button></span>
-															<span><button type="button" class="btn btn-info btn-xs"><b>收&nbsp;&nbsp;藏</b></button></span>
+															<span><button type="button" class="btn btn-userinfo btn-xs"><b>收&nbsp;&nbsp;藏</b></button></span>
 														</div>
 														<div class="clearfix"></div>
 													</div>
@@ -425,37 +425,37 @@
 									<div>
 										<div>
 											<div class="intro_left pull-left"><span class="glyphicon glyphicon-user"></span> 昵称</div>
-											<div class="intro_right pull-left">{{info.user_name|capfirst}}</div>
+											<div class="intro_right pull-left">{{userinfo.user_name|capfirst}}</div>
 											<div class="clearfix"></div>
 										</div>
 										<div>
 											<div class="intro_left pull-left"><span class="glyphicon glyphicon-map-marker"></span> 所在城市</div>
-											<div class="intro_right pull-left">{{info.position}}</div>
+											<div class="intro_right pull-left">{{userinfo.position}}</div>
 											<div class="clearfix"></div>
 										</div>
 										<div>
 											<div class="intro_left pull-left"><span class="glyphicon glyphicon-briefcase"></span> 职业</div>
-											<div class="intro_right pull-left">{{info.work}}</div>
+											<div class="intro_right pull-left">{{userinfo.work}}</div>
 											<div class="clearfix"></div>
 										</div>
 										<div>
 											<div class="intro_left pull-left"><span class="glyphicon glyphicon-calendar"></span> 生日</div>
-											<div class="intro_right pull-left">{{info.birthday}}</div>
+											<div class="intro_right pull-left">{{userinfo.birthday}}</div>
 											<div class="clearfix"></div>
 										</div>
 										<div>
 											<div class="intro_left pull-left"><span class="glyphicon glyphicon-globe"></span> 星座</div>
-											<div class="intro_right pull-left">{{info.constellation}}</div>
+											<div class="intro_right pull-left">{{userinfo.constellation}}</div>
 											<div class="clearfix"></div>
 										</div>
 										<div>
 											<div class="intro_left pull-left"><span class="glyphicon glyphicon-adjust"></span> 性别</div>
-											<div class="intro_right pull-left">{% ifequal info.sex 1 %}男{% else %}女{% endifequal %}</div>
+											<div class="intro_right pull-left">{% ifequal userinfo.sex 1 %}男{% else %}女{% endifequal %}</div>
 											<div class="clearfix"></div>
 										</div>
 										<div>
 											<div class="intro_left pull-left"><span class="glyphicon glyphicon-pencil"></span> 签名</div>
-											<div class="intro_right pull-left">{{info.sign}}</div>
+											<div class="intro_right pull-left">{{userinfo.sign}}</div>
 											<div class="clearfix"></div>
 										</div>
 										<div>

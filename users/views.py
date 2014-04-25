@@ -217,13 +217,14 @@ def mycourseact(request):
 	return render(request,'users/myCourseAct.html')
 
 def home(request,u_id):
+	info=Info.objects.get(user_id=request.session['id'])
 	if int(u_id)==int(request.session['id']):
 		identity='1'
-		info=Info.objects.get(user_id=request.session['id'])
+		userinfo=Info.objects.get(user_id=request.session['id'])
 		news=News.objects.filter(user_id=request.session['id']).order_by('-time')
 	else:
 		identity='0'
-		info=Info.objects.get(user_id=u_id)
+		userinfo=Info.objects.get(user_id=u_id)
 		news=News.objects.filter(user_id=u_id).order_by('-time')
 	user=Register.objects.all()[0:5]
 	guy=[]
@@ -257,7 +258,7 @@ def home(request,u_id):
 		each.append(k.name)			#0
 		each.append(k.domain)		#1
 		each.append(k.img)			#2
-		each.append(k.introduce)	#3
+		each.append(k.introduce)		#3
 		if k.id in follow:
 			each.append('1')		#4
 		else:
@@ -277,7 +278,7 @@ def home(request,u_id):
 	for n in m:
 		if n.status==1:
 			havent+=1
-	return render(request,'users/home.html',{'mygroup':mygroup,'identity':identity,'info':info,'guy':guy,'news':news,'havent':havent})
+	return render(request,'users/home.html',{'mygroup':mygroup,'identity':identity,'userinfo':userinfo,'info':info,'guy':guy,'news':news,'havent':havent})
 
 def add(request):
 	f=Follow_user.objects.filter(user_id=request.session['id'])
@@ -306,6 +307,7 @@ def managecourse(request):
 	return render(request,'users/manageCourse.html')
 
 def managegroup(request):
+	info=Info.objects.get(user_id=request.session['id'])
 	follow=Follow_group.objects.filter(user_id=request.session['id'])
 	limit=15
 	paginator = Paginator(follow, limit)
@@ -320,12 +322,12 @@ def managegroup(request):
 	for i in follow:
 		each=[]
 		group=Group.objects.get(id=i.follow_group_id)
-		info=Info.objects.get(user_id=group.user_id)
+		k=Info.objects.get(user_id=group.user_id)
 		each.append(group.id)          #0
 		each.append(group.name)        #1
 		each.append(group.crew_con)    #2
-		each.append(info.user_name)    #3
-		each.append(info.user_id)      #4
+		each.append(k.user_name)    #3
+		each.append(k.user_id)      #4
 		each.append(group.img)         #5
 		each.append(group.domain)      #6
 		groups.append(each)
@@ -343,7 +345,7 @@ def managegroup(request):
 	for n in m:
 		if n.status==1:
 			havent+=1
-	return render(request,'users/manageGroup.html',{'groups':groups,'follow':follow,'my':my,'message':mess,'havent':havent})
+	return render(request,'users/manageGroup.html',{'groups':groups,'follow':follow,'my':my,'message':mess,'havent':havent,'info':info})
 
 def managereward(request):
 	return render(request,'users/managereward.html')

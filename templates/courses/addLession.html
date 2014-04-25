@@ -35,7 +35,7 @@
 	{% if result %}
 	<script>
 		window.onload=function(){
-			window.location="http://192.168.1.120:8866/courses/types/tiny/course/lession/{{result}}"
+			window.location="http://192.168.1.113:8866/courses/types/tiny/course/lession/"{{result}}
 		}
 	</script>
 	{% endif %}
@@ -46,11 +46,11 @@
 			<div class="col-xs-8">
 				<div>
 					<div class="publisher_img pull-left">
-						<img src="../../../../../avatar/{{user.img}}" width="100%" class="img-circle"/>
+						<img src="{{info.domain}}/{{info.img}}" width="100%" class="img-circle"/>
 					</div>
 					<div class="publisher_name pull-left">
-						<div>{{user.user_name}}</div>
-						<div class="publisher_sign"><i>{{user.sign}}</i></div>
+						<div>{{info.user_name}}</div>
+						<div class="publisher_sign"><i>{{info.sign}}</i></div>
 					</div>
 					<div class="clearfix"></div>
 				</div>
