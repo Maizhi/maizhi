@@ -14,6 +14,7 @@ urlpatterns = patterns('',
     url(r'^topic/publish/$', views.publish, name="publish"),
     url(r'^topic/collect/$', views.collect, name="collect"),
     url(r'^topic/comment/$', views.comment, name="comment"),
+    url(r'^topic/cccomment/$', views.cccomment, name="cccomment"),
     url(r'^topic/good/$', views.good, name="good"),
     url(r'^topic/ban/$', views.ban, name="ban"),
     url(r'^topic/dt/$', views.deleteTopic, name="deleteTopic"),
@@ -22,30 +23,30 @@ urlpatterns = patterns('',
     url(r'^create/$', views.groupcreate, name="groupcreate"),
 
     url(r'^css/(?P<path>.*)$', 'django.views.static.serve', 
-        { 'document_root': '/home/tron/mz/maizhi/templates/public/css' } 
+        { 'document_root': '/home/sun/mz/maizhi/templates/public/css' } 
 	),
 	url(r'^js/(?P<path>.*)$', 'django.views.static.serve', 
-        { 'document_root': '/home/tron/mz/maizhi/templates/public/js' } 
+        { 'document_root': '/home/sun/mz/maizhi/templates/public/js' } 
     ),
     url(r'^fonts/(?P<path>.*)$', 'django.views.static.serve', 
-        { 'document_root': '/home/tron/mz/maizhi/templates/public/fonts' } 
+        { 'document_root': '/home/sun/mz/maizhi/templates/public/fonts' } 
     ), 
-url(r'^img/(?P<path>.*)$', 'django.views.static.serve', 
-        { 'document_root': '/home/tron/mz/templates/public/img' } 
+    url(r'^img/(?P<path>.*)$', 'django.views.static.serve', 
+        { 'document_root': '/home/sun/mz/templates/public/img' } 
     ), 
     url(r'^news/(?P<path>.*)$', 'django.views.static.serve', 
-        { 'document_root': '/home/tron/mz/maizhi/templates/picture/news' } 
+        { 'document_root': '/home/sun/mz/maizhi/templates/picture/news' } 
     ), 
     url(r'^ico/(?P<path>.*)$', 'django.views.static.serve', 
-        { 'document_root': '/home/tron/mz/maizhi/templates/picture/ico' } 
+        { 'document_root': '/home/sun/mz/maizhi/templates/picture/ico' } 
     ), 
     url(r'^avatar/(?P<path>.*)$', 'django.views.static.serve', 
-        { 'document_root': '/home/tron/mz/maizhi/templates/picture/avatar/' } 
+        { 'document_root': '/home/sun/mz/maizhi/templates/picture/avatar/' } 
     ), 
     url(r'^group/(?P<path>.*)$', 'django.views.static.serve', 
-        { 'document_root': '/home/tron/mz/maizhi/templates/picture/group/image' } 
+        { 'document_root': '/home/sun/mz/maizhi/templates/picture/group/image' } 
     ), 
     url(r'^file/(?P<path>.*)$', 'django.views.static.serve', 
-        { 'document_root': '/home/tron/mz/maizhi/templates/picture/group/file' } 
+        { 'document_root': '/home/sun/mz/maizhi/templates/picture/group/file' } 
     ), 
 )
