@@ -26,25 +26,25 @@ urlpatterns = patterns('',
     url(r'^get_more_re/$', views.get_more_re, name="get_more_re"),
     
     url(r'^css/(?P<path>.*)$', 'django.views.static.serve', 
-        { 'document_root': '/home/sun/mz/maizhi/templates/public/css' } 
+        { 'document_root': '/home/tron/mz/maizhi/templates/public/css' } 
 	),
 	url(r'^js/(?P<path>.*)$', 'django.views.static.serve', 
-        { 'document_root': '/home/sun/mz/maizhi/templates/public/js' } 
+        { 'document_root': '/home/tron/mz/maizhi/templates/public/js' } 
     ),
     url(r'^fonts/(?P<path>.*)$', 'django.views.static.serve', 
-        { 'document_root': '/home/sun/mz/maizhi/templates/public/fonts' } 
+        { 'document_root': '/home/tron/mz/maizhi/templates/public/fonts' } 
     ), 
     url(r'^img/(?P<path>.*)$', 'django.views.static.serve', 
-        { 'document_root': '/home/sun/mz/maizhi/templates/public/img' } 
+        { 'document_root': '/home/tron/mz/maizhi/templates/public/img' } 
     ), 
     url(r'^news/(?P<path>.*)$', 'django.views.static.serve', 
-        { 'document_root': '/home/sun/mz/maizhi/templates/picture/news' } 
+        { 'document_root': '/home/tron/mz/maizhi/templates/picture/news' } 
     ), 
     url(r'^ico/(?P<path>.*)$', 'django.views.static.serve', 
-        { 'document_root': '/home/sun/mz/maizhi/templates/picture/ico' } 
+        { 'document_root': '/home/tron/mz/maizhi/templates/picture/ico' } 
     ), 
     url(r'^group/(?P<path>.*)$', 'django.views.static.serve', 
-        { 'document_root': '/home/sun/mz/maizhi/templates/picture/group/image' } 
+        { 'document_root': '/home/tron/mz/maizhi/templates/picture/group/image' } 
     ), 
 )
 
