@@ -29,7 +29,7 @@ qiniu.conf.ACCESS_KEY = "EW8idy4EFnJDBicDJZhPIVIVDU9AL0g4waW5MNtJ"
 qiniu.conf.SECRET_KEY = "C1qaP_-sgjVgQb6GGHJ-vCle0qTiGI8qtbgOumOB"
 
 def types(request):
-	info=info.objects.filter(user_id=request.session['id'])
+	info=Info.objects.filter(user_id=request.session['id'])
 	types=Types.objects.all()
 	m=Message.objects.filter(to=request.session['id']).order_by('-time')[0:5]
 	mess=[]
