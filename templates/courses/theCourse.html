@@ -169,10 +169,10 @@
 				<div class="tc_teacher_intro">
 					<div>
 						<div class="pull-left tc_tea_img">
-							<img src="{{info.domain}}/{{info.img}}" class="img-circle" width="100%"/>
+							<img src="{{tinfo.domain}}/{{tinfo.img}}" class="img-circle" width="100%"/>
 						</div>
 						<div class="pull-left tc_tea_name">
-							<div style="margin-bottom:10px;margin-top:10px"><b><a href="{% url 'users:home' info.user_id %}">{{info.user_name}}</a></b>{% ifequal purview '1' %}<i class="icon-check" title="认证用户" style="margin-left:7px"></i>{% endifequal %}{% ifequal purview '2' %}<i class="icon-home" title="企业用户" style="margin-left:7px"></i>{% endifequal %}</div>
+							<div style="margin-bottom:10px;margin-top:10px"><b><a href="{% url 'users:home' tinfo.user_id %}">{{tinfo.user_name}}</a></b>{% ifequal purview '1' %}<i class="icon-check" title="认证用户" style="margin-left:7px"></i>{% endifequal %}{% ifequal purview '2' %}<i class="icon-home" title="企业用户" style="margin-left:7px"></i>{% endifequal %}</div>
 							{% ifequal focus '0' %}
 							<div><span class="person_name"><a href=""><b>{{u.0}}</b></a></span><span class="focus"><button id="add{{course.teacher_id}}" type="button" onclick="add({{course.teacher_id}})" class="btn btn-info btn-xs">+ 关注</button><button id="abord{{course.teacher_id}}" style="display:none" type="button" onclick="add({{course.teacher_id}})" class="btn btn-danger btn-xs">取消关注</button></span></div>
 							{% endifequal %}
@@ -185,7 +185,7 @@
 						</div>
 						<div class="clearfix"></div>
 					</div>
-					<div style="margin:3px 9px 3px 9px"><i class="icon-edit" style="margin-right:5px"></i>{{info.introduce}}</div>
+					<div style="margin:3px 9px 3px 9px"><i class="icon-edit" style="margin-right:5px"></i>{{tinfo.introduce}}</div>
 				</div>
 			</div>
 			<div class="col-xs-9 row2_col">
