@@ -23,10 +23,10 @@ urlpatterns = patterns('',
     url(r'^create/$', views.groupcreate, name="groupcreate"),
 
     url(r'^css/(?P<path>.*)$', 'django.views.static.serve', 
-        { 'document_root': '/home/sun/mz/maizhi/templates/public/css' } 
+        { 'document_root': '/home/tron/mz/maizhi/templates/public/css' } 
 	),
 	url(r'^js/(?P<path>.*)$', 'django.views.static.serve', 
-        { 'document_root': '/home/sun/mz/maizhi/templates/public/js' } 
+        { 'document_root': '/home/tron/mz/maizhi/templates/public/js' } 
     ),
     url(r'^fonts/(?P<path>.*)$', 'django.views.static.serve', 
         { 'document_root': '/home/tron/mz/maizhi/templates/public/fonts' } 
