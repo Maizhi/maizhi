@@ -60,7 +60,7 @@
 							{% for i in groups %}
 								<tr>
 									<td class="td1">
-										<div class="pull-left"><img src="../../group/{{i.5}}" width="50px" text-align="absmiddle"/></div>
+										<div class="pull-left"><img src="{{i.6}}/{{i.5}}" width="50px" text-align="absmiddle"/></div>
 										<div class="td_12 pull-left"><a href="{% url 'groups:thegroup' i.0 %}" title="hahaha">{{i.1}}</a></div>
 										<div class="clearfix"></div>
 									</td>
@@ -103,7 +103,7 @@
 							{% for j in my %}
 								<tr>
 									<td class="td1">
-										<div class="pull-left"><img src="../../group/{{j.img}}" width="50px" text-align="absmiddle"/></div>
+										<div class="pull-left"><img src="{{j.domain}}/{{j.img}}" width="50px" text-align="absmiddle"/></div>
 										<div class="td_12 pull-left"><a href="{% url 'groups:thegroup' j.id %}" title="hahaha">{{j.name}}</a></div>
 										<div class="clearfix"></div>
 									</td>
