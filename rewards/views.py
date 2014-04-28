@@ -13,20 +13,20 @@ import re,md5,os,time,random
 def reward(request):
 	types=Types.objects.all()
 	rewardTable=Reward.objects.all().order_by('-time')
-
 	rewards=[]
 	for r in rewardTable:
 		areward=[]
-		info=Info.objects.get(user_id=r.from_id)
-		areward.append(info.img)		#0
-		areward.append(r.id)		#1
+		i=Info.objects.get(user_id=r.from_id)
+		areward.append(i.img)			#0
+		areward.append(r.id)			#1
 		areward.append(r.name)		#2
 		areward.append(r.price)		#3
 		intro=r.introduce[0:70]
 		intro=intro+'...'
-		areward.append(intro)		#4
+		areward.append(intro)			#4
 		typesTable=Types.objects.get(id=r.types_id)
-		areward.append(typesTable.name)		#5
+		areward.append(typesTable.name)	#5
+		areward.append(i.domain)		#6
 		rewards.append(areward)
 
 	paginator = Paginator(rewards, 15)
@@ -38,8 +38,8 @@ def reward(request):
 	except EmptyPage:
 	    rewards = paginator.page(paginator.num_pages)
 	result=[]
-
-	return render(request,'rewards/rewards.html',{'rewards':rewards,'types':types})
+	info=Info.objects.get(user_id=request.session['id'])
+	return render(request,'rewards/rewards.html',{'rewards':rewards,'types':types,'info':info})
 
 
 
@@ -79,16 +79,17 @@ def rewards(request):
 	rewards=[]
 	for r in rewardTable:
 		areward=[]
-		info=Info.objects.get(user_id=r.from_id)
-		areward.append(info.img)		#0
-		areward.append(r.id)		#1
+		i=Info.objects.get(user_id=r.from_id)
+		areward.append(i.img)		#0
+		areward.append(r.id)			#1
 		areward.append(r.name)		#2
 		areward.append(r.price)		#3
 		intro=r.introduce[0:70]
 		intro=intro+'...'
-		areward.append(intro)		#4
+		areward.append(intro)			#4
 		typesTable=Types.objects.get(id=r.types_id)
-		areward.append(typesTable.name)		#5
+		areward.append(typesTable.name)	#5
+		areward.append(i.domain)		#6	
 		rewards.append(areward)
 
 	paginator = Paginator(rewards, 15)
@@ -100,8 +101,8 @@ def rewards(request):
 	except EmptyPage:
 	    rewards = paginator.page(paginator.num_pages)
 	result=[]
-
-	return render(request,'rewards/rewards.html',{'rewards':rewards,'types':types,'order':order,'typeid':typeid})
+	info=Info.objects.get(user_id=request.session['id'])
+	return render(request,'rewards/rewards.html',{'rewards':rewards,'types':types,'order':order,'typeid':typeid,'info':info})
 
 
 
@@ -112,7 +113,7 @@ def rewardcreate(request):
 	types=Types.objects.all()
 	rewardscount=Reward.objects.filter(from_id=request.session['id']).count()
 
-	return render(request,'rewards/rewardCreate.html',{'types':types,'user_name':user_name,'user_img':user_img,'user_id':request.session['id'],'rewardscount':rewardscount})
+	return render(request,'rewards/rewardCreate.html',{'info':info,'types':types,'user_name':user_name,'user_img':user_img,'user_id':request.session['id'],'rewardscount':rewardscount})
 
 def addReward(request):
 	course_name=request.POST['course_name']
@@ -156,6 +157,7 @@ def thereward(request,id):
 	typesTable=Types.objects.get(id=thereward.types_id)
 	areward.append(typesTable.name)			#9
 	areward.append(id)					#10
+	areward.append(info.domain)					#11
 
 	re_rewardTable=Reward_mes.objects.filter(reward_id=id).order_by('-time')
 	re_rewards=[]
@@ -165,8 +167,9 @@ def thereward(request,id):
 		a_re_reward.append(info.img)			#0
 		a_re_reward.append(info.user_name)		#1
 		a_re_reward.append(r.content)			#2
-		a_re_reward.append(r.time)				#3
-		a_re_reward.append(r.from_id)				#4
+		a_re_reward.append(r.time)			#3
+		a_re_reward.append(r.from_id)			#4
+		a_re_reward.append(info.domain)		#5
 		re_rewards.append(a_re_reward)
 
 	if Uncover.objects.filter(reward_id=id).filter(to=request.session['id']):
@@ -177,8 +180,8 @@ def thereward(request,id):
 
 	yellow_stars=range(0,info.credit)
 	hollow_stars=range(0,(5-info.credit))
-
-	return render(request,'rewards/theReward.html',{'areward':areward,'re_rewards':re_rewards,'yellow_stars':yellow_stars,'hollow_stars':hollow_stars,'uncover_exist':uncover_exist})
+	info=Info.objects.get(user_id=request.session['id'])
+	return render(request,'rewards/theReward.html',{'areward':areward,'info':info,'re_rewards':re_rewards,'yellow_stars':yellow_stars,'hollow_stars':hollow_stars,'uncover_exist':uncover_exist})
 
 
 def addreview(request):
@@ -189,7 +192,7 @@ def addreview(request):
 	re_reward.save()
 	info=Info.objects.get(user_id=from_id)
 	
-	return HttpResponse(str(info.img)+','+str(info.user_name)+','+str(from_id))
+	return HttpResponse(str(info.img)+','+str(info.user_name)+','+str(from_id)+','+str(info.domain))
 
 
 

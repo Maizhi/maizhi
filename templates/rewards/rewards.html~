@@ -8,7 +8,7 @@
 <link href="../../css/bootstrap.css" rel="stylesheet">
 <!-- Custom styles for this template -->
 <link href="../../css/non-responsive.css" rel="stylesheet">
-<link href="../../css/fontawesome.min.css" rel="stylesheet">
+<link href="../../css/font-awesome.min.css" rel="stylesheet">
 
     <!-- Just for debugging purposes. Don't actually copy this line! -->
     <!--[if lt IE 9]><script src="../../../../docs-assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
@@ -45,15 +45,15 @@
 		{
 			if(typeid){
 				var sel=$("#sel").val();
-				window.location.href="http://192.168.1.120:8866/rewards/rewards/?order="+sel+"&typeid="+typeid;
+				window.location.href="http://192.168.1.113:8866/rewards/rewards/?order="+sel+"&typeid="+typeid;
 				
 			}else{
 				var typeid=$("#typeid").val();
 				var sel=$("#sel").val();
 				if(typeid){
-					window.location.href="http://192.168.1.120:8866/rewards/rewards/?order="+sel+"&typeid="+typeid;
+					window.location.href="http://192.168.1.113:8866/rewards/rewards/?order="+sel+"&typeid="+typeid;
 				}else{
-					window.location.href="http://192.168.1.120:8866/rewards/rewards/?order="+sel;
+					window.location.href="http://192.168.1.113:8866/rewards/rewards/?order="+sel;
 				}
 				
 			}
@@ -138,7 +138,7 @@
 					<div class="a_a_reward">
 						<div class="a_reward1">
 							<div class="a_reward11 pull-left">
-								<div class="reward_img"><img src="../../avatar/{{r.0}}" width="100%" class="img-circle"></div>
+								<div class="reward_img"><img src="{{r.6}}/{{r.0}}" width="100%" class="img-circle"></div>
 							</div>
 							<div class="a_reward12 pull-left">
 								<div class="reward_type pull-right"><b>#{{r.5}}</b></div>
