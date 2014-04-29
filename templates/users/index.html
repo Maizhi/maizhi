@@ -125,7 +125,7 @@ var array=new Array();
 					<div class="newsDiv">
 						<div class="in_newsDiv"> 
 							<div class="news_photo pull-left">
-									<a href="{% url 'users:home' i.10 %}" ><img src="{{info.domain}}/{{info.img}}-mzhead" width="100%"/></a>
+									<a href="{% url 'users:home' i.10 %}" ><img src="{{info.domain}}/{{i.1}}-mzhead" width="100%"/></a>
 							</div>
 
 							<div class="news_content pull-left">
@@ -198,8 +198,8 @@ var array=new Array();
 								      </div>
 								      <div class="modal-body">
 								      	<div class="content" style="margin-bottom:20px"><textarea id="sharemsg{{i.8}}" class="form-control">//{{i.0}}:{{i.2}}</textarea></div>
-								        {% if i.4 %}
-										<img src="{{i.4}}" />
+								       		 {% if i.4 %}
+										<img src="{{i.4}}-mzimg" />
 										{% endif %}
 								      </div>
 								      <div class="modal-footer">
