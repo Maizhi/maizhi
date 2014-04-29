@@ -178,25 +178,26 @@ def head(request):
 	if 'picture' in request.FILES:
 		tj=time.time()
 		pic=request.FILES['picture']
-		#pic=Image.open(pic)
-		#coordinate=request.POST['coordinate'].split('*')
-		#region = (int(round(float(coordinate[0]))+1),int(coordinate[1]),int(coordinate[2]),int(coordinate[3]))
+		suffix=pic.name.split('.')[-1]
+		pic=Image.open(pic)
+		coordinate=request.POST['coordinate'].split('*')
+		region = (int(round(float(coordinate[0]))+1),int(coordinate[1]),int(coordinate[2]),int(coordinate[3]))
 		#region=(0,0,100,100)
-		#cropImg = pic.crop(region)
+		cropImg = pic.crop(region)
 		#cropImg=pic.thumbnail((int(coordinate[2]),int(coordinate[3])),Image.ANTIALIAS)
-		#cropImg.save(r"/home/tron/Dropbox/mz/templates/picture/avatar/"+str(tj))
+		cropImg.save(r"/home/tron/Maizhi/templates/picture/avatar/"+str(tj)+'.'+suffix)
 		domain="http://mzhead.qiniudn.com"
-		dirs ='templates/picture/avatar/'+str(tj)
-		if os.path.isfile(dirs):
-			os.remove(dirs) 
-		fp=open(dirs, 'wb')
-		content=pic.read()
-		fp.write(content)
-		fp.flush()
-		fp.close()
-		ret=qiniu.io.put_file(uptoken,str(tj),r"/home/tron/Maizhi/templates/picture/avatar/"+str(tj))
-		if ret:
-			os.remove(dirs)
+		#dirs ='templates/picture/avatar/'+str(tj)
+		#if os.path.isfile(dirs):
+		#	os.remove(dirs) 
+		#fp=open(dirs, 'wb')
+		#content=pic.read()
+		#fp.write(content)
+		#fp.flush()
+		#fp.close()
+		ret=qiniu.io.put_file(uptoken,str(tj),r"/home/tron/Maizhi/templates/picture/avatar/"+str(tj)+'.'+suffix)
+		#if ret:
+		#	os.remove(dirs)
 		info.img=str(tj)
 		info.domain=domain
 		info.time=timezone.now()
@@ -249,9 +250,17 @@ def home(request,u_id):
 			guy.append(each)
 	my=Group.objects.filter(user_id=request.session['id'])
 	fg=Follow_group.objects.filter(user_id=request.session['id'])
+	fogo=[]
 	follow=[]
 	for l in fg:
 		follow.append(l.follow_group_id)
+		g=Group.objects.get(id=l.follow_group_id)
+		each=[]
+		each.append(g.name)
+		each.append(g.domain)
+		each.append(g.img)
+		each.append(g.domain)
+		fogo.append(each)
 	mygroup=[]
 	for k in my:
 		each=[]
@@ -263,6 +272,7 @@ def home(request,u_id):
 			each.append('1')		#4
 		else:
 			each.append('0')		#4
+		each.append(k.id)			#5
 		#Topic.objects.filter(group_id=k.id).order_by('-review_con')[0:3]
 		mygroup.append(each)
 	m=Message.objects.filter(to=request.session['id']).order_by('-time')[0:5]
@@ -278,7 +288,7 @@ def home(request,u_id):
 	for n in m:
 		if n.status==1:
 			havent+=1
-	return render(request,'users/home.html',{'mygroup':mygroup,'identity':identity,'userinfo':userinfo,'info':info,'guy':guy,'news':news,'havent':havent})
+	return render(request,'users/home.html',{'mygroup':mygroup,'identity':identity,'userinfo':userinfo,'info':info,'guy':guy,'news':news,'havent':havent,'fg1':fogo[0:6],'fg2':fogo[7:12]})
 
 def add(request):
 	f=Follow_user.objects.filter(user_id=request.session['id'])

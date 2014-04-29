@@ -173,19 +173,22 @@
 							<div>
 								<div class="label_info pull-left">新头像</div>
 								<div class="form_info pull-left"><input type="file" id="picture" name="picture"/></div>
-								<div id="haha"></div>
+								
 								<div class="clearfix"></div>
 							</div>
-<!-- js cutimg begin 
-							<div id="show_cut" class="cutImgDiv" style="display:none;">
-								
+						<div class="group_form_all" id="cutimg" style="display:none;">
+<!-- js cutimg begin -->
+							<div id="show_cut" class="cutImgDiv">
+								<div class="pull-left" id="haha" style="width:330px;overflow:hidden;">
+									
+								</div>
 								<div class="pull-left previewwDiv" id="heihei">
 									
 								</div>
 								<div class="clearfix"></div>
 							</div>
--->
 <!-- js cutimg end -->
+						</div>
 							<input class="form-control" type="hidden" name="coordinate" id="hidden" />
 							<div class="setting_image_btn" style="margin-left:120px"><button type="submit" onclick="refer()" class="btn btn-info">保存</button></div>
 						</form>
@@ -319,6 +322,7 @@
 <script type="text/javascript">
 
 function handleFileSelect(evt) {
+	document.getElementById('cutimg').style.display='block';
 	var files = evt.target.files; // FileList object
 	// Loop through the FileList and render image files as thumbnails.
 	for (var i = 0, f; f = files[i]; i++) {
@@ -343,6 +347,7 @@ function handleFileSelect(evt) {
 	                        '" title="', escape(theFile.name), '"/>'].join('');
 	      //document.getElementById('haha').insertBefore(span, null);
 	      imgs=escape(e.target.result);
+	      abc()
 	      //var urls=document.images.item(img1).src;
 	    };
 	  })(f);
@@ -389,12 +394,12 @@ function refer(){
 	var upDiv=$(".jcrop-tracker");
 	var img=$("#haha");
 	var x0=upDiv.offset().left-img.offset().left;
-	var x1=img.offset().top-upDiv.offset().top;
+	var x1=upDiv.offset().top-img.offset().top;
 	var y0=x0+upDiv.width();
 	var y1=x1+upDiv.height();
 	document.getElementById('hidden').value=x0+"*"+x1+"*"+y0+"*"+y1;
 	var form = document.getElementById('form');  
-    form.submit(); 
+    	form.submit(); 
 }
 </script>		
 </body>

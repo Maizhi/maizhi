@@ -7,13 +7,23 @@
 <!-- Bootstrap core CSS -->
 <link href="../css/bootstrap.css" rel="stylesheet">
 <!-- Custom styles for this template -->
+<link href="../css/jCrop.css" rel="stylesheet">
 <link href="../css/non-responsive.css" rel="stylesheet">
 <link href="../css/font-awesome.min.css" rel="stylesheet">
 <link href="../css/groupCreate.css" rel="stylesheet">    
 <link href="../ico/favicon.ico" rel="shortcut icon" type="image/vnd.microsoft.icon"/>
+<style>
+.previewwDiv{
+	width:100px;
+	height:100px;
+	overflow:hidden;
+	margin-top:30px;
+	margin-left:20px;
+}
+</style>
 <!-- jQuery文件。务必在bootstrap.min.js 之前引入 -->
 <script src="../js/jquery.min.js"></script>
-
+<script src="../js/jCrop.js"></script>
 <!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
 <script src="../js/bootstrap.js"></script>
 </head>
@@ -36,7 +46,7 @@
 				<div>
 					<div class="topdirection"></div>
 					<div class="group_mes">
-					<form action="{% url 'groups:groupcreate' %}" method="post" enctype="multipart/form-data">
+					<form action="{% url 'groups:groupcreate' %}" method="post" enctype="multipart/form-data" id="form">
 						{% csrf_token %}
 						<div class="group_form_all">
 							<div class="group_form_name pull-left"><b>小组名</b></div>
@@ -45,8 +55,22 @@
 						</div>
 						<div class="group_form_all">
 							<div class="group_form_name pull-left"><b>小组图片</b></div>
-							<div class="group_form pull-left"><input type="file" name="groupImg"><input type="hidden" id="hidden"></div>
+							<div class="group_form pull-left"><input type="file" id="picture" name="groupImg"></div>
 							<div class="clearfix"></div>
+						</div>
+						<input class="form-control" type="hidden" name="coordinate" id="hidden" />
+						<div class="group_form_all" id="cutimg" style="display:none;">
+<!-- js cutimg begin -->
+							<div id="show_cut" class="cutImgDiv">
+								<div id="haha" class="pull-left" style="width:330px;overflow:hidden;">
+									
+								</div>
+								<div class="pull-left previewwDiv" id="heihei">
+									
+								</div>
+								<div class="clearfix"></div>
+							</div>
+<!-- js cutimg end -->
 						</div>
 						<div class="group_form_all">
 							<div class="group_form_name pull-left"><b>小组介绍</b></div>
@@ -75,7 +99,7 @@
 										<input id="subbox" type="checkbox" onclick="sub()" checked>我已阅读并同意排队网服务协议
 									</div>
 									<div>
-										<div style="text-align:center;"><button id="subbutton3" type="submit" class="btn btn-info">提交申请</button></div>
+										<div style="text-align:center;"><button id="subbutton3" type="button" onclick="refer()" class="btn btn-info">提交申请</button></div>
 									</div>
 								</div>
 							</div>
@@ -129,6 +153,67 @@
 
 
 
+	jQuery(function($){
+		// Create variables (in this scope) to hold the API and image size
+		var jcrop_api,boundx,boundy;
+		
+		$("#targett").Jcrop({
+			setSelect:[0,0,100,100],//显示盖板DIV，控制盖板大小
+			onChange:updatePreview,
+			onSelect:updatePreview,
+			aspectRatio:1//选框宽高比。说明：width/height
+		},function(){
+			// Use the API to get the real image size
+			var bounds=this.getBounds();
+			boundx=bounds[0];
+			boundy=bounds[1];
+			// Store the API in the jcrop_api variable
+			jcrop_api=this;
+		});
+		
+		function updatePreview(c){
+			if(parseInt(c.w)>0){
+				var rx=100/c.w;
+				var ry=100/c.h;
+				
+				$("#previeww").css({
+					width:Math.round(rx*boundx)+"px",
+					height:Math.round(ry*boundy)+"px",
+					marginLeft:"-"+Math.round(rx*c.x)+"px",
+					marginTop:"-"+Math.round(ry*c.y)+"px"
+				});
+			};
+		};
+	});
+
+
+	function huihui()
+	{
+		var upDiv=$(".jcrop-tracker");
+		var img=$("#haha");
+		alert(upDiv.offset().left+"-----"+upDiv.offset().top+"--------"+upDiv.width()+"-------"+upDiv.height());
+		alert(img.offset().left+"-----"+img.offset().top+"--------"+img.width()+"-------"+img.height());
+	}
+			
+
+
+	function change_list(a)
+	{
+		$("#case1").css("display","none");
+		$("#case2").css("display","none");
+		$("#case3").css("display","none");
+		$("#case4").css("display","none");
+		$("#a1").attr("class","list-group-item");
+		$("#a2").attr("class","list-group-item");
+		$("#a3").attr("class","list-group-item");
+		$("#a4").attr("class","list-group-item");
+		$("#case"+a).css("display","block");
+		$("#a"+a).attr("class","active list-group-item");
+	}
+
+
+
+
 	function typeLabels(a)
 	{
 		var textvalue=$("#textvalue").val();
@@ -165,6 +250,107 @@
 		$("#subbutton2").attr("id","subbutton3");
 		$("#subbutton1").attr("id","subbutton2");
 	}
+	function confirm(){
+		var o=document.getElementById('new_pwd').value;
+		var n=document.getElementById('con_pwd').value;
+		if(o != n){
+			document.getElementById('err').innerHTML="您的密码输入有误！";
+		} else {
+			document.getElementById('err').innerHTML="";
+			document.getElementById('pwc').disabled=false;
+		}
+	}
+
+function handleFileSelect(evt) {
+	document.getElementById('cutimg').style.display='block';
+	var files = evt.target.files; // FileList object
+	// Loop through the FileList and render image files as thumbnails.
+	for (var i = 0, f; f = files[i]; i++) {
+
+	  // Only process image files.
+	  if (!f.type.match('image.*')) {
+	    continue;
+	  }
+
+	  var reader = new FileReader();
+
+	  // Closure to capture the file information.
+	  reader.onload = (function(theFile) {
+	    return function(e) {
+	      // Render thumbnail.
+	      var haha=document.getElementById('haha')
+	      var heihei=document.getElementById('heihei')
+	      //var span = document.createElement('span');
+	      haha.innerHTML = ['<img name="img1" id="targett" src="', e.target.result,
+	                        '" title="', escape(theFile.name), '"/>'].join('');
+	      heihei.innerHTML = ['<img name="img2" id="previeww" src="', e.target.result,
+	                        '" title="', escape(theFile.name), '"/>'].join('');
+	      //document.getElementById('haha').insertBefore(span, null);
+	      imgs=escape(e.target.result);
+	      abc()
+	      //var urls=document.images.item(img1).src;
+	    };
+	  })(f);
+	  // Read in the image file as a data URL.
+	  reader.readAsDataURL(f);
+	}
+}
+
+document.getElementById('picture').addEventListener('change', handleFileSelect, false);
+function abc(){
+	// Create variables (in this scope) to hold the API and image size
+	var jcrop_api,boundx,boundy;
+	
+	$("#targett").Jcrop({
+		setSelect:[0,0,100,100],//显示盖板DIV，控制盖板大小
+		onChange:updatePreview,
+		onSelect:updatePreview,
+		aspectRatio:1//选框宽高比。说明：width/height
+	},function(){
+		// Use the API to get the real image size
+		var bounds=this.getBounds();
+		boundx=bounds[0];
+		boundy=bounds[1];
+		// Store the API in the jcrop_api variable
+		jcrop_api=this;
+	});
+	
+	function updatePreview(c){
+		if(parseInt(c.w)>0){
+			var rx=100/c.w;
+			var ry=100/c.h;
+			
+			$("#previeww").css({
+				width:Math.round(rx*boundx)+"px",
+				height:Math.round(ry*boundy)+"px",
+				marginLeft:"-"+Math.round(rx*c.x)+"px",
+				marginTop:"-"+Math.round(ry*c.y)+"px"
+			});
+		}
+	}
+}
+
+
+function refer(){
+	var upDiv=$(".jcrop-tracker");
+	var img=$("#haha");
+	var x0=upDiv.offset().left-img.offset().left;
+	var x1=upDiv.offset().top-img.offset().top;
+	var y0=x0+upDiv.width();
+	var y1=x1+upDiv.height();
+	document.getElementById('hidden').value=x0+"*"+x1+"*"+y0+"*"+y1;
+	var form = document.getElementById('form');  
+    	form.submit(); 
+}
+
+function sub(){
+	$("#subbutton3").attr("id","subbutton1");
+	$("#subbutton2").removeAttr("disabled");
+	$("#subbutton1").attr("disabled","disabled");
+	$("#subbutton2").attr("id","subbutton3");
+	$("#subbutton1").attr("id","subbutton2");
+}
+</script>	
 		
 		
 	</script>

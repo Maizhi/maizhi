@@ -48,22 +48,22 @@
 						</div>
 						<div class="group_form_all">
 							<div class="group_form_name pull-left"> 课程图片 </div>
-							<div class="group_form pull-left"><input type="file" id="picture" name="picture" onChange="show_cut();"/><div id="haha" style="width:330px;"></div></div>
+							<div class="group_form pull-left"><input type="file" id="picture" name="picture"/></div>
 							
 							<div class="clearfix"></div>
 						</div>
-						<div class="group_form_all">
-<!-- js cutimg begin 
-							<div id="show_cut" class="cutImgDiv" style="display:none;">
+						<div class="group_form_all" id="cutimg" style="display:none;">
+<!-- js cutimg begin -->
+							<div id="show_cut" class="cutImgDiv">
 								<div id="haha" class="pull-left" style="width:330px;overflow:hidden;">
 									
 								</div>
 								<div class="pull-left previewwDiv" id="heihei">
-									<img src="../img/rd.jpg" id="previeww" alt="Preview">
+									
 								</div>
 								<div class="clearfix"></div>
 							</div>
--->
+
 <!-- js cutimg end -->
 
 						</div>
@@ -116,7 +116,7 @@
 										<input id="subbox" type="checkbox" onclick="sub()" checked>我已阅读并同意排队网服务协议
 									</div>
 									<div>
-										<div style="text-align:center;"><button id="subbutton3" type="submit" class="btn btn-info">创建课程系列</button></div>
+										<div style="text-align:center;"><button id="subbutton3" type="button" onclick="refer()" class="btn btn-info">创建课程系列</button></div>
 									</div>
 								</div>
 							</div>
@@ -132,13 +132,13 @@
 <!-- right div -->
 			<div class="col-xs-4">
 				<div class="agreement">
-					在此处要告诉发布者 要在课程系列里面添加课时											<div class="cutImgDiv"			<div class="cutImgDiv"
-				</div>
+					在此处要告诉发布者 要在课程系列里面添加课时					
 			</div>
 		</div>
 	</div>
 <script type="text/javascript">
 function handleFileSelect(evt) {
+	document.getElementById('cutimg').style.display='block';
 	var files = evt.target.files; // FileList object
 	// Loop through the FileList and render image files as thumbnails.
 	for (var i = 0, f; f = files[i]; i++) {
@@ -163,6 +163,7 @@ function handleFileSelect(evt) {
 	                        '" title="', escape(theFile.name), '"/>'].join('');
 	      //document.getElementById('haha').insertBefore(span, null);
 	      imgs=escape(e.target.result);
+	      abc()
 	      //var urls=document.images.item(img1).src;
 	    };
 	  })(f);
@@ -210,12 +211,12 @@ function refer(){
 	var upDiv=$(".jcrop-tracker");
 	var img=$("#haha");
 	var x0=upDiv.offset().left-img.offset().left;
-	var x1=img.offset().top-upDiv.offset().top;
+	var x1=upDiv.offset().top-img.offset().top;
 	var y0=x0+upDiv.width();
 	var y1=x1+upDiv.height();
 	document.getElementById('hidden').value=x0+"*"+x1+"*"+y0+"*"+y1;
 	var form = document.getElementById('form');  
-    form.submit(); 
+    	form.submit(); 
 }
 
 function sub(){

@@ -29,7 +29,7 @@ qiniu.conf.ACCESS_KEY = "EW8idy4EFnJDBicDJZhPIVIVDU9AL0g4waW5MNtJ"
 qiniu.conf.SECRET_KEY = "C1qaP_-sgjVgQb6GGHJ-vCle0qTiGI8qtbgOumOB"
 
 def types(request):
-	info=Info.objects.filter(user_id=request.session['id'])
+	info=Info.objects.get(user_id=request.session['id'])
 	types=Types.objects.all()
 	m=Message.objects.filter(to=request.session['id']).order_by('-time')[0:5]
 	mess=[]
@@ -66,7 +66,7 @@ def tinytypes(request,ty):
 	tiny=Tiny_type.objects.filter(types_id=int(ty))
 	types=Types.objects.get(id=int(ty))
 	info=Info.objects.get(user_id=request.session['id'])
-	return render(request,'courses/tinyTypes.html',{'tiny':tiny,'types':types})
+	return render(request,'courses/tinyTypes.html',{'info':info,'tiny':tiny,'types':types})
 
 def courselist(request,id):
 	info=Info.objects.get(user_id=request.session['id'])
@@ -138,31 +138,32 @@ def coursecreate(request):
 		uptoken = policy.token()
 		if 'picture' in request.FILES:
 			pic=request.FILES['picture']
-			#suffix=pic.name.split('.')[-1]
-			#pic=Image.open(pic)
-			#coordinate=request.POST['coordinate'].split('*')
-			#region = (int(round(float(coordinate[0]))+1),int(coordinate[1]),int(coordinate[2]),int(coordinate[3]))
+			suffix=pic.name.split('.')[-1]
+			pic=Image.open(pic)
+			coordinate=request.POST['coordinate'].split('*')
+			region = (int(round(float(coordinate[0]))+1),int(coordinate[1]),int(coordinate[2]),int(coordinate[3]))
 			#region=(0,0,100,100)
-			#cropImg = pic.crop(region)
+			cropImg = pic.crop(region)
 			#cropImg=pic.thumbnail((int(coordinate[2]),int(coordinate[3])),Image.ANTIALIAS)
-			#cropImg.save(r"/home/tron/Dropbox/mz/templates/picture/course/"+str(tj)+'.'+suffix)
-			#pic.save("/home/tron/Dropbox/mz/templates/picture/course/"+str(tj)+".jpg","jpg")
-			dirs ='templates/picture/course/'+str(tj)
-			if os.path.isfile(dirs):
-				os.remove(dirs) 
-			fp=open(dirs, 'wb')
-			content=pic.read()
-			fp.write(content)
-			fp.flush()
-			fp.close()
+			cropImg.save(r"/home/tron/Maizhi/templates/picture/course/"+str(tj)+'.'+suffix)
+			#pic.save("/home/tron/Maizhi/templates/picture/course/"+str(tj)+'.'+suffix,suffix)
+			#dirs ='templates/picture/course/'+str(tj)
+			#if os.path.isfile(dirs):
+			#	os.remove(dirs) 
+			#fp=open(dirs, 'wb')
+			#content=pic.read()
+			#fp.write(content)
+			#fp.flush()
+			#fp.close()
 		domain='http://mzvideoimg.qiniudn.com'
 		course=Course(name=request.POST['name'],img=str(tj),domain=domain,introduce=request.POST['introduce'],tiny_type_id=request.POST['tiny'],price=request.POST['price'],status=0,over=0,teacher_id=request.session['id'],grade=0)
 		course.save()
-		qiniu.io.put_file(uptoken,str(tj),r"/home/tron/Maizhi/templates/picture/course/"+str(tj))
+		qiniu.io.put_file(uptoken,str(tj),r"/home/tron/Maizhi/templates/picture/course/"+str(tj)+'.'+suffix)
 		status=course.id
 		Post_course(user_id=request.session['id'],post_course_id=course.id,status=1).save()
 		return render(request,'courses/success.html',{'status':status})
 		#return HttpResponse(str(int(round(float(coordinate[0]))+1))+"---"+str(int(coordinate[1]))+"---"+str(int(coordinate[2]))+"---"+str(int(coordinate[3])))
+		#return HttpResponse(coordinate)
 	except:
 		m=Message.objects.filter(to=request.session['id']).order_by('-time')[0:5]
 		info=Info.objects.get(user_id=request.session['id'])
@@ -181,6 +182,7 @@ def coursecreate(request):
 		tag=Types.objects.all()
 		mycourse=Course.objects.filter(teacher_id=request.session['id']).count()
 		return render(request,'courses/courseCreate.html',{'message':mess,'havent':havent,'tag':tag,'info':info,'mycourse':mycourse})
+	
 
 def gettiny(request):
 	alltiny=Tiny_type.objects.filter(types_id=request.GET['tiny'])

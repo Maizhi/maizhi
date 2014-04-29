@@ -8,6 +8,7 @@ from users.models import Info,Follow_group,Message,Follow_topic,Follow_user
 from groups.models import Group,Topic,Review_of_topic,Good_review_of_topic,Group_file
 from django.utils import timezone
 from django.views.decorators.csrf import csrf_exempt 
+from PIL import Image
 import sys
 reload(sys)
 sys.setdefaultencoding('utf-8')
@@ -298,6 +299,7 @@ def thetopic(request,id):
 			each.append(info.user_name)                   #4
 			each.append(info.img)                         #5
 			each.append(r.id)                             #6
+			each.append(info.domain)                             #7
 			review.append(each)
 		info=Info.objects.get(user_id=request.session['id'])
 		return render(request,'groups/theTopic.html',{'info':info,'topic':topic,'user':user,'group':group,'message':mess,'havent':havent,'competence':competence,'recommend':recommend,'abord':abord,'review':review,'topics':topics})
@@ -355,7 +357,7 @@ def change(request):
 	return HttpResponse('1')
 
 def groupcreate(request):
-	try:
+	
 		if Group.objects.filter(name=request.POST['groupName']):
 			return HttpResponse('小组已存在 ! ')
 		else:
@@ -364,39 +366,30 @@ def groupcreate(request):
 			if 'groupImg' in request.FILES:
 				tj=time.time()
 				image=request.FILES['groupImg']
-				dirs ='templates/picture/group/image/'+str(tj)
-				content = image.read()
-				if os.path.isfile(dirs):
-					os.remove(dirs) 
-				fp=open(dirs, 'wb')
-				fp.write(content)
-				fp.flush()
-				fp.close()
+				suffix=image.name.split('.')[-1]
+				image=Image.open(image)
+				coordinate=request.POST['coordinate'].split('*')
+				region = (int(round(float(coordinate[0]))+1),int(coordinate[1]),int(coordinate[2]),int(coordinate[3]))
+				cropImg = image.crop(region)
+				cropImg.save(r"/home/tron/Maizhi/templates/picture/group/image/"+str(tj)+'.'+suffix)
+				#dirs ='templates/picture/group/image/'+str(tj)
+				#content = image.read()
+				#if os.path.isfile(dirs):
+				#	os.remove(dirs) 
+				#fp=open(dirs, 'wb')
+				#fp.write(content)
+				#fp.flush()
+				#fp.close()
 				domain="http://mzgroup.qiniudn.com"
-				ret=qiniu.io.put_file(uptoken,str(tj),r"/home/tron/Maizhi/templates/picture/group/image/"+str(tj))
-				if ret:
-					os.remove(dirs)
+				ret=qiniu.io.put_file(uptoken,str(tj),r"/home/tron/Maizhi/templates/picture/group/image/"+str(tj)+'.'+suffix)
+				#if ret:
+				#	os.remove(dirs)
 			else:
 				filename=None
 			g=Group(name=request.POST['groupName'],introduce=request.POST['groupIntro'],img=str(tj),domain=domain,user_id=request.session['id'])
 			g.save()
 			return render(request,'groups/success.html',{'g':g.id})
-	except:
-		m=Message.objects.filter(to=request.session['id']).order_by('-time')[0:5]
-		mess=[]
-		for k in m:
-			each=[]
-			name=Info.objects.get(user_id=k.from_id).user_name
-			content=k.content
-			each.append(name)
-			each.append(content)
-			mess.append(each)
-		havent=0
-		for n in m:
-			if n.status==1:
-				havent+=1
-		info=Info.objects.get(user_id=request.session['id'])
-		return render(request,'groups/groupCreate.html',{'info':info,'message':mess,'havent':havent})
+	
 
 def download(request,group):
 	group=Group.objects.get(id=group)
