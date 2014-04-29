@@ -2,7 +2,7 @@
 function comment_t(id){
 	createXMLRequest();                       
 	var content=document.getElementById("comment_tarea"+id).value;
-	var url="http://192.168.1.109:8866/users/comment/?content="+content+"&news_id="+id;
+	var url="http://192.168.1.120:8866/users/comment/?content="+content+"&news_id="+id;
 	xmlHttp.open("GET",url);
 	xmlHttp.onreadystatechange=function(){
 		if(xmlHttp.readyState==4 && xmlHttp.status==200){
@@ -11,9 +11,9 @@ function comment_t(id){
 				
 				re_news_array=xmlHttp.responseText.split(',');
 				//alert(re_news_array[0]+'----'+re_news_array[4]+'----'+re_news_array[1]);
-				var str1='<div class="pull-left comment_img"><a href="http://192.168.1.109:8866/users/home/';
-				var str2='"><img src="../avatar/';
-				var str3='" class="img-circle" width="100%"></a></div><div class="pull-left comment_content"><div><div class="pull-left"><a href="http://192.168.1.109:8866/users/home/';
+				var str1='<div class="pull-left comment_img"><a href="http://192.168.1.120:8866/users/home/';
+				var str2='"><img src="http://mzhead.qiniudn.com/http://mzhead.qiniudn.com/';
+				var str3='" class="img-circle" width="100%"></a></div><div class="pull-left comment_content"><div><div class="pull-left"><a href="http://192.168.1.120:8866/users/home/';
 				var str4='"><b>';
 				var str5='</b></a></div><div class="pull-right comment_time">刚刚更新</div><div class="clearfix"></div></div><div class="comment_concontent">';
 				var str6='</div><div class="pull-right"><span class="span_news"><a href="javascript:void(0)" onclick="cogood(';
@@ -53,7 +53,7 @@ function cocomment_t(news_id,re_id,to)
 {//alert(news_id+'---'+re_id+'---'+to);
 	createXMLRequest();                       
 	var content=document.getElementById("comment_tarea"+news_id).value;
-	var url="http://192.168.1.109:8866/users/cocomment/?content="+content+"&news_id="+news_id+"&re_id="+re_id+"&to="+to;
+	var url="http://192.168.1.120:8866/users/cocomment/?content="+content+"&news_id="+news_id+"&re_id="+re_id+"&to="+to;
 	xmlHttp.open("GET",url);
 	xmlHttp.onreadystatechange=function(){
 		if(xmlHttp.readyState==4 && xmlHttp.status==200){
@@ -62,8 +62,8 @@ function cocomment_t(news_id,re_id,to)
 				
 				re_news_array=xmlHttp.responseText.split(',');
 				//alert(re_news_array[0]+'----'+re_news_array[4]+'----'+re_news_array[1]);
-				var str1='<div class="pull-left comment_img"><a href="http://192.168.1.109:8866/users/home/';
-				var str2='"><img src="../avatar/';
+				var str1='<div class="pull-left comment_img"><a href="http://192.168.1.120:8866/users/home/';
+				var str2='"><img src="http://mzhead.qiniudn.com/';
 				var str3='" class="img-circle" width="100%"></a></div><div class="pull-left comment_content"><div><div class="pull-left"><a href="http://192.168.1.109:8866/users/home/';
 				var str4='"><b>';
 				var str5='</b></a></div><div class="pull-right comment_time">刚刚更新</div><div class="clearfix"></div></div><div class="comment_concontent">';
@@ -89,7 +89,7 @@ function get_more_re(news_id)
 {
 	createXMLRequest();                       
 	var content=document.getElementById("comment_tarea"+news_id).value;
-	var url="http://192.168.1.109:8866/users/get_more_re/?&news_id="+news_id;
+	var url="http://192.168.1.120:8866/users/get_more_re/?&news_id="+news_id;
 	xmlHttp.open("GET",url);
 	xmlHttp.onreadystatechange=function(){
 		if(xmlHttp.readyState==4 && xmlHttp.status==200){
@@ -100,8 +100,8 @@ function get_more_re(news_id)
 					    re_news_array=val.split(',');
 					    if(re_news_array[7]!=undefined)
 					    {
-						    var str1='<div class="comment_a_style"><div class="pull-left comment_img"><a href="http://192.168.1.109:8866/users/home/';
-							var str2='"><img src="../avatar/';
+						    var str1='<div class="comment_a_style"><div class="pull-left comment_img"><a href="http://192.168.1.120:8866/users/home/';
+							var str2='"><img src="http://mzhead.qiniudn.com/';
 							var str3='" class="img-circle" width="100%"></a></div><div class="pull-left comment_content"><div><div class="pull-left"><a href="http://192.168.1.109:8866/users/home/';
 							var str4='"><b>';
 							var str5='</b></a></div><div class="pull-right comment_time">'+re_news_array[9]+'</div><div class="clearfix"></div></div><div class="comment_concontent">';

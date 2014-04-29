@@ -11,7 +11,7 @@ from django.views.decorators.csrf import csrf_exempt
 import sys
 reload(sys)
 sys.setdefaultencoding('utf-8')
-import re,md5,os,time,json,qiniu.io,qiniu.conf,qiniu.rs
+import re,md5,os,time,json,qiniu.io,qiniu.conf,qiniu.rs,base64
 
 class PutPolicy(object):
     scope = 'maizhi'         
@@ -30,6 +30,7 @@ qiniu.conf.ACCESS_KEY = "EW8idy4EFnJDBicDJZhPIVIVDU9AL0g4waW5MNtJ"
 qiniu.conf.SECRET_KEY = "C1qaP_-sgjVgQb6GGHJ-vCle0qTiGI8qtbgOumOB"
 
 def groups(request):
+	info=Info.objects.get(user_id=request.session['id'])
 	gro=Group.objects.all()
 	follow=Follow_group.objects.filter(user_id=request.session['id'])
 	fg=[]
@@ -65,7 +66,7 @@ def groups(request):
 	for n in m:
 		if n.status==1:
 			havent+=1
-	return render(request,'groups/groups.html',{'groups':group,'fg':fg,'message':mess,'havent':havent})
+	return render(request,'groups/groups.html',{'groups':group,'fg':fg,'message':mess,'havent':havent,'info':info})
 
 def join(request):
 	my=Follow_group.objects.filter(user_id=request.session['id'])
@@ -181,7 +182,8 @@ def thegroup(request,id):
 		else:
 			each.append('2')         #7
 		topic.append(each)
-	return render(request,'groups/theGroup.html',{'group':group,'status':status,'actman':actman,'message':mess,'havent':havent,'topic':topic,'topics':topics,'recommend':recommend})
+	info=Info.objects.get(user_id=request.session['id'])
+	return render(request,'groups/theGroup.html',{'info':info,'group':group,'status':status,'actman':actman,'message':mess,'havent':havent,'topic':topic,'topics':topics,'recommend':recommend})
 
 def topiccreate(request,id):
 	group=Group.objects.get(id=id)
@@ -198,34 +200,57 @@ def topiccreate(request,id):
 	for n in m:
 		if n.status==1:
 			havent+=1
-	return render(request,'groups/topicCreate.html',{'group':group,'message':mess,'havent':havent})
+	info=Info.objects.get(user_id=request.session['id'])
+	return render(request,'groups/topicCreate.html',{'info':info,'group':group,'message':mess,'havent':havent})
 
 @csrf_exempt
 def publish(request):
-	try:
+	#try:
+		policy = qiniu.rs.PutPolicy('mztopic')
+		uptoken = policy.token()
 		content=request.POST['editor'].replace('*','+')
 		content=content.replace('}',';')
-		tname=time.time()
-		dirs ='templates/topic/'+str(tname)
-		if os.path.isfile(dirs):
-			os.remove(dirs) 
-		fp=open(dirs, 'wb')
-		fp.write(content)
-		fp.flush()
-		fp.close()
-		topic=Topic(group_id=request.POST['group'],user_id=request.session['id'],name=request.POST['title'],content=str(tname))
+		image=re.findall("src=\"(.+?)\"",content)
+		img=[]
+		for i in image:
+			st=time.time()
+			dirs ='templates/picture/topic/'+str(st)
+			if os.path.isfile(dirs):
+				os.remove(dirs) 
+			frd=str(i).split(',')
+			decode=base64.decodestring(frd[1])
+			f=open(dirs,'w')
+			f.write(decode)
+			f.close()
+			ret=qiniu.io.put_file(uptoken,str(st),r"/home/tron/Maizhi/templates/picture/topic/"+str(st))
+			if ret:
+				os.remove(dirs)
+			domain="http://mztopic.qiniudn.com/"
+			img.append(domain+str(st))
+		for j in img:
+			start=content.find("src=\"data")
+			start=int(start)+int(5)
+			end=content.find("\"",start)
+			end=int(end)
+			content=content.replace(content[start:end],j)
+		#tname=time.time()
+		#dirs ='templates/topic/'+str(tname)
+		#if os.path.isfile(dirs):
+		#	os.remove(dirs) 
+		#fp=open(dirs, 'wb')
+		#fp.write(content)
+		#fp.flush()
+		#fp.close()
+		topic=Topic(group_id=request.POST['group'],user_id=request.session['id'],name=request.POST['title'],content=content)
 		topic.save()
-		return HttpResponse(topic.id)
-	except:
-		return HttpResponse('Wrong')
+		#return HttpResponse(content)
+		return HttpResponse(int(topic.id))
+	#except:
+	#	return HttpResponse('Wrong')	
 
 def thetopic(request,id):
 	#try:
 		topic=Topic.objects.get(id=id)
-		dirs ='templates/topic/'+topic.content
-		fp=open(dirs)
-		value=fp.read()
-		fp.close()
 		user=Info.objects.get(user_id=topic.user_id)
 		group=Group.objects.get(id=topic.group_id)
 		m=Message.objects.filter(to=request.session['id']).order_by('-time')[0:5]
@@ -265,16 +290,17 @@ def thetopic(request,id):
 		review=[]
 		for r in topics:
 			each=[]
-			each.append(r.content)                        #0
-			each.append(r.time)                           #1
-			each.append(r.good_con)                       #2
+			each.append(r.content)         	  	  #0
+			each.append(r.time)                              	 #1
+			each.append(r.good_con)                        #2
 			each.append(r.review_con)                     #3
 			info=Info.objects.get(user_id=r.from_id)
 			each.append(info.user_name)                   #4
 			each.append(info.img)                         #5
 			each.append(r.id)                             #6
 			review.append(each)
-		return render(request,'groups/theTopic.html',{'topic':topic,'user':user,'group':group,'message':mess,'havent':havent,'competence':competence,'recommend':recommend,'abord':abord,'review':review,'topics':topics,'content':value})
+		info=Info.objects.get(user_id=request.session['id'])
+		return render(request,'groups/theTopic.html',{'info':info,'topic':topic,'user':user,'group':group,'message':mess,'havent':havent,'competence':competence,'recommend':recommend,'abord':abord,'review':review,'topics':topics})
 	#except:
 	#	return HttpResponse('404')
 

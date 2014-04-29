@@ -46,7 +46,7 @@ a:hover{
     border-color: transparent transparent #F2F2F2 transparent;  
 }
 .a_reward31{
-	height:130px;
+	height:150px;
 }
 .a_reward12{
 	width:60%;

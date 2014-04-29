@@ -175,7 +175,7 @@ a:hover{
     border-color: transparent transparent #F2F2F2 transparent;  
 } 
 .home_topics{
-	margin-top:17px;
+	margin-top:15px;
 }
 .group_introduce{
 	font-size:12px;

@@ -40,7 +40,7 @@
 	function comment_reward(id){
 		createXMLRequest();                       
 		var content=document.getElementById("reOfReward_texta").value;
-		var url="http://192.168.1.113:8866/rewards/addreview/?content="+content+"&reward_id="+id;
+		var url="http://192.168.1.120:8866/rewards/addreview/?content="+content+"&reward_id="+id;
 		xmlHttp.open("GET",url);
 		xmlHttp.onreadystatechange=function(e){
 			if(xmlHttp.readyState==4 && xmlHttp.status==200){
@@ -48,7 +48,7 @@
 
 					str1='<div id="ajax_comment" style="padding-bottom:40px;"></div><div class="pull-left tc_commit1"><div><img src='+re_array[3]+"/"+re_array[0]+'" class="img-circle" width="100%"/></div></div>';
 					str2='<div class="pull-left tc_commit2"><div class="topdirection2 pull-left"></div><div class="pull-left tc_commit32"><div>';
-					str3='<span class="tc_commit_name"><a href="http://192.168.1.113:8866/users/home/?u_id='+re_array[2]+'">'+re_array[1]+'</a>留言：</span><span class="tc_time pull-right">刚刚更新</span><div class="clearfix"></div></div>';
+					str3='<span class="tc_commit_name"><a href="http://192.168.1.120:8866/users/home/?u_id='+re_array[2]+'">'+re_array[1]+'</a>留言：</span><span class="tc_time pull-right">刚刚更新</span><div class="clearfix"></div></div>';
 					str4='<div class="tc_commit_content">'+content+'</div></div></div><div class="clearfix"></div>';
 			        var strr=str1+str2+str3+str4;
 
@@ -155,7 +155,7 @@
 						<span><button type="button" class="btn btn-warning" onclick="uncover({{areward.10}});">我要揭榜</button></span>
 						{% else %}
 						<span><button type="button" class="btn btn-warning" disabled="disabled">您已揭榜</button>
-							<a href="http://192.168.1.113:8866/courses/types/create?reward={{enreward}}&method=1&user={{enuser}}&to={{ento}}" type="button" class="btn btn-success">请创建课程</a>
+							<a href="http://192.168.1.120:8866/courses/types/create?reward={{enreward}}&method=1&user={{enuser}}&to={{ento}}" type="button" class="btn btn-success">请创建课程</a>
 						</span>
 						{% endifequal %}
 						</span>
