@@ -8,7 +8,7 @@ from rewards.models import Reward,Uncover,Reward_mes
 from courses.models import Types,Tiny_type,Course,Lession,Course_comment
 from users.models import Info,Teacher,News,Review_of_news,Message,Follow_topic,Follow_user,Follow_group,Follow_course,Post_reward,Post_course,Purchase,Good_news,Good_review_of_news
 from django.utils import timezone
-import re,md5,os,time,random
+import re,md5,os,time,random,base64
 
 def reward(request):
 	types=Types.objects.all()
@@ -28,7 +28,6 @@ def reward(request):
 		areward.append(typesTable.name)	#5
 		areward.append(i.domain)		#6
 		rewards.append(areward)
-
 	paginator = Paginator(rewards, 15)
 	page = request.GET.get('page')
 	try:
@@ -91,7 +90,6 @@ def rewards(request):
 		areward.append(typesTable.name)	#5
 		areward.append(i.domain)		#6	
 		rewards.append(areward)
-
 	paginator = Paginator(rewards, 15)
 	page = request.GET.get('page')
 	try:
@@ -171,17 +169,17 @@ def thereward(request,id):
 		a_re_reward.append(r.from_id)			#4
 		a_re_reward.append(info.domain)		#5
 		re_rewards.append(a_re_reward)
-
 	if Uncover.objects.filter(reward_id=id).filter(to=request.session['id']):
 		uncover_exist=1
 	else:
 		uncover_exist=0
-
-
 	yellow_stars=range(0,info.credit)
 	hollow_stars=range(0,(5-info.credit))
 	info=Info.objects.get(user_id=request.session['id'])
-	return render(request,'rewards/theReward.html',{'areward':areward,'info':info,'re_rewards':re_rewards,'yellow_stars':yellow_stars,'hollow_stars':hollow_stars,'uncover_exist':uncover_exist})
+	enreward=base64.encodestring(str(thereward.id))
+	enuser=base64.encodestring(str(request.session['id']))
+	ento=base64.encodestring(str(thereward.from_id))
+	return render(request,'rewards/theReward.html',{'enreward':enreward,'enuser':enuser,'ento':ento,'areward':areward,'info':info,'re_rewards':re_rewards,'yellow_stars':yellow_stars,'hollow_stars':hollow_stars,'uncover_exist':uncover_exist})
 
 
 def addreview(request):

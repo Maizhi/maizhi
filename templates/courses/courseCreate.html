@@ -75,18 +75,29 @@
 						<div class="group_form_all">
 							<div class="group_form_name pull-left"> 课程价格 </div>
 							<div class="group_form pull-left">
+								{% ifequal method '1' %}
 								<div class="input-group">
 								  <span class="input-group-addon">￥</span>
-								  <input type="text" name="price" class="form-control">
+								  <input type="text" name="price" class="form-control" value="{{price}}" disabled='disabled'>
 								  <span class="input-group-addon">.00</span>
+								  {% endifequal %}
+								  {% ifequal method '0' %}
+								<div class="input-group">
+								  <span class="input-group-addon">￥</span>
+								  <input type="text" name="price" class="form-control" >
+								  <span class="input-group-addon">.00</span>
+								  {% endifequal %}
 								</div>
 							</div>
 							<div class="clearfix"></div>
 						</div>
 						<input class="form-control" type="hidden" name="coordinate" id="hidden" />
 						<div class="group_form_all">	
+						
 							<div class="right case4" id="case4">
+
 								<div>
+									{% ifequal method '0' %}
 									<div class="group_form_name pull-left"> 课程分类 </div>
 									<div class="group_form pull-left">
 										<div class="pull-left cc_sel">
@@ -106,9 +117,13 @@
 										
 <!--一个小分类  循环结束处-->
 											</select>
+
 										</div>
+									
 										<div class="clearfix"></div>
+
 									</div>
+								{% endifequal %}
 									<div class="clearfix"></div>
 
 									

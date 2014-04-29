@@ -4,13 +4,15 @@ from django.http import HttpResponse,HttpResponseRedirect
 from django.core.paginator import PageNotAnInteger, Paginator, InvalidPage, EmptyPage
 from django.core.urlresolvers import reverse
 from django.shortcuts import render
+from django.http import Http404
 from courses.models import Types,Tiny_type,Course,Lession,Course_comment
 from login.models import Register
 from users.models import Info,Teacher,News,Review_of_news,Message,Follow_topic,Follow_user,Follow_group,Follow_course,Post_reward,Post_course,Purchase,Good_news,Good_review_of_news
+from rewards.models import Reward,Uncover,Reward_mes
 from django.utils import timezone 
 from PIL import Image
 from django.contrib import messages
-import re,md5,os,time,qiniu.io,qiniu.conf,qiniu.rs
+import re,md5,os,time,qiniu.io,qiniu.conf,qiniu.rs,base64
 
 class PutPolicy(object):
     scope = 'maizhi'         
@@ -156,7 +158,14 @@ def coursecreate(request):
 			#fp.flush()
 			#fp.close()
 		domain='http://mzvideoimg.qiniudn.com'
-		course=Course(name=request.POST['name'],img=str(tj),domain=domain,introduce=request.POST['introduce'],tiny_type_id=request.POST['tiny'],price=request.POST['price'],status=0,over=0,teacher_id=request.session['id'],grade=0)
+		if 'method' in request.GET:
+			reward=Reward.objects.get(id=base64.decodestring(request.GET['reward']))
+			to=base64.decodestring(request.GET['to'])
+			if int(request.session['id']) != int(base64.decodestring(request.GET['user'])):
+				raise Http404
+			course=Course(name=request.POST['name'],img=str(tj),domain=domain,introduce=request.POST['introduce'],tiny_type_id='',price=reward.price,status=0,over=0,teacher_id=request.session['id'],grade=0)
+		else:
+			course=Course(name=request.POST['name'],img=str(tj),domain=domain,introduce=request.POST['introduce'],tiny_type_id=request.POST['tiny'],price=request.POST['price'],status=0,over=0,teacher_id=request.session['id'],grade=0)
 		course.save()
 		qiniu.io.put_file(uptoken,str(tj),r"/home/tron/Maizhi/templates/picture/course/"+str(tj)+'.'+suffix)
 		status=course.id
@@ -181,7 +190,14 @@ def coursecreate(request):
 				havent+=1
 		tag=Types.objects.all()
 		mycourse=Course.objects.filter(teacher_id=request.session['id']).count()
-		return render(request,'courses/courseCreate.html',{'message':mess,'havent':havent,'tag':tag,'info':info,'mycourse':mycourse})
+		if 'method' in request.GET:
+			reward=Reward.objects.get(id=base64.decodestring(request.GET['reward']))
+			method='1'
+			price=int(reward.price)
+		else:
+			method='0'
+			price=''
+		return render(request,'courses/courseCreate.html',{'message':mess,'havent':havent,'tag':tag,'info':info,'mycourse':mycourse,'method':method,'price':price})
 	
 
 def gettiny(request):
