@@ -2650,6 +2650,7 @@ input[type="button"].btn-block {
   font-weight: normal;
   line-height: 1;
   -moz-osx-font-smoothing: grayscale;
+  margin-top:10px;
 }
 
 .glyphicon:empty {
@@ -6440,7 +6441,7 @@ button.close {
   top: 0;
   bottom: 0;
   left: 0;
-  width: 15%;
+  width: 5%;
   font-size: 20px;
   color: #ffffff;
   text-align: center;

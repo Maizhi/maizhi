@@ -67,7 +67,7 @@ function handleStateChange(e){
 
 
 
-
+/*
 var comment_time=null;
 function comment(a)
 {
@@ -80,4 +80,4 @@ function comment(a)
 
 
 
-}
+}*/

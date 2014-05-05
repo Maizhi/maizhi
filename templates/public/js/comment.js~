@@ -1,3 +1,19 @@
+var comment_time=null;
+function comment(a)
+{
+	if(comment_time!=null){
+		clearTimeout(comment_time);
+	}
+	comment_time=setTimeout(function(){
+		$("#comment"+a).toggle("slow");
+	},200);
+
+
+
+}
+
+
+
 
 function comment_t(id){
 	createXMLRequest();                       
@@ -12,7 +28,7 @@ function comment_t(id){
 				re_news_array=xmlHttp.responseText.split(',');
 				//alert(re_news_array[0]+'----'+re_news_array[4]+'----'+re_news_array[1]);
 				var str1='<div class="pull-left comment_img"><a href="http://192.168.1.120:8866/users/home/';
-				var str2='"><img src="http://mzhead.qiniudn.com/http://mzhead.qiniudn.com/';
+				var str2='"><img src="http://mzhead.qiniudn.com/';
 				var str3='" class="img-circle" width="100%"></a></div><div class="pull-left comment_content"><div><div class="pull-left"><a href="http://192.168.1.120:8866/users/home/';
 				var str4='"><b>';
 				var str5='</b></a></div><div class="pull-right comment_time">刚刚更新</div><div class="clearfix"></div></div><div class="comment_concontent">';

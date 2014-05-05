@@ -17,9 +17,39 @@
     <!--[if lt IE 9]>
       <script src="http://cdn.bootcss.com/html5shiv/3.7.0/html5shiv.min.js"></script>
       <script src="http://cdn.bootcss.com/respond.js/1.3.0/respond.min.js"></script>
-    <![endif]-->
+    <![endif]-->  
 <link href="../css/home.css" rel="stylesheet">    
-
+	<script src="../js/jquery.min.js"></script>
+	<script src="../js/bootstrap.js"></script>
+	<script src="../js/add.js"></script>
+	<script src="../js/good.js"></script>
+	<script src="../js/share.js"></script>
+	<script src="../js/comment.js"></script>
+	<script type="text/javascript">
+		function larger(a){
+			var wid=$("#news_image"+a).css("width");
+			if(wid=="380px"){
+				$("#news_image"+a).css("width","100%");
+			}else{
+				$("#news_image"+a).css("width","380px");
+			}
+		}
+		function change()
+		{
+			//最好使用ico或cur格式的文件，分辨率最好是32×32
+			//$("#news_image").css("cursor","url('../img/rd.jpg'),auto");
+			//$("#news_image").css("cursor","url('../img/rd.jpg'),default");
+			$(".news_image").css("cursor","pointer");
+		}
+		function pageChange(num,page)
+		{
+			//$(".li_li").attr("class","li_li");
+			//$("#li_"+num).attr("class","li_li active");
+			
+			//$("#hidden").val(num);
+			window.location.href="?page"+num+"="+page+"&tab="+num;
+		}
+	</script>
 </head>
 <body>
 	{% include 'public/common/header.html' %}
@@ -27,7 +57,7 @@
 		<div class="row">
 <!-- 左侧div -->
 			<div class="col-xs-4">
-<!--我的主页 个人名片  -->
+<!--我的主页 个人名片  --><form id="frm"><input type="hidden" id="hidden"></form>
 				{% ifequal identity '1' %}
 				<div class="person">
 					<div>
@@ -110,8 +140,8 @@
 			{% ifequal identity '1' %}
 				<div class="manage">
 					<div class="a_manage"><a href=""><strong>>>管理我的小组</strong></a></div>
-					<div class="a_manage"><a href=""><strong>>>管理我的课程</strong></a></div>
-					<div class="a_manage"><a href=""><strong>>>管理我的悬赏</strong></a></div>
+					<div class="a_manage"><a href="{% url 'users:managecourse' %}"><strong>>>管理我的课程</strong></a></div>
+					<div class="a_manage"><a href="{% url 'users:managereward' %}"><strong>>>管理我的悬赏</strong></a></div>
 				</div>
 			{% endifequal %}
 <!-- 他的主页 个人介绍 -->
@@ -162,44 +192,129 @@
 <!-- 右侧div -->
 			<div class="col-xs-8">
 				<div>
-<!-- 一条新鲜事 循环开始处 -->
 					<div class="newsDiv">
 						<div class="in_newsDiv"> 
 							<ul class="nav nav-tabs" id="myTab">
-							  <li class="active"><a href="#dongtai" data-toggle="tab">动态</a></li>
-							  <li><a href="#xiaozu" data-toggle="tab">{{userinfo.user_name|capfirst}}的小组</a></li>
-							  <li><a href="#kecheng" data-toggle="tab">发布的课程</a></li>
+								{% ifequal tab 1 %}
+							  <li id="li_1" class="li_li active"><a href="#dongtai" data-toggle="tab">动态</a></li>
+							  {% else %}
+							   <li id="li_1" class="li_li"><a href="#dongtai" data-toggle="tab">动态</a></li>
+							  {% endifequal %}
+							  {% ifequal tab 2 %}
+							  <li id="li_2" class="li_li active"><a href="#xiaozu" data-toggle="tab">{{userinfo.user_name|capfirst}}的小组</a></li>
+							  {% else %}
+							  <li id="li_2" class="li_li"><a href="#xiaozu" data-toggle="tab">{{userinfo.user_name|capfirst}}的小组</a></li>
+							  {% endifequal %}
+							  {% ifequal tab 3 %}
+							  <li id="li_3" class="li_li active"><a href="#kecheng" data-toggle="tab">发布的课程</a></li>
+							  {% else %}
+							  <li id="li_3" class="li_li"><a href="#kecheng" data-toggle="tab">发布的课程</a></li>
+							  {% endifequal %}
 <!-- 只有他的主页有 开始处 -->
-							  <li><a href="#xuanshang" data-toggle="tab">{{userinfo.user_name|capfirst}}的悬赏</a></li>
-							  <li><a href="#xinxi" data-toggle="tab">详细信息</a></li>
+								{% ifequal tab 4 %}
+							  <li id="li_4" class="li_li active"><a href="#xuanshang" data-toggle="tab">{{userinfo.user_name|capfirst}}的悬赏</a></li>
+							  {% else %}
+							  <li id="li_4" class="li_li"><a href="#xuanshang" data-toggle="tab">{{userinfo.user_name|capfirst}}的悬赏</a></li>
+							  {% endifequal %}
+							  <li id="li_5" class="li_li"><a href="#xinxi" data-toggle="tab">详细信息</a></li>
 <!-- 只有他的主页有结束处 -->
 							</ul>
 							
 							<div class="tab-content">
-<!-- 动态 标签第一签 -->
+<!-- 动态 标签第一签 -->			{% ifequal tab 1 %}
 								<div class="tab-pane active" id="dongtai">
+								{% else %}
+								<div class="tab-pane" id="dongtai">
+								{% endifequal %}
 <!-- 一条动态 循环开始处 -->
 							{% for i in news %}
 									<div class="a_dongtai">
 										<div class="dongtai_img pull-left">
-											<img src="{{userinfo.domain}}/{{userinfo.img}}" width="100%"/>
+											<img src="{{info.domain}}/{{info.img}}" width="100%"/>
 										</div>
 										<div class="dongtai_content pull-left">
 											<div class="triangle pull-left"></div>
 											<div class="dongtai_content1 pull-left">
-												<div class="time">{{i.time|date:"Y-m-d H:i:s"}}</div>
+												<div class="time">{{i.3|date:"Y-m-d H:i:s"}}</div>
 												<div class="news_cont">
-													<div>{{i.content}}</div>
-													{% if i.img %}
-													<div style="width:100px;"><img id="news_image1" class="news_image" src="{{i.src}}-mzimg" onmouseover="change();" onclick="larger(1);"/></div>
+													<div>{{i.2}}</div>
+													{% if i.1 %}
+													<div style="width:250px;"><img id="larger{{i.8}}" class="news_image" src="{{i.4}}-mzimg" onmouseover="change();" onclick="larger(1);" width="100%"/></div>
 													{% endif %}
 													<div class="news_act">
-														<span class="span_news"><a href="javascript:void(0)" onclick="clickgoodgood({{i.id}})"><i class="icon-thumbs-up"></i> <span id="good{{i.id}}">{{i.good_con}}</span></a></span>
-														<span class="span_news"><a href="javascript:void(0)" data-toggle="modal" data-target="#shareThis{{i.id}}" title="分享到我的新鲜事"><i class="icon-share-alt"></i> <span id="share{{i.id}}">{{i.share_con}}</span></a></span>
-														<span class="span_news"><a href="javascript:void(0)"><i class="icon-comment"></i> {{i.review_con}}</a></span>
+														<span class="span_news"><a href="javascript:void(0)" onclick="clickgood({{i.8}})"><i class="icon-thumbs-up"></i> <span id="good{{i.8}}">{{i.5}}</span></a></span>
+														<span class="span_news"><a href="javascript:void(0)" data-toggle="modal" data-target="#shareThis{{i.8}}" title="分享到我的新鲜事"><i class="icon-share-alt"></i> <span id="share{{i.8}}">{{i.6}}</span></a></span>
+														<span class="span_news"><a href="javascript:void(0)" id="redirect{{i.8}}" onclick="comment({{i.8}});"><i class="icon-comment"></i> <span id="review{{i.8}}">{{i.7}}</span></a></span>
+													</div>
+<!--在这个div里加入评论-->
+							<div>
+<!--评论 点击出现-->
+								<div id="comment{{i.8}}" class="comment" style="display:none;">
+									<div class="comment_act">
+										<div class="comment_act1 pull-left">
+											<textarea class="comment_act1_tarea" id="comment_tarea{{i.8}}"></textarea>
+										</div>
+										<div id="coAndcocomment{{i.8}}" class="comment_act2 pull-left">
+											<button type="button" class="btn btn-info comment_act_btn" onclick="comment_t({{i.8}});">评论</button>
+										</div>
+										<div class="clearfix"></div>
+									</div>
+<!-- 某条新鲜事的评论 循环开始处 -->
+									<div class="a_comment">
+										<div id="first_commend{{i.8}}">
+											{% if i.16 %}
+											<div class="comment_a_style">
+												<div class="pull-left comment_img">
+													<a href="{% url 'users:home' i.21 %}"><img src="{{i.22}}/{{i.16}}" class="img-circle" width="100%"></a>
+												</div>
+												<div class="pull-left comment_content">
+													<div>
+														<div class="pull-left">
+															<a href="{% url 'users:home' i.21 %}"><b>{{i.15}}</b></a>
+														</div>
+														<div class="pull-right comment_time">
+															{{i.19|date:"Y-m-d H:i:s"}}
+														</div>
+														<div class="clearfix"></div>
+													</div>
+													<div class="comment_concontent">
+														{{i.14}}
+													</div>
+													<div class="pull-right">
+														<span class="span_news"><a href="javascript:void(0)" onclick="cogood({{i.13}})"><i class="icon-thumbs-up"></i> <span id="cogood{{i.13}}">{{i.18}}</span></a></span>
+														<span class="span_news"><a href="javascript:void(0)" onclick="cocomment({{i.13}},'{{i.15}}',{{i.17}},{{i.8}});"><i class="icon-comment"></i> <span id="cocomment_span{{i.13}}">{{i.20}}</a></span></span>
 													</div>
 												</div>
-												<div class="modal fade" id="shareThis{{i.id}}" tabindex="-1" role="dialog" aria-hidden="true">
+												<div class="clearfix"></div>
+											</div>
+											{% endif %}
+										</div>
+<!-- 回复的回复 加入的div 
+										<div>
+											<div id="cocomment{{i.13}}" class="cocomment_act" style="display:none;">
+												<div class="comment_act1 pull-left">
+													<textarea id="cocomment_act1_tarea{{i.8}}" class="comment_act1_tarea"></textarea>
+												</div>
+												<div class="comment_act2 pull-left">
+													<button type="button" class="btn btn-info comment_act_btn">评论</button>
+												</div>
+												<div class="clearfix"></div>
+											</div>
+										</div>-->
+										
+										<div style="margin-top:5px;" id="see_more_re{{i.8}}"> 
+											{% if i.16 %}
+											<a href="javascript:void(0)" onclick="get_more_re({{i.8}});">查看更多评论</a>
+											{% endif %}
+										</div>
+										
+									</div>
+									
+<!-- 某条新鲜事的评论 循环结束处 -->
+								</div>
+							</div>
+												</div>
+												<div class="modal fade" id="shareThis{{i.8}}" tabindex="-1" role="dialog" aria-hidden="true">
 												  <div class="modal-dialog">
 												    <div class="modal-content">
 												      <div class="modal-header">
@@ -207,58 +322,76 @@
 												        <h4 class="modal-title">分享到我的新鲜事</h4>
 												      </div>
 												      <div class="modal-body">
-												      	<div class="content" style="margin-bottom:20px"><textarea id="sharemsg{{i.id}}" class="form-control">//{{userinfo.user_name|capfirst}}:{{i.content}}</textarea></div>
+												      	<div class="content" style="margin-bottom:20px"><textarea id="sharemsg{{i.8}}" class="form-control">//{{i.0|capfirst}}:{{i.2}}</textarea></div>
 												        {% if i.img %}
-														<img id="larger{{i.id}}" class="larger" src="../news/{{i.img}}" width="320" />
+														<img id="larger{{i.8}}" class="larger" src="../news/{{i.1}}" width="320" />
 														{% endif %}
 												      </div>
 												      <div class="modal-footer">
-												        <button type="button" onclick="shareTo({{i.id}})" class="btn btn-primary">分享</button>
+												        <button type="button" onclick="shareTo({{i.8}})" class="btn btn-primary">分享</button>
 												      </div>
 												    </div><!-- /.modal-content -->
 												  </div><!-- /.modal-dialog -->
 												</div><!-- /.modal -->
 											</div>
 											<div class="clearfix"></div>
+
 										</div>
 										<div class="clearfix"></div>
 									</div>
 							{% endfor %}
-<!-- 一条动态 循环结束处 -->
+<!-- 一条动态 循环结束处 -->			
+									<div>
+										<ul class="pager">
+										{% if news.has_previous %}
+										  <li><a href="javascript:void(0)" onclick="pageChange(1,{{ news.previous_page_number }});">&larr;上一页</a></li>
+										{% endif %}
+										共 {{ news.paginator.num_pages }} 页  第 {{ news.number }} 页.
+										{% if news.has_next %}
+										  <li><a href="javascript:void(0)" onclick="pageChange(1,{{ news.next_page_number }},1);">下一页&rarr;</a></li>
+										{% endif %}
+										</ul>
+									</div>
 								</div>
 <!-- XX的小组 标签第二签 -->
+								{% ifequal tab 2 %}
+								<div class="tab-pane active" id="xiaozu">
+								{% else %}
 								<div class="tab-pane" id="xiaozu">
+								{% endifequal %}
 									<div class="join_groups">
 										<div class="join_content">
 <!-- 他加入的小组  幻灯片开始处 每页七个 -->		
 											<div class="join_title">
-												<span class="pull-left"><b>他加入的小组</b></span>
-												<span class="pull-right home_all_join_groups"><a href="">查看更多</a></span>
-												<div class="clearfix"></div>
+												<span class="pull-left"><b>{% ifequal userinfo.sex 1 %}他{% else %}她{% endifequal %}加入的小组</b></span>
+												<!--<span class="pull-right home_all_join_groups"><a href="">查看更多</a></span>
+												<div class="clearfix"></div>-->
 											</div>
 											<div class="bs-example" style="width:100%;">
 										      <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
 										        <div class="carousel-inner">
 										          <div class="item active">
-<!-- 一个小组 幻灯片  第一页   共循环6个 循环开始处-->
+<!-- 一个小组 幻灯片  第一页   共循环6个 循环开始处-->{% for f in follow_group_set1 %}
 										          	<div class="pull-left join_a_group">
 										          		<div class="includegroups">
-															<a href="#" title="小组名"><img src="public/img/rd.jpg" width="100%"/></a>
+															<a href="{% url 'groups:thegroup' f.0 %}" title="{{f.3}}"><img src="{{f.1}}/{{f.2}}" width="100%"/></a>
 														</div>
 													</div>
-<!-- 一个小组 幻灯片    第一页  共循环6个 循环结束处-->
+<!-- 一个小组 幻灯片    第一页  共循环6个 循环结束处-->{% endfor %}
 													<div class="clearfix"></div>
 										          </div>
+										          {% if follow_group_set2 %}
 										          <div class="item">
-<!-- 一个小组 幻灯片  第二页   共循环6个 循环开始处-->
+<!-- 一个小组 幻灯片  第二页   共循环6个 循环开始处-->{% for f in follow_group_set2 %}
 										          	<div class="pull-left join_a_group">
 										          		<div class="includegroups">
-															<a href="#" title="小组名"><img src="public/img/rd.jpg" width="100%"/></a>
+															<a href="{% url 'groups:thegroup' f.0 %}" title="{{f.3}}"><img src="{{f.1}}/{{f.2}}" width="100%"/></a>
 														</div>
 													</div>
-<!-- 一个小组 幻灯片  第二页   共循环6个 循环结束处-->													
+<!-- 一个小组 幻灯片  第二页   共循环6个 循环结束处-->	{% endfor %}												
 													<div class="clearfix"></div>
 												  </div>
+												  {% endif %}
 										        </div>
 										        <a class="left carousel-control" href="#carousel-example-generic" data-slide="prev">
 										          <span class="glyphicon glyphicon-chevron-left"></span>
@@ -274,18 +407,18 @@
 										<div class="clearfix"></div>
 									</div>
 									<div class="create_group">
-										<div class="create_title"><b>他创建的小组</b></div>
+										<div class="create_title"><b>{% ifequal userinfo.sex 1 %}他{% else %}她{% endifequal %}创建的小组</b></div>
 <!-- 他创建的小组 循环开始处 -->
 									{% for i in mygroup %}
 										<div class="a_group">
 											<div>
 												<div class="group_img pull-left">
-													<a href=""><img src="{{i.1}}/{{i.2}}" width="100%"/></a>
+													<a href="{% url 'groups:thegroup' i.5 %}"><img src="{{i.1}}/{{i.2}}" width="100%"/></a>
 												</div>
 												<div class="group_intro pull-left">
 													<div>
 														<div class="pull-left">
-															<a href=""><b>{{i.0}}</b></a>
+															<a href="{% url 'groups:thegroup' i.5 %}"><b>{{i.0}}</b></a>
 														</div>
 														{% ifequal identity '0' %}
 														<div class="btn_join_group pull-left">
@@ -307,101 +440,137 @@
 											<div class="home_topics">
 												<div class="topdirection"></div>
 												<div class="topic">
-<!-- 一个话题 循环开始处 -->
+<!-- 一个话题 循环开始处 -->						{% for t in i.6 %}
 													<div class="a_topic">
 														<div>
-															<div class="a_topic_title pull-left"><a href=""><b>省钱的好办法有哪些~？省钱的好办法有哪些~？省钱的好办法有哪些~？省钱的好办法有哪些~？</b></a></div>
-															<div class="a_topic_time pull-right">2014-2-5 15:56:18</div>
+															<div class="a_topic_title pull-left"><a href=""><b>{{t.1}}</b></a></div>
+															<div class="a_topic_time pull-right">{{t.3|date:"Y-m-d H:i:s"}}</div>
 															<div class="clearfix"></div>
 														</div>
 														<div class="a_topic_content">
-															<i>唧唧复唧唧，木兰当户织。不闻机杼声，惟闻女叹息。问女何所思，问女何所忆。女亦无所思，女亦无所忆。</i>
+															<i>{{t.2}}</i>
 														</div>
 														<div class="hr"></div>
 													</div>
-<!-- 一个话题 循环结束处 -->
-													<div class="topic_more"><a href="">>>更多</a></div>
+<!-- 一个话题 循环结束处 -->						{% endfor %}
+													<div class="topic_more"><a href="{% url 'groups:thegroup' i.5 %}">>>更多</a></div>
 												</div>
 											</div>
 										</div>
 									{% endfor %}
 <!-- 他创建的小组 循环结束处 -->
+										<div>
+											<ul class="pager">
+											{% if mygroup.has_previous %}
+											  <li><a href="javascript:void(0)" onclick="pageChange(2,{{ mygroup.previous_page_number }});">&larr;上一页</a></li>
+											{% endif %}
+											共 {{ mygroup.paginator.num_pages }} 页  第 {{ mygroup.number }} 页.
+											{% if mygroup.has_next %}
+											  <li><a href="javascript:void(0)" onclick="pageChange(2,{{ mygroup.next_page_number }});">下一页&rarr;</a></li>
+											{% endif %}
+											</ul>
+										</div>
 									</div>
 								</div>
 <!-- 发布的课程 标签第三签 -->
+								{% ifequal tab 3 %}
+								<div class="tab-pane active" id="kecheng">
+								{% else %}
 								<div class="tab-pane" id="kecheng">
+								{% endifequal %}
 									<div class="course_publish">
-										<div>
+										<!--<div>
 											<select id="sel" onChange="chg()">
 												<option value="1">按人气排序</option>
 												<option value="2">按时间排序</option>
 												<option value="3">按价格排序</option>
 											</select>
-										</div>
-<!-- 一个课程 循环开始处 -->
+										</div>-->
+<!-- 一个课程 循环开始处 -->{% for c in couses %}
 										<div class="a_course">
 											<div>
 												<div class="a_course_img pull-left">
-													<div><img src="../img/rd.jpg" width="100%"/></div>
-													<div class="course_title">形而上学</div>
+													<a href=""><div><img src="{{c.2}}/{{c.3}}" width="100%"/></div></a>
+													<div class="course_title">{{c.1}}</div>
 												</div>
 												<div class="a_course_intro pull-left">
 													<div>
 														<div class="course_score pull-left">
 															<span>
 <!-- 用星星评价的地方    第一个span是黄色星星  第二个span是空心星星  分别循环   -->
-																<span class="yellow_star">&#9733</span><span class="yellow_star">&#9733</span><span class="yellow_star">&#9733</span><span class="yellow_star">&#9733</span><span>☆</span>
+														{% for s in c.8 %}
+																<span class="yellow_star">&#9733</span>
+														{% endfor %}
+														{% for s in c.9 %}
+														<span>☆</span>
+														{% endfor %}
 <!-- 用星星评价的地方 结束 -->							
 															</span>
-															<span class="score_con"><b>（131人评价）</b></span>
+															<span class="score_con"><b>（{{c.6}}人评价）</b></span>
 														</div>
 														<div class="pull-right">
-															<span style="margin-right:20px;"><b>￥35.00</b></span>
+															<span style="margin-right:20px;"><b>￥{{c.5}}</b></span>
+															{% ifequal c.10 0 %}
 															<span><button type="button" class="btn btn-warning btn-xs"><b>购&nbsp;&nbsp;买</b></button></span>
+															{% endifequal %}
+															{% ifequal c.7 0 %}
 															<span><button type="button" class="btn btn-userinfo btn-xs"><b>收&nbsp;&nbsp;藏</b></button></span>
+															{% endifequal %}
 														</div>
 														<div class="clearfix"></div>
 													</div>
 													<div class="a_course_intro_content">
 														<i>
-															形而上学，是一个传统的哲学分支，旨在解释存在和世界的基本性质。但是，如何准确
-															地定义这个术语并不容易。传统上，形而上学试图用尽可能宽泛的措辞回答两个基本的
-															问题： 根本上有什么存在？ 它是什么样的？ 形而上学家试图阐明人们用以理解世界的
-															基本概念，例如存在、客体及其性质、空间和时间、因果和可能性。
+															{{c.4}}
 														</i>
 													</div>
 												</div>
 												<div class="clearfix"></div>
 											</div>
 										</div>
-<!-- 一个课程 循环结束处 -->
+<!-- 一个课程 循环结束处 -->{% endfor %}
+										<div>
+											<ul class="pager">
+											{% if couses.has_previous %}
+											  <li><a href="javascript:void(0)" onclick="pageChange(3,{{ couses.previous_page_number }});">&larr;上一页</a></li>
+											{% endif %}
+											共 {{ couses.paginator.num_pages }} 页  第 {{ couses.number }} 页.
+											{% if couses.has_next %}
+											  <li><a href="javascript:void(0)" onclick="pageChange(3,{{ couses.next_page_number }});">下一页&rarr;</a></li>
+											{% endif %}
+											</ul>
+										</div>
 									</div>
 								</div>
 <!-- 只有他的主页有 开始处 -->
 <!-- XX的悬赏  标签第四签-->
+								{% ifequal tab 4 %}
+								<div class="tab-pane active" id="xuanshang">
+								{% else %}
 								<div class="tab-pane" id="xuanshang">
+								{% endifequal %}
 									<div class="rewards">
-										<div>
+										<!--<div>
 											<select id="sel" onChange="chg2()">
 												<option value="1">未过期</option>
 												<option value="2">已过期</option>
 											</select>
-										</div>
+										</div>-->
 										<div class="all_rewards">
-<!-- 一个悬赏 循环开始处 -->										
+<!-- 一个悬赏 循环开始处 -->						{% for r in reward %}				
 											<div class="a_reward pull-left">
 												<div class="a_a_reward">
 													<div class="a_reward1">
 														<div class="a_reward11 pull-left">
-															<div class="reward_img"><img src="../img/rd.jpg" width="100%" class="img-circle"></div>
+															<div class="reward_img"><img src="{{r.5}}/{{r.6}}" width="100%" class="img-circle"></div>
 														</div>
 														<div class="a_reward12 pull-left">
-															<div class="reward_type pull-right"><b>#编程</b></div>
+															<div class="reward_type pull-right"><b>#{{r.4}}</b></div>
 															<div class="clearfix"></div>
 															<div class="reward_name">
-																求购PHP基础课程求购PHP基础课程
+																{{r.1}}
 															</div>
-															<div class="reward_price"><b>￥20.00</b></div>
+															<div class="reward_price"><b>￥{{r.2}}</b></div>
 														</div>
 														<div class="clearfix"></div>
 													</div>
@@ -409,19 +578,34 @@
 														<div class="topdirection"></div>
 													</div>
 													<div class="a_reward3">
-														<div>求购PHP课程的具体内容求购PHP课程的具体内容求购PHP课程的具体内容求购PHP课程的具体内容求购PHP课程的具体内容</div>
-														<div class="reward_in pull-right"><a href=""><b>查看详情</b></a></div>
+														<div style="height:150px;">{{r.3}}</div>
+														<div class="reward_in pull-right"><a href="{% url 'rewards:thereward' r.0 %}"><b>查看详情</b></a></div>
 														<div class="clearfix"></div>
 													</div>
 												</div>
 											</div>
-<!-- 一个悬赏 循环结束处 -->
+<!-- 一个悬赏 循环结束处 -->						{% endfor %}
 											<div class="clearfix"></div>
+											<div>
+												<ul class="pager">
+												{% if reward.has_previous %}
+												  <li><a href="javascript:void(0)" onclick="pageChange(4,{{ reward.previous_page_number }});">&larr;上一页</a></li>
+												{% endif %}
+												共 {{ reward.paginator.num_pages }} 页  第 {{ reward.number }} 页.
+												{% if reward.has_next %}
+												  <li><a href="javascript:void(0)" onclick="pageChange(4,{{ reward.next_page_number }});">下一页&rarr;</a></li>
+												{% endif %}
+												</ul>
+											</div>
 										</div>
 									</div>
 								</div>
 <!-- 详细信息  标签第五签 -->
-								<div class="introduce tab-pane" id="xinxi">
+								{% ifequal tab 5 %}
+								<div class="tab-pane introduce active" id="xinxi">
+								{% else %}
+								<div class="tab-pane introduce" id="xinxi">
+								{% endifequal %}
 									<div>
 										<div>
 											<div class="intro_left pull-left"><span class="glyphicon glyphicon-user"></span> 昵称</div>
@@ -484,28 +668,6 @@
 	
 	
 	
-	<script src="../js/jquery.min.js"></script>
-	<script src="../js/bootstrap.js"></script>
-	<script src="../js/add.js"></script>
-	<script src="../js/good.js"></script>
-	<script src="../js/share.js"></script>
-	<script type="text/javascript">
-		function larger(a){
-			var wid=$("#news_image"+a).css("width");
-			if(wid=="380px"){
-				$("#news_image"+a).css("width","100%");
-			}else{
-				$("#news_image"+a).css("width","380px");
-			}
-		}
-		function change()
-		{
-			//最好使用ico或cur格式的文件，分辨率最好是32×32
-			//$("#news_image").css("cursor","url('../img/rd.jpg'),auto");
-			//$("#news_image").css("cursor","url('../img/rd.jpg'),default");
-			$(".news_image").css("cursor","pointer");
-		}
-		
-	</script>
+
 </body>
 </html>

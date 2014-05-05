@@ -1,3 +1,19 @@
+var comment_time=null;
+function comment(a)
+{
+	if(comment_time!=null){
+		clearTimeout(comment_time);
+	}
+	comment_time=setTimeout(function(){
+		$("#comment"+a).toggle("slow");
+	},200);
+
+
+
+}
+
+
+
 
 function comment_t(id){
 	createXMLRequest();                       

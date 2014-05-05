@@ -123,7 +123,7 @@ def publish(request):
 			domain='http://mzimage.qiniudn.com'
 			News(user_id=request.session['id'],src=domain+'/'+str(tj),content=news,good_con=0,share_con=0,review_con=0,img=str(tj)).save()
 			jpg("templates/picture/news/"+str(tj),"templates/picture/news/"+str(tj))
-			ret=qiniu.io.put_file(uptoken,str(tj),r"/home/tron/mz/maizhi/templates/picture/news/"+str(tj))
+			ret=qiniu.io.put_file(uptoken,str(tj),r"/home/tron/Maizhi/templates/picture/news/"+str(tj))
 			if ret:
 				os.remove(dirs)
 			return HttpResponse('1')
@@ -178,25 +178,26 @@ def head(request):
 	if 'picture' in request.FILES:
 		tj=time.time()
 		pic=request.FILES['picture']
-		#pic=Image.open(pic)
-		#coordinate=request.POST['coordinate'].split('*')
-		#region = (int(round(float(coordinate[0]))+1),int(coordinate[1]),int(coordinate[2]),int(coordinate[3]))
+		suffix=pic.name.split('.')[-1]
+		pic=Image.open(pic)
+		coordinate=request.POST['coordinate'].split('*')
+		region = (int(round(float(coordinate[0]))+1),int(coordinate[1]),int(coordinate[2]),int(coordinate[3]))
 		#region=(0,0,100,100)
-		#cropImg = pic.crop(region)
+		cropImg = pic.crop(region)
 		#cropImg=pic.thumbnail((int(coordinate[2]),int(coordinate[3])),Image.ANTIALIAS)
-		#cropImg.save(r"/home/tron/Dropbox/mz/templates/picture/avatar/"+str(tj))
+		cropImg.save(r"/home/tron/Maizhi/templates/picture/avatar/"+str(tj)+'.'+suffix)
 		domain="http://mzhead.qiniudn.com"
-		dirs ='templates/picture/avatar/'+str(tj)
-		if os.path.isfile(dirs):
-			os.remove(dirs) 
-		fp=open(dirs, 'wb')
-		content=pic.read()
-		fp.write(content)
-		fp.flush()
-		fp.close()
-		ret=qiniu.io.put_file(uptoken,str(tj),r"/home/tron/Maizhi/templates/picture/avatar/"+str(tj))
-		if ret:
-			os.remove(dirs)
+		#dirs ='templates/picture/avatar/'+str(tj)
+		#if os.path.isfile(dirs):
+		#	os.remove(dirs) 
+		#fp=open(dirs, 'wb')
+		#content=pic.read()
+		#fp.write(content)
+		#fp.flush()
+		#fp.close()
+		ret=qiniu.io.put_file(uptoken,str(tj),r"/home/tron/Maizhi/templates/picture/avatar/"+str(tj)+'.'+suffix)
+		#if ret:
+		#	os.remove(dirs)
 		info.img=str(tj)
 		info.domain=domain
 		info.time=timezone.now()
@@ -216,20 +217,25 @@ def getimg(request):
 def mycourseact(request):
 	return render(request,'users/myCourseAct.html')
 
+
 def home(request,u_id):
+	if 'tab' in request.GET:
+		tab=int(request.GET['tab'])
+	else:
+		tab=1
 	info=Info.objects.get(user_id=request.session['id'])
 	if int(u_id)==int(request.session['id']):
 		identity='1'
 		userinfo=Info.objects.get(user_id=request.session['id'])
-		news=News.objects.filter(user_id=request.session['id']).order_by('-time')
+		newsTable=News.objects.filter(user_id=request.session['id']).order_by('-time')
 	else:
 		identity='0'
 		userinfo=Info.objects.get(user_id=u_id)
-		news=News.objects.filter(user_id=u_id).order_by('-time')
+		newsTable=News.objects.filter(user_id=u_id).order_by('-time')
 	user=Register.objects.all()[0:5]
 	guy=[]
 	focus=[]
-	f=Follow_user.objects.filter(user_id=request.session['id'])
+	f=Follow_user.objects.filter(user_id=u_id)
 	for j in f:
 		focus.append(j.follow_user_id)
 	for u in user:
@@ -247,8 +253,42 @@ def home(request,u_id):
 			each.append(i.id)				#4
 			each.append(i.domain)			#5
 			guy.append(each)
-	my=Group.objects.filter(user_id=request.session['id'])
-	fg=Follow_group.objects.filter(user_id=request.session['id'])
+	news=[]
+	for t in newsTable:
+		each=[]
+		i=Info.objects.get(user_id=t.user_id)
+		each.append(i.user_name)  #0
+		each.append(i.img)        #1
+		each.append(t.content)    #2
+		each.append(t.time)       #3
+		if t.src:
+			each.append(t.src)    #4
+		else:
+			each.append('')       #4
+		each.append(t.good_con)   #5
+		each.append(t.share_con)  #6
+		each.append(t.review_con) #7
+		each.append(t.id)         #8
+		each.append(i.sign)       #9
+		each.append(t.user_id)    #10
+		each.append(i.position)   #11
+		each.append(i.work)       #12
+		re_of_news=Review_of_news.objects.filter(news_id=t.id).order_by('-time')[0:1]
+		for r in re_of_news:
+			each.append(r.id)			#13	
+			each.append(r.content)		#14	
+			info=Info.objects.get(user_id=r.from_id)
+			each.append(info.user_name)	#15	
+			each.append(info.img)		#16
+			each.append(r.to)			#17
+			each.append(r.good_con)	 	#18
+			each.append(r.time)		 	#19
+			each.append(r.review_con)	#20
+			each.append(r.from_id)		#21
+			each.append(info.domain)			#22
+		news.append(each)
+	my=Group.objects.filter(user_id=u_id)
+	fg=Follow_group.objects.filter(user_id=u_id)
 	follow=[]
 	for l in fg:
 		follow.append(l.follow_group_id)
@@ -263,6 +303,20 @@ def home(request,u_id):
 			each.append('1')		#4
 		else:
 			each.append('0')		#4
+		each.append(k.id)			#5
+		topicTable=Topic.objects.filter(group_id=k.id).order_by('-time')[0:3]
+		topics=[]
+		for t in topicTable:
+			eachTopic=[]
+			eachTopic.append(t.id)	##0
+			eachTopic.append(t.name)	##1
+			t_content=t.content
+			t_content=re.sub(r'<img.*>','',str(t_content))
+			eachTopic.append(t_content)	##2
+			eachTopic.append(t.time)	##3
+			topics.append(eachTopic)		
+		each.append(topics)				#6 
+
 		#Topic.objects.filter(group_id=k.id).order_by('-review_con')[0:3]
 		mygroup.append(each)
 	m=Message.objects.filter(to=request.session['id']).order_by('-time')[0:5]
@@ -278,7 +332,118 @@ def home(request,u_id):
 	for n in m:
 		if n.status==1:
 			havent+=1
-	return render(request,'users/home.html',{'mygroup':mygroup,'identity':identity,'userinfo':userinfo,'info':info,'guy':guy,'news':news,'havent':havent})
+
+	Follow_group_set1=Group.objects.filter(id__in=follow).order_by('-time')[0:6]
+	Follow_group_set2=Group.objects.filter(id__in=follow).order_by('-time')[6:]
+	follow_group_set1=[]
+	for f in Follow_group_set1:
+		each=[]
+		each.append(f.id)
+		each.append(f.domain)
+		each.append(f.img)
+		each.append(f.name)
+		follow_group_set1.append(each)
+	follow_group_set2=[]
+	for f in Follow_group_set2:
+		each=[]
+		each.append(f.id)
+		each.append(f.domain)
+		each.append(f.img)
+		each.append(f.name)
+		follow_group_set2.append(each)
+
+	courseTable=Course.objects.filter(teacher_id=u_id).order_by('-time')
+	couses=[]
+	for c in courseTable:
+		each=[]
+		each.append(c.id)		#0
+		each.append(c.name)		#1
+		each.append(c.domain)	#2
+		each.append(c.img)		#3
+		each.append(c.introduce)	#4
+		each.append(c.price)	#5
+		each.append(c.grade_con)	#6
+		
+		
+		col=0
+		if int(u_id)==request.session['id']:
+			col=1
+		else:
+			follow_courseTable=Follow_course.objects.filter(user_id=request.session['id'])
+			for f in follow_courseTable:
+				if int(f.follow_course_id)==int(c.id):
+					col=1
+					break
+		each.append(col)		#7 if collect
+		yellow_stars=range(0,c.grade)		
+		each.append(yellow_stars)		#8
+		hollow_stars=range(0,(5-c.grade))	
+		each.append(hollow_stars)		#9
+		pur=0
+		if int(u_id)==request.session['id']:
+			pur=1
+		else:
+			purchaseTable=Purchase.objects.filter(user_id=request.session['id'])
+			for p in purchaseTable:
+				if int(p.purchase_id)==int(c.id):
+					pur=1
+					break
+		each.append(pur)		#10 if purchase
+		couses.append(each)
+	
+	rewardTable=Reward.objects.filter(from_id=u_id).order_by('-time')
+	reward=[]
+	for r in rewardTable:
+		each=[]
+		each.append(r.id)		#0
+		each.append(r.name)		#1
+		each.append(r.price)	#2
+		each.append(r.introduce)	#3
+		r_type=Types.objects.get(id=r.types_id)
+		each.append(r_type.name)	#4
+		visited_info=Info.objects.get(user_id=u_id)
+		each.append(visited_info.domain)  #5
+		each.append(visited_info.img)		#6
+		reward.append(each)
+
+
+	paginator = Paginator(news, 10)
+	page = request.GET.get('page1')
+	try:
+	    news = paginator.page(page)
+	except PageNotAnInteger:
+	    news = paginator.page(1)
+	except EmptyPage:
+	    news = paginator.page(paginator.num_pages)
+
+	paginator = Paginator(mygroup, 10)
+	page = request.GET.get('page2')
+	try:
+	    mygroup = paginator.page(page)
+	except PageNotAnInteger:
+	    mygroup = paginator.page(1)
+	except EmptyPage:
+	    mygroup = paginator.page(paginator.num_pages)
+
+	paginator = Paginator(couses, 10)
+	page = request.GET.get('page3')
+	try:
+	    couses = paginator.page(page)
+	except PageNotAnInteger:
+	    couses = paginator.page(1)
+	except EmptyPage:
+	    couses = paginator.page(paginator.num_pages)
+
+	paginator = Paginator(reward, 30)
+	page = request.GET.get('page4')
+	try:
+	    reward = paginator.page(page)
+	except PageNotAnInteger:
+	    reward = paginator.page(1)
+	except EmptyPage:
+	    reward = paginator.page(paginator.num_pages)
+
+	return render(request,'users/home.html',{'reward':reward,'follow_group_set1':follow_group_set1,'follow_group_set2':follow_group_set2,'tab':tab,'couses':couses,'mygroup':mygroup,'identity':identity,'userinfo':userinfo,'info':info,'guy':guy,'news':news,'havent':havent})
 
 def add(request):
 	f=Follow_user.objects.filter(user_id=request.session['id'])
