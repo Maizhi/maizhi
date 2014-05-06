@@ -357,7 +357,7 @@ def change(request):
 	return HttpResponse('1')
 
 def groupcreate(request):
-	
+	try:
 		if Group.objects.filter(name=request.POST['groupName']):
 			return HttpResponse('小组已存在 ! ')
 		else:
@@ -389,6 +389,22 @@ def groupcreate(request):
 			g=Group(name=request.POST['groupName'],introduce=request.POST['groupIntro'],img=str(tj),domain=domain,user_id=request.session['id'])
 			g.save()
 			return render(request,'groups/success.html',{'g':g.id})
+	except:
+		m=Message.objects.filter(to=request.session['id']).order_by('-time')[0:5]
+		mess=[]
+		for k in m:
+			each=[]
+			name=Info.objects.get(user_id=k.from_id).user_name
+			content=k.content
+			each.append(name)
+			each.append(content)
+			mess.append(each)
+		havent=0
+		for n in m:
+			if n.status==1:
+				havent+=1
+		info=Info.objects.get(user_id=request.session['id'])
+		return render(request,'groups/groupCreate.html',{'info':info,'message':mess,'havent':havent})
 	
 
 def download(request,group):
