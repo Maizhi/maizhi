@@ -3,7 +3,7 @@ function shareTo(id){
 	imgurl=document.getElementById('larger'+id).src;
 	img=imgurl.split('-');
 	var sharemsg=document.getElementById("sharemsg"+id).value;
-	var sharemsgeurl="http://192.168.1.113:8866/users/share/?sharemsg="+sharemsg+"&img="+img[0]+"&id="+id;
+	var sharemsgeurl="http://192.168.1.120:8866/users/share/?sharemsg="+sharemsg+"&img="+img[0]+"&id="+id;
 	xmlHttp.open('GET',sharemsgeurl);
 	xmlHttp.onreadystatechange=rtn(id);
 	xmlHttp.send(); 
