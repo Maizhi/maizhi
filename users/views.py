@@ -163,7 +163,7 @@ def message(request):
 
 def share(request):
 	try:
-		News(user_id=request.session['id'],content=request.GET['sharemsg'],good_con=0,share_con=0,review_con=0,img=request.GET['img']).save()
+		News(user_id=request.session['id'],content=request.GET['sharemsg'],good_con=0,share_con=0,review_con=0,img="",src=request.GET['img']).save()
 		oldnews=News.objects.get(id=request.GET['id'])
 		oldnews.share_con+=1
 		oldnews.save()
